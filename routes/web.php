@@ -8,17 +8,7 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('/struktur-organisasi', function () {
-    return view('struktur-organisasi');
-});
-
-Route::get('/divisi', function () {
-    return view('divisi');
-});
-
-Route::get('/program-kerja', function () {
-    return view('program-kerja');
-});
+Route::get('/program-kerja', [\App\Http\Controllers\WorkProgramController::class, 'index']);
 
 Route::get('/kegiatan', function () {
     return view('kegiatan');
@@ -26,6 +16,10 @@ Route::get('/kegiatan', function () {
 
 Route::get('/pengumuman', function () {
     return view('pengumuman');
+});
+
+Route::get('/merchandise', function () {
+    return view('merchandise');
 });
 
 Route::get('/login-admin', [AdminAuthController::class, 'showLoginForm'])->name('login');
@@ -46,4 +40,10 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/admin/users', [App\Http\Controllers\UserController::class, 'store'])->name('admin.users.store');
     Route::put('/admin/user/{id}', [App\Http\Controllers\UserController::class, 'update'])->name('admin.users.update');
     Route::delete('/admin/user/{id}', [App\Http\Controllers\UserController::class, 'destroy'])->name('admin.users.destroy');
+
+    Route::resource('/admin/positions', App\Http\Controllers\Admin\PositionController::class, ['as' => 'admin']);
+    Route::resource('/admin/divisions', App\Http\Controllers\Admin\DivisionController::class, ['as' => 'admin']);
+    Route::resource('/admin/members', App\Http\Controllers\Admin\OrgMemberController::class, ['as' => 'admin']);
 });
+
+Route::get('/struktur-organisasi', [App\Http\Controllers\Admin\OrgMemberController::class, 'publicIndex']);

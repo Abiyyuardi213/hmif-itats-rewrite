@@ -1,14 +1,13 @@
 <div
-    class="fixed top-6 left-1/2 -translate-x-1/2 z-50 w-full max-w-4xl px-4 animate-in fade-in slide-in-from-top-4 duration-500">
+    class="fixed top-6 left-1/2 -translate-x-1/2 z-50 w-full max-w-5xl px-4 animate-in fade-in slide-in-from-top-4 duration-500">
     <nav
-        class="flex items-center justify-between px-2 py-2 bg-white rounded-2xl shadow-xl ring-1 ring-slate-200/60 mx-auto">
+        class="flex items-center justify-between px-4 py-3 bg-white rounded-2xl shadow-xl ring-1 ring-slate-200/60 mx-auto">
 
         <!-- Left Section: Logo & Nav Items -->
         <div class="flex items-center gap-6 pl-2">
             <!-- Logo Box -->
-            <a href="{{ url('/admin/dashboard') }}"
-                class="flex items-center justify-center w-10 h-10 rounded-xl bg-slate-900 text-white shadow-sm hover:bg-slate-800 transition-colors">
-                <span class="font-bold text-xs tracking-tighter">HMIF</span>
+            <a href="{{ url('/admin/dashboard') }}" class="flex items-center transition-opacity hover:opacity-80">
+                <img src="{{ asset('image/hima-infor.png') }}" alt="HMIF Logo" class="w-12 h-12 object-contain">
             </a>
 
             <!-- Nav Links -->
@@ -33,9 +32,19 @@
                     Konten
                 </a>
 
-                <a href="#"
-                    class="px-3 py-2 text-sm font-medium text-slate-500 rounded-lg hover:text-slate-900 hover:bg-slate-50 transition-colors">
+                <a href="{{ route('admin.positions.index') }}"
+                    class="px-3 py-2 text-sm font-medium {{ request()->is('admin/positions*') ? 'text-slate-900 bg-slate-50' : 'text-slate-500' }} rounded-lg hover:text-slate-900 hover:bg-slate-50 transition-colors">
+                    Jabatan
+                </a>
+
+                <a href="{{ route('admin.divisions.index') }}"
+                    class="px-3 py-2 text-sm font-medium {{ request()->is('admin/divisions*') ? 'text-slate-900 bg-slate-50' : 'text-slate-500' }} rounded-lg hover:text-slate-900 hover:bg-slate-50 transition-colors">
                     Divisi
+                </a>
+
+                <a href="{{ route('admin.members.index') }}"
+                    class="px-3 py-2 text-sm font-medium {{ request()->is('admin/members*') ? 'text-slate-900 bg-slate-50' : 'text-slate-500' }} rounded-lg hover:text-slate-900 hover:bg-slate-50 transition-colors">
+                    Anggota
                 </a>
 
                 <!-- Dropdown Trigger -->
