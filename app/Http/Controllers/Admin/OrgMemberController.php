@@ -13,7 +13,7 @@ class OrgMemberController extends Controller
 {
     public function index()
     {
-        $members = OrgMember::with(['position', 'division'])->orderBy('order')->get();
+        $members = OrgMember::with(['position', 'division'])->orderBy('order')->paginate(10);
         $positions = Position::orderBy('order')->get();
         $divisions = Division::orderBy('order')->get();
         return view('admin.members.index', compact('members', 'positions', 'divisions'));
@@ -44,6 +44,12 @@ class OrgMemberController extends Controller
         }
 
         OrgMember::create($validated);
+
+        if ($request->wantsJson()) {
+            session()->flash('success', 'Anggota berhasil ditambahkan');
+            return response()->json(['message' => 'Success']);
+        }
+
         return redirect()->route('admin.members.index')->with('success', 'Anggota berhasil ditambahkan');
     }
 
@@ -75,7 +81,13 @@ class OrgMemberController extends Controller
         }
 
         $member->update($validated);
-        return redirect()->route('admin.members.index')->with('success', 'Anggota berhasil diperbarui');
+
+        if ($request->wantsJson()) {
+            session()->flash('success', 'Anggota berhasil diperbarui');
+            return response()->json(['message' => 'Success']);
+        }
+
+        return redirect()->back()->with('success', 'Anggota berhasil diperbarui');
     }
 
     public function destroy(OrgMember $member)
@@ -84,7 +96,7 @@ class OrgMemberController extends Controller
             Storage::disk('public')->delete($member->image);
         }
         $member->delete();
-        return redirect()->route('admin.members.index')->with('success', 'Anggota berhasil dihapus');
+        return back()->with('success', 'Anggota berhasil dihapus');
     }
 
     public function publicIndex()
