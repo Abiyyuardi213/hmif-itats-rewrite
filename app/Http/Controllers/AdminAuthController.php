@@ -22,7 +22,7 @@ class AdminAuthController extends Controller
         if (Auth::attempt($credentials)) {
             $request->session()->regenerate();
 
-            return redirect()->intended('/admin/dashboard');
+            return redirect()->intended('/admin/dashboard')->with('success', 'Selamat datang kembali, ' . Auth::user()->name . '!');
         }
 
         return back()->withErrors([

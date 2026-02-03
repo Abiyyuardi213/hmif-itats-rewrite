@@ -23,6 +23,7 @@ class PositionController extends Controller
     {
         $validated = $request->validate([
             'name' => 'required|string|max:255',
+            'description' => 'nullable|string',
             'type' => 'required|in:inti,divisi',
             'order' => 'required|integer',
         ]);
@@ -40,6 +41,7 @@ class PositionController extends Controller
     {
         $validated = $request->validate([
             'name' => 'required|string|max:255',
+            'description' => 'nullable|string',
             'type' => 'required|in:inti,divisi',
             'order' => 'required|integer',
         ]);

@@ -1,0 +1,418 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="Tentang">
+    <title>Akademik WR 1 - Tentang</title>
+    <link rel="icon" type="image/png" href="https://pinjamruang.sistemin.site/image/itats-1080.jpg">
+    <link rel="apple-touch-icon" href="https://pinjamruang.sistemin.site/image/itats-1080.jpg">
+    <link rel="apple-touch-startup-image" href="https://pinjamruang.sistemin.site/image/itats-1080.jpg">
+    <link rel="manifest" href="https://pinjamruang.sistemin.site/manifest.json">
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+    <!-- Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <!-- Scripts & Styles -->
+    <link rel="preload" as="style" href="https://pinjamruang.sistemin.site/build/assets/app-C-eKw2pJ.css" /><link rel="modulepreload" href="https://pinjamruang.sistemin.site/build/assets/app-CAiCLEjY.js" /><link rel="stylesheet" href="https://pinjamruang.sistemin.site/build/assets/app-C-eKw2pJ.css" /><script type="module" src="https://pinjamruang.sistemin.site/build/assets/app-CAiCLEjY.js"></script>
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            -webkit-font-smoothing: antialiased;
+        }
+    </style>
+</head>
+
+<body class="bg-white text-zinc-950 antialiased">
+    <!-- Navbar -->
+    <nav
+    class="sticky top-0 z-50 w-full border-b border-zinc-200 bg-white/95 backdrop-blur supports-[backdrop-filter]:bg-white/60">
+    <div class="container mx-auto px-4 md:px-8">
+        <div class="flex h-16 items-center justify-between">
+            <!-- Logo area -->
+            <a class="flex items-center gap-2 mr-4" href="https://pinjamruang.sistemin.site/home">
+                <img src="https://pinjamruang.sistemin.site/image/itats-biru.png" alt="Logo ITATS" class="h-8 w-auto">
+                <div class="hidden md:flex flex-col">
+                    <span class="text-lg font-bold tracking-tight text-zinc-900 leading-none">SISTEM</span>
+                    <span class="text-[10px] uppercase tracking-wider font-medium text-zinc-500">Peminjaman
+                        Ruangan</span>
+                </div>
+            </a>
+
+            <!-- Desktop Navigation -->
+            <nav class="hidden md:flex items-center gap-6 text-sm font-medium">
+                <a class="transition-colors hover:text-zinc-900 text-zinc-600"
+                    href="https://pinjamruang.sistemin.site/home">
+                    Beranda
+                </a>
+                <a class="transition-colors hover:text-zinc-900 text-zinc-900 font-semibold"
+                    href="https://pinjamruang.sistemin.site/about">
+                    Tentang
+                </a>
+                <a class="transition-colors hover:text-zinc-900 text-zinc-600"
+                    href="https://pinjamruang.sistemin.site/fasilitas">
+                    Fasilitas
+                </a>
+                <a class="transition-colors hover:text-zinc-900 text-zinc-600"
+                    href="https://pinjamruang.sistemin.site/pengumuman">
+                    Pengumuman
+                </a>
+            </nav>
+
+            <div class="flex items-center gap-4">
+                <a href="https://pinjamruang.sistemin.site/login-guest"
+                    class="hidden md:inline-flex items-center justify-center rounded-md bg-zinc-900 px-4 py-2 text-sm font-medium text-white shadow hover:bg-zinc-900/90 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-zinc-950 disabled:pointer-events-none disabled:opacity-50">
+                    Login
+                </a>
+                <!-- Mobile Menu Button -->
+                <button id="mobile-menu-btn"
+                    class="inline-flex items-center justify-center rounded-md p-2 text-zinc-700 hover:bg-zinc-100 focus:outline-none md:hidden">
+                    <span class="sr-only">Open main menu</span>
+                    <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path id="menu-icon" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M4 6h16M4 12h16M4 18h16"></path>
+                        <path id="close-icon" class="hidden" stroke-linecap="round" stroke-linejoin="round"
+                            stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                    </svg>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Mobile Navigation Menu -->
+    <div id="mobile-menu" class="hidden border-t border-zinc-200 bg-white md:hidden">
+        <div class="space-y-1 p-4">
+            <a class="block rounded-md px-3 py-2 text-sm font-medium hover:bg-zinc-100 text-zinc-600"
+                href="https://pinjamruang.sistemin.site/home">
+                Beranda
+            </a>
+            <a class="block rounded-md px-3 py-2 text-sm font-medium hover:bg-zinc-100 text-zinc-900 bg-zinc-50"
+                href="https://pinjamruang.sistemin.site/about">
+                Tentang
+            </a>
+            <a class="block rounded-md px-3 py-2 text-sm font-medium hover:bg-zinc-100 text-zinc-600"
+                href="https://pinjamruang.sistemin.site/fasilitas">
+                Fasilitas
+            </a>
+            <a class="block rounded-md px-3 py-2 text-sm font-medium hover:bg-zinc-100 text-zinc-600"
+                href="https://pinjamruang.sistemin.site/pengumuman">
+                Pengumuman
+            </a>
+            <div class="pt-4 mt-2 border-t border-zinc-100">
+                <a href="https://pinjamruang.sistemin.site/login-guest"
+                    class="block w-full rounded-md bg-zinc-900 px-3 py-2 text-center text-sm font-medium text-white hover:bg-zinc-900/90 shadow-sm">
+                    Login
+                </a>
+            </div>
+        </div>
+    </div>
+</nav>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const btn = document.getElementById('mobile-menu-btn');
+        const menu = document.getElementById('mobile-menu');
+        const menuIcon = document.getElementById('menu-icon');
+        const closeIcon = document.getElementById('close-icon');
+
+        if (btn && menu) {
+            btn.addEventListener('click', function() {
+                menu.classList.toggle('hidden');
+                menuIcon.classList.toggle('hidden');
+                closeIcon.classList.toggle('hidden');
+            });
+        }
+    });
+</script>
+
+    <!-- Header Section -->
+    <section class="py-20 md:py-28 bg-zinc-50 border-b border-zinc-100">
+        <div class="container mx-auto px-4 text-center max-w-3xl">
+            <h1 class="text-3xl md:text-5xl font-bold tracking-tight text-zinc-900 mb-6">Tentang Sistem</h1>
+            <p class="text-lg text-zinc-500 leading-relaxed">
+                Sistem Peminjaman Ruangan Akademik WR 1 - Institut Teknologi Adhi Tama Surabaya. <br
+                    class="hidden md:block">
+                Inovasi digital untuk efisiensi akademik.
+            </p>
+        </div>
+    </section>
+
+    <!-- Main Content -->
+    <section class="py-20 bg-white">
+        <div class="container mx-auto px-4 md:px-6">
+            <div class="grid lg:grid-cols-2 gap-12 lg:gap-16 items-start">
+
+                <!-- Image Grid -->
+                <div class="grid grid-cols-2 gap-4">
+                    <div class="space-y-4 pt-12">
+                        <img src="https://pinjamruang.sistemin.site/image/d12.jpg"
+                            class="rounded-xl border border-zinc-200 shadow-sm w-full h-48 object-cover"
+                            alt="Tentang Sistem 1">
+                    </div>
+                    <div>
+                        <img src="https://pinjamruang.sistemin.site/image/d1interior.jpg"
+                            class="rounded-xl border border-zinc-200 shadow-sm w-full h-64 object-cover"
+                            alt="Tentang Sistem 2">
+                        <div class="pt-4">
+                            <img src="https://pinjamruang.sistemin.site/image/joglo.jpg"
+                                class="rounded-xl border border-zinc-200 shadow-sm w-full h-40 object-cover"
+                                alt="Tentang Sistem 3">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="lg:pt-8">
+                    <div
+                        class="inline-flex items-center rounded-full border border-zinc-200 bg-zinc-50 px-3 py-1 text-xs font-medium text-zinc-800 mb-6">
+                        Overview
+                    </div>
+                    <h2 class="text-3xl font-bold tracking-tight text-zinc-900 mb-6">Sistem Terintegrasi untuk Kampus
+                    </h2>
+                    <div class="space-y-4 text-zinc-600 leading-relaxed">
+                        <p>
+                            Sistem ini dirancang untuk mempermudah proses peminjaman ruangan di lingkungan kampus ITATS.
+                            Pengguna dapat mengajukan permohonan peminjaman, memantau status pengajuan, serta menerima
+                            notifikasi terkait persetujuan dengan transparan.
+                        </p>
+                        <p>
+                            Dengan sistem ini, kami berkomitmen untuk meningkatkan efisiensi pengelolaan fasilitas dan
+                            meminimalisir konflik jadwal penggunaan ruangan di lingkungan akademik.
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Visi & Misi -->
+            <div class="mt-24">
+                <div class="grid md:grid-cols-2 gap-8 max-w-5xl mx-auto">
+                    <!-- Visi -->
+                    <div class="p-8 rounded-xl border border-zinc-200 bg-zinc-50/50 hover:bg-zinc-50 transition-colors">
+                        <div
+                            class="h-10 w-10 bg-white border border-zinc-200 rounded-lg flex items-center justify-center text-zinc-900 mb-6 shadow-sm">
+                            <i class="fas fa-eye"></i>
+                        </div>
+                        <h4 class="text-xl font-bold text-zinc-900 mb-3">Visi</h4>
+                        <p class="text-zinc-500 leading-relaxed">
+                            Menjadi sistem informasi yang efektif, efisien, dan transparan dalam mendukung pengelolaan
+                            ruangan kampus.
+                        </p>
+                    </div>
+
+                    <!-- Misi -->
+                    <div class="p-8 rounded-xl border border-zinc-200 bg-zinc-50/50 hover:bg-zinc-50 transition-colors">
+                        <div
+                            class="h-10 w-10 bg-white border border-zinc-200 rounded-lg flex items-center justify-center text-zinc-900 mb-6 shadow-sm">
+                            <i class="fas fa-bullseye"></i>
+                        </div>
+                        <h4 class="text-xl font-bold text-zinc-900 mb-3">Misi</h4>
+                        <p class="text-zinc-500 leading-relaxed">
+                            Menyediakan layanan digital yang memudahkan mahasiswa, dosen, dan staf dalam proses
+                            peminjaman ruangan dengan aksesibilitas tinggi.
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Team -->
+            <div class="mt-24">
+                <div class="text-center mb-12">
+                    <h2 class="text-2xl font-bold tracking-tight text-zinc-900">Tim Pengembang</h2>
+                    <p class="text-zinc-500 mt-2">Dibalik layar sistem akademik</p>
+                </div>
+
+                <div class="grid md:grid-cols-3 gap-8 max-w-5xl mx-auto">
+                    <!-- Dev 1 -->
+                    <div class="p-6 rounded-xl border border-zinc-200 bg-white text-center shadow-sm">
+                        <img src="https://pinjamruang.sistemin.site/image/default.png"
+                            class="w-20 h-20 rounded-full mx-auto mb-4 bg-zinc-100 object-cover border border-zinc-200"
+                            alt="Dev 1">
+                        <h5 class="text-lg font-bold text-zinc-900">R. Abiyyu Ardi Lian P</h5>
+                        <p class="text-sm font-medium text-zinc-500 mb-1">Backend & Frontend</p>
+                        <p class="text-xs text-zinc-400">Teknik Informatika 2023</p>
+                    </div>
+
+                    <!-- Dev 2 -->
+                    <div class="p-6 rounded-xl border border-zinc-200 bg-white text-center shadow-sm">
+                        <img src="https://pinjamruang.sistemin.site/image/default.png"
+                            class="w-20 h-20 rounded-full mx-auto mb-4 bg-zinc-100 object-cover border border-zinc-200"
+                            alt="Dev 2">
+                        <h5 class="text-lg font-bold text-zinc-900">Developer 2</h5>
+                        <p class="text-sm font-medium text-zinc-500 mb-1">Frontend Developer</p>
+                        <p class="text-xs text-zinc-400">Angkatan</p>
+                    </div>
+
+                    <!-- Dev 3 -->
+                    <div class="p-6 rounded-xl border border-zinc-200 bg-white text-center shadow-sm">
+                        <img src="https://pinjamruang.sistemin.site/image/default.png"
+                            class="w-20 h-20 rounded-full mx-auto mb-4 bg-zinc-100 object-cover border border-zinc-200"
+                            alt="Dev 3">
+                        <h5 class="text-lg font-bold text-zinc-900">Developer 3</h5>
+                        <p class="text-sm font-medium text-zinc-500 mb-1">UI/UX Designer</p>
+                        <p class="text-xs text-zinc-400">Angkatan</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-slate-950 text-slate-50 py-16 border-t border-slate-800">
+    <div class="container mx-auto px-4 md:px-8">
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12">
+            <!-- Brand -->
+            <div class="space-y-6">
+                <div class="flex items-center gap-3">
+                    <img src="https://pinjamruang.sistemin.site/image/logo-itats-putih.png" alt="Logo ITATS" class="h-10 w-auto opacity-90">
+                    <div>
+                        <h5 class="text-lg font-bold text-white leading-none tracking-tight">Sistem Peminjaman<br>Ruangan
+                        </h5>
+                    </div>
+                </div>
+                <p class="text-sm text-slate-400 leading-relaxed max-w-xs">
+                    Solusi digital terpadu untuk mengelola peminjaman ruangan di lingkungan kampus dengan efisien dan
+                    transparan.
+                </p>
+            </div>
+
+            <!-- Menu Utama -->
+            <div>
+                <h6 class="text-sm font-semibold text-white tracking-wider uppercase mb-6">Menu Utama</h6>
+                <ul class="space-y-3 text-sm text-slate-400">
+                    <li><a href="#beranda" class="hover:text-white transition-colors">Beranda</a></li>
+                    <li><a href="#daftar-ruangan" class="hover:text-white transition-colors">Daftar Ruangan</a></li>
+                    <li><a href="#permohonan-peminjaman" class="hover:text-white transition-colors">Peminjaman</a></li>
+                    <li><a href="#pengumuman" class="hover:text-white transition-colors">Pengumuman</a></li>
+                </ul>
+            </div>
+
+            <!-- Kontak -->
+            <div>
+                <h6 class="text-sm font-semibold text-white tracking-wider uppercase mb-6">Informasi Kontak</h6>
+                <ul class="space-y-4 text-sm text-slate-400">
+                    <li class="flex items-start gap-3">
+                        <i class="fas fa-envelope mt-1 text-slate-500"></i>
+                        <span>itats@itats.ac.id</span>
+                    </li>
+                    <li class="flex items-start gap-3">
+                        <i class="fas fa-phone mt-1 text-slate-500"></i>
+                        <span>(031) 5991101</span>
+                    </li>
+                    <li class="flex items-start gap-3">
+                        <i class="fas fa-map-marker-alt mt-1 text-slate-500"></i>
+                        <span class="leading-snug">Jln Arief Rachman Hakim 100,<br>Surabaya 60117</span>
+                    </li>
+                </ul>
+            </div>
+
+            <!-- Social -->
+            <div>
+                <h6 class="text-sm font-semibold text-white tracking-wider uppercase mb-6">Ikuti Kami</h6>
+                <div class="flex gap-4">
+                    <a href="#"
+                        class="text-slate-400 hover:text-white transition-colors p-2 hover:bg-slate-900 rounded-md">
+                        <i class="fab fa-facebook-f text-lg"></i>
+                    </a>
+                    <a href="#"
+                        class="text-slate-400 hover:text-white transition-colors p-2 hover:bg-slate-900 rounded-md">
+                        <i class="fab fa-twitter text-lg"></i>
+                    </a>
+                    <a href="#"
+                        class="text-slate-400 hover:text-white transition-colors p-2 hover:bg-slate-900 rounded-md">
+                        <i class="fab fa-instagram text-lg"></i>
+                    </a>
+                    <a href="#"
+                        class="text-slate-400 hover:text-white transition-colors p-2 hover:bg-slate-900 rounded-md">
+                        <i class="fab fa-linkedin-in text-lg"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <div
+            class="mt-16 pt-8 border-t border-slate-900 text-center md:text-left flex flex-col md:flex-row justify-between items-center text-sm text-slate-500">
+            <p>&copy; 2025 <span class="font-medium text-slate-400">Institut Teknologi Adhi Tama Surabaya</span>. All
+                rights reserved.</p>
+            <div class="flex gap-6 mt-4 md:mt-0">
+                <a href="#" class="hover:text-slate-300 transition-colors">Kebijakan Privasi</a>
+                <a href="#" class="hover:text-slate-300 transition-colors">Syarat & Ketentuan</a>
+            </div>
+        </div>
+    </div>
+</footer>
+    <div id="logoutModal" class="hidden fixed inset-0 z-[100] overflow-y-auto" aria-labelledby="modal-title" role="dialog"
+    aria-modal="true">
+    <!-- Background backdrop -->
+    <div class="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity backdrop-blur-sm" aria-hidden="true"
+        id="logoutModalBackdrop"></div>
+
+    <div class="flex min-h-full items-center justify-center p-4 text-center sm:p-0">
+        <div
+            class="relative transform overflow-hidden rounded-lg bg-white text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-lg">
+            <div class="bg-white px-4 pb-4 pt-5 sm:p-6 sm:pb-4">
+                <div class="sm:flex sm:items-start">
+                    <div
+                        class="mx-auto flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-full bg-red-100 sm:mx-0 sm:h-10 sm:w-10">
+                        <svg class="h-6 w-6 text-red-600" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                            stroke="currentColor" aria-hidden="true">
+                            <path stroke-linecap="round" stroke-linejoin="round"
+                                d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126zM12 15.75h.007v.008H12v-.008z" />
+                        </svg>
+                    </div>
+                    <div class="mt-3 text-center sm:ml-4 sm:mt-0 sm:text-left">
+                        <h3 class="text-base font-semibold leading-6 text-gray-900" id="modal-title">Konfirmasi Logout
+                        </h3>
+                        <div class="mt-2">
+                            <p class="text-sm text-gray-500">Apakah Anda yakin ingin keluar dari sistem? Anda harus
+                                login kembali untuk mengakses fitur.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="bg-gray-50 px-4 py-3 sm:flex sm:flex-row-reverse sm:px-6">
+                <form action="https://pinjamruang.sistemin.site/logout" method="POST">
+                    <input type="hidden" name="_token" value="w0Vq6qBcCLMKpsrQHgp5xve5jnsnUj71BSiFBZoD" autocomplete="off">                    <button type="submit"
+                        class="inline-flex w-full justify-center rounded-md bg-red-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-red-500 sm:ml-3 sm:w-auto">Ya,
+                        Logout</button>
+                </form>
+                <button type="button"
+                    class="mt-3 inline-flex w-full justify-center rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 sm:mt-0 sm:w-auto"
+                    id="cancelLogout">Batal</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const modal = document.getElementById('logoutModal');
+        const triggers = document.querySelectorAll('[data-bs-target="#logoutModal"]');
+        const cancelBtn = document.getElementById('cancelLogout');
+        const backdrop = document.getElementById('logoutModalBackdrop');
+
+        function toggleModal() {
+            modal.classList.toggle('hidden');
+        }
+
+        triggers.forEach(trigger => {
+            trigger.addEventListener('click', function(e) {
+                e.preventDefault();
+                toggleModal();
+            });
+        });
+
+        if (cancelBtn) cancelBtn.addEventListener('click', toggleModal);
+        if (backdrop) backdrop.addEventListener('click', toggleModal);
+    });
+</script>
+</body>
+
+</html>

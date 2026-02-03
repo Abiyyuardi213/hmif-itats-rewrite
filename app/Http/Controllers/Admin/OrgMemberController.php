@@ -14,7 +14,9 @@ class OrgMemberController extends Controller
     public function index()
     {
         $members = OrgMember::with(['position', 'division'])->orderBy('order')->get();
-        return view('admin.members.index', compact('members'));
+        $positions = Position::orderBy('order')->get();
+        $divisions = Division::orderBy('order')->get();
+        return view('admin.members.index', compact('members', 'positions', 'divisions'));
     }
 
     public function create()

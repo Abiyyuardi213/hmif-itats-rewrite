@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Position extends Model
 {
-    protected $fillable = ['name', 'type', 'order'];
+    protected $fillable = ['name', 'description', 'type', 'order'];
 
     public function members()
     {
