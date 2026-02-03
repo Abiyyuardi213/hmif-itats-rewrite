@@ -4,120 +4,124 @@
 
 @section('content')
     <!-- Hero Section -->
-    <section class="relative pt-12 pb-20 bg-white overflow-hidden">
-        <div class="max-w-[1600px] mx-auto px-6 sm:px-10 lg:px-12">
-            <div class="mb-14 text-center">
+    <section class="relative py-12 md:py-20 overflow-hidden bg-white mt-[-1px]">
+        <!-- Radial Gradient Background -->
+        <div class="absolute inset-0 bg-[radial-gradient(circle_at_50%_-20%,rgba(244,114,182,0.12),rgba(255,255,255,0))]">
+        </div>
+
+        <div class="max-w-[1600px] mx-auto px-6 sm:px-10 lg:px-12 relative">
+            <div class="mb-16 text-center">
                 <div
-                    class="inline-flex items-center gap-2 mb-6 bg-white border border-slate-100 px-3 py-1 rounded-full w-fit shadow-sm mx-auto">
-                    <span class="w-1.5 h-1.5 rounded-full bg-primary"></span>
-                    <span class="text-[11px] font-medium text-slate-500 tracking-tight">Koleksi Eksklusif • Kualitas Premium
-                        • Bangga Informatika</span>
+                    class="inline-flex items-center gap-2 rounded-full border border-pink-100 bg-pink-50/50 px-3 py-1.5 text-[10px] font-bold text-pink-500 mb-5 backdrop-blur-sm shadow-sm uppercase tracking-widest">
+                    <i class="fas fa-shopping-bag"></i>
+                    Koleksi Eksklusif HMIF
                 </div>
-                <h1 class="text-4xl md:text-5xl lg:text-6xl font-black text-slate-900 mb-6 tracking-tight">Official
-                    Merchandise</h1>
-                <p class="text-slate-500 font-medium max-w-2xl mx-auto leading-relaxed">
+                <h1 class="text-4xl md:text-6xl font-black tracking-tighter text-slate-900 mb-5 leading-[1.1]">
+                    Official <br>
+                    <span class="text-pink-500">Merchandise</span>
+                </h1>
+                <p class="text-base text-slate-500 max-w-xl mx-auto leading-relaxed font-medium opacity-90">
                     Tunjukkan identitasmu sebagai bagian dari keluarga besar Informatika ITATS dengan koleksi merchandise
                     eksklusif kami.
                 </p>
             </div>
 
-            <!-- Products Grid -->
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
+            <!-- Products Grid (More compact: 2 on mobile, 3 on tablet, 4 on lg, 5 on xl) -->
+            <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4 md:gap-6">
                 <!-- Product 1 -->
-                <div class="group">
-                    <div
-                        class="relative aspect-square rounded-3xl overflow-hidden bg-slate-100 border border-slate-200 mb-5 shadow-sm transition-all duration-300 group-hover:shadow-xl group-hover:-translate-y-1">
-                        <img src="https://api.luckysf.com/api/placeholder/600/600" alt="HMIF Official Hoodie"
-                            class="w-full h-full object-cover">
-                        <div class="absolute top-4 right-4 focus:outline-none">
+                <div
+                    class="group bg-white rounded-[2rem] p-3 border border-slate-100 shadow-sm hover:shadow-xl transition-all duration-300">
+                    <div class="relative aspect-square rounded-2xl overflow-hidden bg-slate-50 mb-4">
+                        <img src="https://api.luckysf.com/api/placeholder/600/600" alt="HMIF Core Hoodie 2024"
+                            class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
+                        <div class="absolute top-2 right-2">
                             <span
-                                class="bg-primary text-white text-[10px] font-bold px-3 py-1 rounded-full shadow-lg shadow-primary/20 uppercase tracking-widest">Terlaris</span>
+                                class="bg-amber-500 text-white text-[8px] font-black px-2 py-0.5 rounded-full uppercase tracking-tighter">Terlaris</span>
                         </div>
                     </div>
-                    <div class="flex flex-col">
-                        <span class="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-1">Outerwear</span>
-                        <h3 class="text-lg font-extrabold text-slate-900 mb-2 group-hover:text-primary transition-colors">
+                    <div class="px-1 pb-2">
+                        <span
+                            class="text-[9px] font-bold text-pink-500 uppercase tracking-widest mb-1 block">Outerwear</span>
+                        <h3
+                            class="text-sm font-black text-slate-900 mb-2 truncate group-hover:text-pink-500 transition-colors">
                             HMIF Core Hoodie 2024</h3>
-                        <div class="flex items-center justify-between">
-                            <span class="text-primary font-black text-xl">Rp 185.000</span>
+                        <div class="flex items-center justify-between gap-2">
+                            <span class="text-slate-900 font-black text-sm">Rp 185k</span>
                             <a href="#"
-                                class="w-10 h-10 rounded-xl bg-slate-900 text-white flex items-center justify-center hover:bg-primary transition-colors shadow-lg shadow-slate-900/10">
-                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                        d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"></path>
-                                </svg>
+                                class="w-8 h-8 rounded-lg bg-slate-900 text-white flex items-center justify-center hover:bg-pink-500 transition-colors shadow-sm">
+                                <i class="fas fa-cart-plus text-xs"></i>
                             </a>
                         </div>
                     </div>
                 </div>
 
                 <!-- Product 2 -->
-                <div class="group">
-                    <div
-                        class="relative aspect-square rounded-3xl overflow-hidden bg-slate-100 border border-slate-200 mb-5 shadow-sm transition-all duration-300 group-hover:shadow-xl group-hover:-translate-y-1">
-                        <img src="https://api.luckysf.com/api/placeholder/600/600" alt="HMIF Basic Tee"
-                            class="w-full h-full object-cover">
+                <div
+                    class="group bg-white rounded-[2rem] p-3 border border-slate-100 shadow-sm hover:shadow-xl transition-all duration-300">
+                    <div class="relative aspect-square rounded-2xl overflow-hidden bg-slate-50 mb-4">
+                        <img src="https://api.luckysf.com/api/placeholder/600/600" alt="Informatika Oversize Tee"
+                            class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
                     </div>
-                    <div class="flex flex-col">
-                        <span class="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-1">T-Shirt</span>
-                        <h3 class="text-lg font-extrabold text-slate-900 mb-2 group-hover:text-primary transition-colors">
+                    <div class="px-1 pb-2">
+                        <span class="text-[9px] font-bold text-pink-500 uppercase tracking-widest mb-1 block">T-Shirt</span>
+                        <h3
+                            class="text-sm font-black text-slate-900 mb-2 truncate group-hover:text-pink-500 transition-colors">
                             Informatika Oversize Tee</h3>
-                        <div class="flex items-center justify-between">
-                            <span class="text-primary font-black text-xl">Rp 95.000</span>
+                        <div class="flex items-center justify-between gap-2">
+                            <span class="text-slate-900 font-black text-sm">Rp 95k</span>
                             <a href="#"
-                                class="w-10 h-10 rounded-xl bg-slate-900 text-white flex items-center justify-center hover:bg-primary transition-colors shadow-lg shadow-slate-900/10">
-                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                        d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"></path>
-                                </svg>
+                                class="w-8 h-8 rounded-lg bg-slate-900 text-white flex items-center justify-center hover:bg-pink-500 transition-colors shadow-sm">
+                                <i class="fas fa-cart-plus text-xs"></i>
                             </a>
                         </div>
                     </div>
                 </div>
 
                 <!-- Product 3 -->
-                <div class="group">
-                    <div
-                        class="relative aspect-square rounded-3xl overflow-hidden bg-slate-100 border border-slate-200 mb-5 shadow-sm transition-all duration-300 group-hover:shadow-xl group-hover:-translate-y-1">
-                        <img src="https://api.luckysf.com/api/placeholder/600/600" alt="HMIF Totebag"
-                            class="w-full h-full object-cover">
+                <div
+                    class="group bg-white rounded-[2rem] p-3 border border-slate-100 shadow-sm hover:shadow-xl transition-all duration-300">
+                    <div class="relative aspect-square rounded-2xl overflow-hidden bg-slate-50 mb-4">
+                        <img src="https://api.luckysf.com/api/placeholder/600/600" alt="HMIF Canvas Totebag"
+                            class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
+                        <div class="absolute top-2 right-2">
+                            <span
+                                class="bg-pink-500 text-white text-[8px] font-black px-2 py-0.5 rounded-full uppercase tracking-tighter">New</span>
+                        </div>
                     </div>
-                    <div class="flex flex-col">
-                        <span class="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-1">Accessories</span>
-                        <h3 class="text-lg font-extrabold text-slate-900 mb-2 group-hover:text-primary transition-colors">
+                    <div class="px-1 pb-2">
+                        <span
+                            class="text-[9px] font-bold text-pink-500 uppercase tracking-widest mb-1 block">Accessories</span>
+                        <h3
+                            class="text-sm font-black text-slate-900 mb-2 truncate group-hover:text-pink-500 transition-colors">
                             HMIF Canvas Totebag</h3>
-                        <div class="flex items-center justify-between">
-                            <span class="text-primary font-black text-xl">Rp 45.000</span>
+                        <div class="flex items-center justify-between gap-2">
+                            <span class="text-slate-900 font-black text-sm">Rp 45k</span>
                             <a href="#"
-                                class="w-10 h-10 rounded-xl bg-slate-900 text-white flex items-center justify-center hover:bg-primary transition-colors shadow-lg shadow-slate-900/10">
-                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                        d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"></path>
-                                </svg>
+                                class="w-8 h-8 rounded-lg bg-slate-900 text-white flex items-center justify-center hover:bg-pink-500 transition-colors shadow-sm">
+                                <i class="fas fa-cart-plus text-xs"></i>
                             </a>
                         </div>
                     </div>
                 </div>
 
                 <!-- Product 4 -->
-                <div class="group">
-                    <div
-                        class="relative aspect-square rounded-3xl overflow-hidden bg-slate-100 border border-slate-200 mb-5 shadow-sm transition-all duration-300 group-hover:shadow-xl group-hover:-translate-y-1">
-                        <img src="https://api.luckysf.com/api/placeholder/600/600" alt="HMIF Sticker Pack"
-                            class="w-full h-full object-cover">
+                <div
+                    class="group bg-white rounded-[2rem] p-3 border border-slate-100 shadow-sm hover:shadow-xl transition-all duration-300">
+                    <div class="relative aspect-square rounded-2xl overflow-hidden bg-slate-50 mb-4">
+                        <img src="https://api.luckysf.com/api/placeholder/600/600" alt="Premium Sticker Pack"
+                            class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
                     </div>
-                    <div class="flex flex-col">
-                        <span class="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-1">Essentials</span>
-                        <h3 class="text-lg font-extrabold text-slate-900 mb-2 group-hover:text-primary transition-colors">
+                    <div class="px-1 pb-2">
+                        <span
+                            class="text-[9px] font-bold text-pink-500 uppercase tracking-widest mb-1 block">Essentials</span>
+                        <h3
+                            class="text-sm font-black text-slate-900 mb-2 truncate group-hover:text-pink-500 transition-colors">
                             Premium Sticker Pack</h3>
-                        <div class="flex items-center justify-between">
-                            <span class="text-primary font-black text-xl">Rp 15.000</span>
+                        <div class="flex items-center justify-between gap-2">
+                            <span class="text-slate-900 font-black text-sm">Rp 15k</span>
                             <a href="#"
-                                class="w-10 h-10 rounded-xl bg-slate-900 text-white flex items-center justify-center hover:bg-primary transition-colors shadow-lg shadow-slate-900/10">
-                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                        d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"></path>
-                                </svg>
+                                class="w-8 h-8 rounded-lg bg-slate-900 text-white flex items-center justify-center hover:bg-pink-500 transition-colors shadow-sm">
+                                <i class="fas fa-cart-plus text-xs"></i>
                             </a>
                         </div>
                     </div>

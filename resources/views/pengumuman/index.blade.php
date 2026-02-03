@@ -1,81 +1,188 @@
 @extends('layouts.app')
 
-@section('title', 'Pengumuman - HMIF ITATS')
-
 @section('content')
-    <div class="min-h-screen bg-slate-50 pt-24 pb-12">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <!-- Header -->
-            <div class="text-center space-y-4 mb-12">
-                <h1 class="text-4xl font-extrabold text-slate-900 tracking-tight sm:text-5xl">
-                    Pengumuman <span class="text-primary italic">Terbaru</span>
-                </h1>
-                <p class="text-lg text-slate-600 max-w-2xl mx-auto">
-                    Dapatkan informasi terkini seputar kegiatan, berita, dan pengumuman penting dari Himpunan Mahasiswa
-                    Informatika ITATS.
-                </p>
-            </div>
+    <div class="max-w-7xl mx-auto px-6 py-8 space-y-8 min-h-screen bg-background" x-data="pengumumanApp()">
 
-            @if ($announcements->count() > 0)
-                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                    @foreach ($announcements as $a)
-                        <article
-                            class="bg-white rounded-2xl overflow-hidden border border-slate-200 shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300 flex flex-col group">
-                            <!-- Image Container -->
-                            <div class="aspect-video relative overflow-hidden bg-slate-100">
-                                @if ($a->image)
-                                    <img src="{{ asset('storage/' . $a->image) }}" alt="{{ $a->title }}"
-                                        class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105">
-                                @else
-                                    <div class="w-full h-full flex items-center justify-center text-slate-300">
-                                        <i class="fas fa-bullhorn text-4xl"></i>
+        {{-- Filter Buttons --}}
+        <div class="flex flex-wrap gap-3 justify-center">
+            <button @click="filter = 'semua'"
+                class="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 h-10 px-4 py-2 capitalize"
+                :class="filter === 'semua' ? 'bg-primary text-primary-foreground hover:bg-primary/90' :
+                    'border border-input bg-background hover:bg-accent hover:text-accent-foreground'">
+                Semua
+            </button>
+            <button @click="filter = 'pengumuman'"
+                class="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 h-10 px-4 py-2 capitalize"
+                :class="filter === 'pengumuman' ? 'bg-primary text-primary-foreground hover:bg-primary/90' :
+                    'border border-input bg-background hover:bg-accent hover:text-accent-foreground'">
+                Pengumuman
+            </button>
+            <button @click="filter = 'berita'"
+                class="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 h-10 px-4 py-2 capitalize"
+                :class="filter === 'berita' ? 'bg-primary text-primary-foreground hover:bg-primary/90' :
+                    'border border-input bg-background hover:bg-accent hover:text-accent-foreground'">
+                Berita
+            </button>
+        </div>
+
+        {{-- Empty State --}}
+        <div x-show="filteredPosts.length === 0" class="text-center py-12" style="display: none;">
+            <p class="text-muted-foreground mb-4"
+                x-text="filter === 'semua' ? 'Belum ada pengumuman' : 'Belum ada ' + filter"></p>
+        </div>
+
+        {{-- Announcements Grid --}}
+        <div class="grid gap-6 md:gap-8">
+
+
+            <template x-for="post in filteredPosts" :key="post.id">
+                <a :href="'/pengumuman/' + post.slug">
+                    <div
+                        class="group relative overflow-hidden rounded-xl border border-border/50 bg-card/80 backdrop-blur-sm hover:bg-card transition-all duration-300 hover:shadow-xl hover:shadow-primary/20 cursor-pointer">
+                        <div class="md:flex">
+                            {{-- Image Section --}}
+                            <div class="md:w-1/3 lg:w-1/4">
+                                <div class="relative h-48 md:h-full overflow-hidden">
+                                    <img :src="post.image || '/placeholder.svg'" :alt="post.title"
+                                        class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300">
+                                    <div class="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent"></div>
+                                </div>
+                            </div>
+
+                            {{-- Content Section --}}
+                            <div class="md:w-2/3 lg:w-3/4 p-6 md:p-8">
+                                <div class="flex flex-col md:flex-row md:items-start gap-4 md:gap-8">
+                                    {{-- Date Box --}}
+                                    <div class="flex-shrink-0">
+                                        <div class="text-center p-4 bg-muted/50 rounded-lg border border-border/50">
+                                            <div class="text-2xl font-bold text-primary" x-text="getDay(post.date)"></div>
+                                            <div class="text-sm text-muted-foreground">
+                                                <span x-text="getMonth(post.date)"></span> <span
+                                                    x-text="getYear(post.date)"></span>
+                                            </div>
+                                        </div>
                                     </div>
-                                @endif
-                                <!-- Date Badge -->
-                                <div class="absolute top-4 left-4">
-                                    <span
-                                        class="px-3 py-1 bg-white/90 backdrop-blur rounded-full text-[10px] font-bold text-slate-900 uppercase tracking-widest shadow-sm">
-                                        {{ $a->published_at ? $a->published_at->format('d M Y') : $a->created_at->format('d M Y') }}
-                                    </span>
+
+                                    {{-- Details --}}
+                                    <div class="flex-1 space-y-4">
+                                        <div class="flex flex-wrap gap-2">
+                                            <span
+                                                class="inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 border-transparent"
+                                                :class="getCategoryColor(post.category)" x-text="post.category"></span>
+                                            <span
+                                                class="inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 border-transparent"
+                                                :class="getPriorityColor(post.priority)" x-text="post.priority"></span>
+                                        </div>
+
+                                        <h3 class="text-xl md:text-2xl font-bold text-foreground group-hover:text-primary transition-colors text-balance"
+                                            x-text="post.title"></h3>
+
+                                        <p class="text-muted-foreground leading-relaxed text-pretty" x-text="post.excerpt">
+                                        </p>
+
+                                        <div class="flex flex-wrap gap-2">
+                                            <template x-for="tag in post.tags">
+                                                <span
+                                                    class="inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 text-foreground border-border">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" class="w-3 h-3 mr-1"
+                                                        viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                                        stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                                        <path
+                                                            d="M12 2H2v10l9.29 9.29c.94.94 2.48.94 3.42 0l6.58-6.58c.94-.94.94-2.48 0-3.42L12 2Z" />
+                                                        <path d="M7 7h.01" />
+                                                    </svg>
+                                                    <span x-text="tag"></span>
+                                                </span>
+                                            </template>
+                                        </div>
+
+                                        <div class="flex items-center justify-between pt-4 border-t border-border/50">
+                                            <div class="flex items-center gap-2 text-sm text-muted-foreground">
+                                                <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" viewBox="0 0 24 24"
+                                                    fill="none" stroke="currentColor" stroke-width="2"
+                                                    stroke-linecap="round" stroke-linejoin="round">
+                                                    <path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2" />
+                                                    <circle cx="12" cy="7" r="4" />
+                                                </svg>
+                                                <span x-text="post.author_name"></span>
+                                            </div>
+
+                                            <span
+                                                class="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 hover:bg-accent hover:text-accent-foreground h-9 px-3 group-hover:bg-primary/10 group-hover:text-primary bg-transparent text-primary">
+                                                Baca Selengkapnya
+                                                <svg xmlns="http://www.w3.org/2000/svg"
+                                                    class="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform"
+                                                    viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                                    stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                                    <path d="M5 12h14" />
+                                                    <path d="m12 5 7 7-7 7" />
+                                                </svg>
+                                            </span>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
+                        </div>
 
-                            <!-- Content -->
-                            <div class="p-6 flex flex-col flex-1">
-                                <h2
-                                    class="text-xl font-bold text-slate-900 mb-3 group-hover:text-primary transition-colors line-clamp-2 leading-tight">
-                                    {{ $a->title }}
-                                </h2>
-                                <div
-                                    class="text-slate-600 text-sm mb-6 line-clamp-3 leading-relaxed prose prose-sm max-w-none">
-                                    {!! Str::limit($a->content, 150) !!}
-                                </div>
-
-                                <div class="mt-auto pt-4 border-t border-slate-50">
-                                    <a href="{{ route('pengumuman.show', $a->slug) }}"
-                                        class="inline-flex items-center text-sm font-bold text-primary group-hover:gap-2 transition-all">
-                                        Baca Selengkapnya
-                                        <i class="fas fa-arrow-right ml-2 text-[10px]"></i>
-                                    </a>
-                                </div>
-                            </div>
-                        </article>
-                    @endforeach
-                </div>
-
-                <!-- Pagination -->
-                <div class="mt-12">
-                    {{ $announcements->links() }}
-                </div>
-            @else
-                <div class="text-center py-24 bg-white rounded-3xl border-2 border-dashed border-slate-200">
-                    <div class="w-20 h-20 bg-slate-50 rounded-full flex items-center justify-center mx-auto mb-4">
-                        <i class="fas fa-bullhorn text-3xl text-slate-300"></i>
+                        {{-- Hover Gradient --}}
+                        <div
+                            class="absolute inset-0 bg-gradient-to-r from-primary/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none">
+                        </div>
                     </div>
-                    <h3 class="text-xl font-bold text-slate-900 mb-2">Belum Ada Pengumuman</h3>
-                    <p class="text-slate-500">Nantikan informasi menarik lainnya segera!</p>
-                </div>
-            @endif
+                </a>
+            </template>
         </div>
     </div>
+
+    {{-- Script Alpine.js --}}
+    <script src="//unpkg.com/alpinejs" defer></script>
+    <script>
+        function pengumumanApp() {
+            return {
+                filter: 'semua',
+                posts: @json($postsData),
+
+                get filteredPosts() {
+                    return this.posts.filter(post => {
+                        // Assumption: backend sends already active posts or we check 'is_active'
+                        if (post.is_active === false) return false;
+                        if (this.filter === 'semua') return true;
+                        return post.category === this.filter;
+                    });
+                },
+
+                getCategoryColor(category) {
+                    return category === 'pengumuman' ?
+                        'bg-purple-100 text-purple-700 border-purple-200' :
+                        'bg-blue-100 text-blue-700 border-blue-200';
+                },
+
+                getPriorityColor(priority) {
+                    switch (priority) {
+                        case 'tinggi':
+                            return 'bg-red-100 text-red-700 border-red-200';
+                        case 'sedang':
+                            return 'bg-yellow-100 text-yellow-700 border-yellow-200';
+                        case 'rendah':
+                            return 'bg-green-100 text-green-700 border-green-200';
+                        default:
+                            return 'bg-muted text-muted-foreground';
+                    }
+                },
+
+                // Date Formatting Utilities
+                getDay(dateString) {
+                    return new Date(dateString).getDate();
+                },
+                getMonth(dateString) {
+                    return new Date(dateString).toLocaleDateString('id-ID', {
+                        month: 'short'
+                    });
+                },
+                getYear(dateString) {
+                    return new Date(dateString).getFullYear();
+                }
+            }
+        }
+    </script>
 @endsection

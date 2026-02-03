@@ -4,33 +4,36 @@
 
 @section('content')
     <!-- Hero Section -->
-    <section class="py-16 bg-slate-50 border-b border-slate-100">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex flex-col md:flex-row md:items-end justify-between gap-6">
-                <div>
-                    <div
-                        class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-pink-50 border border-pink-100 text-primary text-xs font-bold mb-4">
-                        <span class="w-1.5 h-1.5 rounded-full bg-primary"></span>
-                        INFORMASI TERKINI
-                    </div>
-                    <h1 class="text-4xl font-bold text-slate-900 mb-4">Pengumuman & Berita</h1>
-                    <p class="text-slate-500 max-w-xl text-lg leading-relaxed">
-                        Dapatkan informasi terbaru seputar kegiatan akademik, organisasi, dan prestasi mahasiswa Teknik
-                        Informatika.
-                    </p>
-                </div>
+    <section class="relative py-12 md:py-20 overflow-hidden bg-white mt-[-1px]">
+        <!-- Radial Gradient Background -->
+        <div class="absolute inset-0 bg-[radial-gradient(circle_at_50%_-20%,rgba(244,114,182,0.12),rgba(255,255,255,0))]">
+        </div>
 
-                <!-- Search & Filter -->
-                <div class="w-full md:w-auto">
-                    <div class="relative">
-                        <input type="text" placeholder="Cari informasi..."
-                            class="w-full md:w-80 pl-10 pr-4 py-3 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all text-sm">
-                        <svg class="w-5 h-5 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2" fill="none"
-                            stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
-                        </svg>
-                    </div>
+        <div class="max-w-4xl mx-auto px-6 lg:px-8 text-center relative">
+            <!-- Badge -->
+            <div
+                class="inline-flex items-center gap-2 rounded-full border border-pink-100 bg-pink-50/50 px-3 py-1.5 text-[10px] font-bold text-pink-500 mb-5 backdrop-blur-sm shadow-sm uppercase tracking-widest">
+                <i class="fas fa-bullhorn"></i>
+                Informasi Terkini
+            </div>
+
+            <h1 class="text-4xl md:text-6xl font-black tracking-tighter text-slate-900 mb-5 leading-[1.1]">
+                Pengumuman & <br>
+                <span class="text-pink-500">Berita</span>
+            </h1>
+
+            <p class="text-base text-slate-500 max-w-xl mx-auto leading-relaxed font-medium mb-10 opacity-90">
+                Dapatkan informasi terbaru seputar kegiatan akademik, organisasi, dan prestasi mahasiswa Teknik Informatika
+                ITATS.
+            </p>
+
+            <!-- Search Bar -->
+            <div class="max-w-md mx-auto">
+                <div class="relative group">
+                    <input type="text" placeholder="Cari informasi..."
+                        class="w-full pl-12 pr-4 py-4 rounded-2xl border border-slate-100 bg-white shadow-xl shadow-slate-200/20 focus:outline-none focus:ring-2 focus:ring-pink-500/20 focus:border-pink-500 transition-all text-sm font-medium">
+                    <i
+                        class="fas fa-search text-slate-400 absolute left-4 top-1/2 -translate-y-1/2 group-focus-within:text-pink-500 transition-colors"></i>
                 </div>
             </div>
         </div>

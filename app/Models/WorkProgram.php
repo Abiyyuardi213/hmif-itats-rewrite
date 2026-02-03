@@ -8,6 +8,8 @@ class WorkProgram extends Model
 {
     protected $fillable = [
         'name',
+        'slug',
+        'category',
         'division_id',
         'description',
         'status',

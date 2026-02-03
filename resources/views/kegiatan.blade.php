@@ -1,97 +1,185 @@
 @extends('layouts.app')
 
-@section('title', 'Recap Kegiatan - HMIF ITATS')
-
 @section('content')
-    <!-- Hero Section -->
-    <section class="py-20 lg:py-24 bg-slate-50 border-b border-slate-100">
-        <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-            <!-- Logo/Badge -->
-            <div
-                class="w-24 h-24 mx-auto bg-white rounded-full flex items-center justify-center p-1 shadow-lg shadow-pink-100 mb-8 border border-pink-100">
-                <div class="w-full h-full rounded-full bg-pink-50 flex items-center justify-center">
-                    <span class="text-xl font-bold text-primary">HMIF</span>
+    <main class="min-h-screen bg-background">
+
+        {{-- Hero Section (from HeroKegiatan) --}}
+        <section class="pt-24 pb-16 px-4 sm:px-6 lg:px-8">
+            <div class="container mx-auto">
+                <div class="max-w-4xl mx-auto text-center">
+                    <div class="mb-8 float-animation">
+                        <div class="w-32 h-32 mx-auto mb-8 relative">
+                            <div
+                                class="absolute inset-0 bg-gradient-to-br from-primary/20 to-accent/20 rounded-full blur-xl">
+                            </div>
+                            <div
+                                class="relative w-full h-full bg-card border-2 border-primary/20 rounded-full flex items-center justify-center glow-animation shadow-lg">
+                                <span class="text-4xl font-bold text-primary">HMIF</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <h1 class="text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tight text-balance mb-6">
+                        Recap Kegiatan
+                        <br />
+                        <span class="text-primary">Himpunan Mahasiswa</span>
+                    </h1>
+
+                    <p class="text-lg sm:text-xl text-muted-foreground text-balance max-w-2xl mx-auto mb-8 leading-relaxed">
+                        Dokumentasi lengkap program kerja dan kegiatan yang telah berhasil dilaksanakan oleh Himpunan
+                        Mahasiswa
+                        Teknik Informatika ITATS
+                    </p>
+
+                    <div class="flex flex-col sm:flex-row items-center justify-center gap-4">
+                        <div class="text-sm text-muted-foreground">PERIODE 2024 • TEKNIK INFORMATIKA • ITATS</div>
+                    </div>
                 </div>
             </div>
+        </section>
 
-            <h1 class="text-4xl md:text-5xl lg:text-6xl font-bold text-slate-900 mb-4 tracking-tight leading-tight">
-                Recap Kegiatan <br>
-                <span class="text-primary">Himpunan Mahasiswa</span>
-            </h1>
+        {{-- Stats Section (from StatsSection) --}}
+        <section class="py-16 px-4 sm:px-6 lg:px-8 bg-muted/30">
+            <div class="container mx-auto">
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                    @php
+                        $statItems = [
+                            [
+                                'number' => $stats['completedPrograms'],
+                                'label' => 'Program Kerja Selesai',
+                                'description' => 'Berbagai kegiatan akademik dan non-akademik',
+                            ],
+                            [
+                                'number' => $stats['totalParticipants'] . '+',
+                                'label' => 'Mahasiswa Terlibat',
+                                'description' => 'Partisipasi aktif dari seluruh angkatan',
+                            ],
+                            [
+                                'number' => $stats['partners'],
+                                'label' => 'Mitra Kerjasama',
+                                'description' => 'Kolaborasi dengan industri dan institusi',
+                            ],
+                            [
+                                'number' => $stats['activeMonths'],
+                                'label' => 'Bulan Aktif',
+                                'description' => 'Konsistensi kegiatan sepanjang tahun',
+                            ],
+                        ];
+                    @endphp
 
-            <p class="text-lg text-slate-500 max-w-2xl mx-auto leading-relaxed mb-8">
-                Dokumentasi lengkap program kerja dan kegiatan yang telah berhasil dilaksanakan oleh Himpunan Mahasiswa
-                Teknik Informatika ITATS
-            </p>
-
-            <p class="text-xs font-bold text-slate-400 uppercase tracking-widest">
-                PERIODE 2024 • TEKNIK INFORMATIKA • ITATS
-            </p>
-        </div>
-    </section>
-
-    <!-- Stats Grid -->
-    <section class="bg-white transform -translate-y-12 mb-[-3rem]">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="grid grid-cols-2 lg:grid-cols-4 gap-4 md:gap-8">
-                <!-- Stat 1 -->
-                <div class="bg-white rounded-xl p-8 border border-slate-100 shadow-sm text-center card-hover">
-                    <span class="block text-4xl font-bold text-primary mb-2">0</span>
-                    <span class="block text-sm font-bold text-slate-900 mb-2">Program Kerja Selesai</span>
-                    <p class="text-xs text-slate-400 leading-relaxed">Berbagai kegiatan akademik dan non-akademik</p>
-                </div>
-                <!-- Stat 2 -->
-                <div class="bg-white rounded-xl p-8 border border-slate-100 shadow-sm text-center card-hover">
-                    <span class="block text-4xl font-bold text-primary mb-2">0+</span>
-                    <span class="block text-sm font-bold text-slate-900 mb-2">Mahasiswa Terlibat</span>
-                    <p class="text-xs text-slate-400 leading-relaxed">Partisipasi aktif dari seluruh angkatan</p>
-                </div>
-                <!-- Stat 3 -->
-                <div class="bg-white rounded-xl p-8 border border-slate-100 shadow-sm text-center card-hover">
-                    <span class="block text-4xl font-bold text-primary mb-2">3</span>
-                    <span class="block text-sm font-bold text-slate-900 mb-2">Mitra Kerjasama</span>
-                    <p class="text-xs text-slate-400 leading-relaxed">Kolaborasi dengan industri dan institusi</p>
-                </div>
-                <!-- Stat 4 -->
-                <div class="bg-white rounded-xl p-8 border border-slate-100 shadow-sm text-center card-hover">
-                    <span class="block text-4xl font-bold text-primary mb-2">0</span>
-                    <span class="block text-sm font-bold text-slate-900 mb-2">Bulan Aktif</span>
-                    <p class="text-xs text-slate-400 leading-relaxed">Konsistensi kegiatan sepanjang tahun</p>
+                    @foreach ($statItems as $stat)
+                        <div
+                            class="p-6 text-center hover:shadow-lg transition-all duration-300 rounded-xl bg-card border border-border">
+                            <div class="text-3xl sm:text-4xl font-bold text-primary mb-2">{{ $stat['number'] }}</div>
+                            <div class="text-sm font-semibold text-foreground mb-2">{{ $stat['label'] }}</div>
+                            <div class="text-xs text-muted-foreground leading-relaxed">{{ $stat['description'] }}</div>
+                        </div>
+                    @endforeach
                 </div>
             </div>
-        </div>
-    </section>
+        </section>
 
-    <!-- Completed Programs Section -->
-    <section class="py-24 bg-white">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-            <h2 class="text-3xl font-bold text-slate-900 mb-4">Program Kerja yang Telah Selesai</h2>
-            <p class="text-slate-500 max-w-xl mx-auto mb-16">
-                Berikut adalah dokumentasi lengkap kegiatan dan program kerja yang telah berhasil dilaksanakan
-            </p>
+        {{-- Aktivitas Grid (from AktivitasGrid) --}}
+        <section id="kegiatan" class="py-16 px-4 sm:px-6 lg:px-8">
+            <div class="container mx-auto">
+                <div class="text-center mb-12">
+                    <h2 class="text-3xl sm:text-4xl font-bold text-balance mb-4">Program Kerja yang Telah Selesai</h2>
+                    <p class="text-lg text-muted-foreground text-balance max-w-2xl mx-auto">
+                        Berikut adalah dokumentasi lengkap kegiatan dan program kerja yang telah berhasil dilaksanakan
+                    </p>
+                </div>
 
-            <!-- Use a min-height for empty state -->
-            <div class="min-h-[200px] flex flex-col items-center justify-center py-12">
-                <p class="text-slate-500 mb-8">Ingin melihat Program kerja lainnya atau melihat pengumuman mendatang?</p>
-                <div class="flex flex-wrap justify-center gap-4">
-                    <a href="{{ url('/program-kerja') }}"
-                        class="px-6 py-3 bg-primary text-white font-bold rounded-lg hover:bg-primary-hover transition-colors shadow-lg shadow-primary/20">
-                        Lihat Program Kerja
-                    </a>
-                    <a href="{{ url('/pengumuman') }}"
-                        class="px-6 py-3 bg-slate-50 text-slate-700 font-bold rounded-lg border border-slate-200 hover:bg-slate-100 transition-colors">
-                        Lihat Pengumuman
-                    </a>
+                {{-- Activities List --}}
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                    @php
+                        function getCategoryClasses($category)
+                        {
+                            $colors = [
+                                'AKADEMIK' => 'bg-blue-100 text-blue-800',
+                                'KOMPETISI' => 'bg-red-100 text-red-800',
+                                'PELATIHAN' => 'bg-green-100 text-green-800',
+                                'SOSIAL' => 'bg-purple-100 text-purple-800',
+                                'KUNJUNGAN' => 'bg-orange-100 text-orange-800',
+                            ];
+                            return $colors[$category] ?? 'bg-gray-100 text-gray-800';
+                        }
+                    @endphp
+
+                    @if ($activities->isEmpty())
+                        <div class="col-span-full text-center p-8 border rounded border-dashed text-muted-foreground">
+                            <p>Belum ada data kegiatan.</p>
+                        </div>
+                    @endif
+
+                    @foreach ($activities as $activity)
+                        <a href="/kegiatan/{{ $activity['slug'] }}" class="block group">
+                            <div
+                                class="overflow-hidden rounded-xl border border-border bg-card text-card-foreground shadow-sm hover:shadow-xl transition-all duration-300 cursor-pointer h-full flex flex-col">
+                                <div class="aspect-video overflow-hidden">
+                                    <img src="{{ $activity['image'] ?? asset('placeholder.svg') }}"
+                                        alt="{{ $activity['title'] }}"
+                                        class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                                        onerror="this.src='https://placehold.co/600x400?text=No+Image'" />
+                                </div>
+
+                                <div class="p-6 flex-1 flex flex-col">
+                                    <div class="flex items-center justify-between mb-3">
+                                        <span
+                                            class="inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 border-transparent {{ getCategoryClasses($activity['category']) }}">
+                                            {{ $activity['category'] }}
+                                        </span>
+                                        <span class="text-xs text-muted-foreground">
+                                            {{ \Carbon\Carbon::parse($activity['date'])->translatedFormat('F Y') }}
+                                        </span>
+                                    </div>
+
+                                    <h3 class="text-lg font-semibold text-foreground mb-2 text-balance">
+                                        {{ $activity['title'] }}</h3>
+
+                                    <p class="text-sm text-muted-foreground mb-4 leading-relaxed line-clamp-3">
+                                        {{ $activity['description'] }}
+                                    </p>
+
+                                    <div
+                                        class="mt-auto flex items-center justify-between text-xs text-muted-foreground pt-4 border-t border-border">
+                                        <span>
+                                            {{ $activity['participants_count'] ?? 0 }} peserta
+                                        </span>
+                                        <span
+                                            class="inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 text-green-600 border-green-200">
+                                            ✓
+                                            {{ $activity['status'] === 'completed'
+                                                ? 'Selesai'
+                                                : ($activity['status'] === 'ongoing'
+                                                    ? 'Berlangsung'
+                                                    : ($activity['status'] === 'upcoming'
+                                                        ? 'Akan Datang'
+                                                        : $activity['status'])) }}
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </a>
+                    @endforeach
+                </div>
+
+                {{-- CTA Section --}}
+                <div class="text-center mt-12">
+                    <p class="text-muted-foreground mb-6">
+                        Ingin melihat Program kerja lainnya atau melihat pengumuman mendatang?
+                    </p>
+                    <div class="flex flex-col sm:flex-row items-center justify-center gap-4">
+                        <a href="/program-kerja"
+                            class="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-primary text-primary-foreground hover:bg-primary/90 h-10 px-6 py-3">
+                            Lihat Program Kerja
+                        </a>
+                        <a href="/pengumuman"
+                            class="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 border border-input bg-background hover:bg-accent hover:text-accent-foreground h-10 px-6 py-3">
+                            Lihat Pengumuman
+                        </a>
+                    </div>
                 </div>
             </div>
-        </div>
-    </section>
-
-    <style>
-        .card-hover:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.1);
-            transition: all 0.3s ease;
-        }
-    </style>
+        </section>
+    </main>
 @endsection

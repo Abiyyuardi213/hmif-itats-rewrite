@@ -1,425 +1,582 @@
 @extends('layouts.app')
 
-@section('title', 'Program Kerja - HMIF ITATS')
-
 @section('content')
-    <div class="bg-white min-h-screen pb-20">
-        <!-- Hero Section -->
-        <section class="py-20 md:py-28 bg-slate-50 border-b border-slate-100">
-            <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-                <!-- Badge -->
-                <div
-                    class="inline-flex items-center rounded-full border border-slate-200 bg-white px-3 py-1 text-xs font-medium text-slate-800 mb-6 backdrop-blur-sm shadow-sm">
-                    <span class="mr-2 h-2 w-2 rounded-full bg-primary animate-pulse"></span>
-                    Program Kerja Strategis
-                </div>
-
-                <h1 class="text-4xl md:text-6xl font-extrabold tracking-tight text-slate-900 mb-6 leading-[1.1]">
-                    Rangkai Kegiatan <br>
-                    <span class="text-primary/80">HMIF ITATS</span>
-                </h1>
-
-                <p class="text-lg text-slate-500 max-w-2xl mx-auto leading-relaxed mb-10">
-                    Daftar inisiatif dan program kerja yang dirancang untuk pengembangan mahasiswa Informatika yang
-                    progresif dan kontributif.
-                </p>
-
-                <!-- Status Stats -->
-                <div class="grid grid-cols-2 md:grid-cols-4 gap-4 max-w-3xl mx-auto mb-10">
-                    <div class="bg-white p-4 rounded-2xl border border-slate-200 shadow-sm">
-                        <span class="block text-2xl font-bold text-slate-900">{{ $programs->count() }}</span>
-                        <span class="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Total Program</span>
+    <div class="min-h-screen bg-background" x-data="programKerjaApp()">
+        {{-- Header Sticky --}}
+        <div class="border-b border-border bg-card/50 backdrop-blur-sm sticky top-0 z-10 transition-all duration-200">
+            <div class="max-w-7xl mx-auto px-6 py-8">
+                <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-6">
+                    <div>
+                        <h1 class="text-4xl font-bold text-balance mb-2">Program Kerja</h1>
+                        <p class="text-muted-foreground text-lg">Himpunan Mahasiswa Teknik Informatika</p>
+                        <p class="text-sm text-muted-foreground mt-1">Periode 2025/2026</p>
                     </div>
-                    <div class="bg-white p-4 rounded-2xl border border-slate-200 shadow-sm">
-                        <span
-                            class="block text-2xl font-bold text-emerald-500">{{ $programs->where('status', 'selesai')->count() }}</span>
-                        <span class="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Selesai</span>
-                    </div>
-                    <div class="bg-white p-4 rounded-2xl border border-slate-200 shadow-sm">
-                        <span
-                            class="block text-2xl font-bold text-blue-500">{{ $programs->where('status', 'berjalan')->count() }}</span>
-                        <span class="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Berjalan</span>
-                    </div>
-                    <div class="bg-white p-4 rounded-2xl border border-slate-200 shadow-sm">
-                        <span
-                            class="block text-2xl font-bold text-slate-400">{{ $programs->where('status', 'mendatang')->count() }}</span>
-                        <span class="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Mendatang</span>
+                    <div class="text-left md:text-right">
+                        <div class="text-sm text-muted-foreground mb-1">Total Program</div>
+                        {{-- Assuming $programs is passed from Controller --}}
+                        <div class="text-3xl font-bold text-primary" x-text="programs.length">0</div>
                     </div>
                 </div>
 
-                <!-- Tabs/Filters -->
-                <div class="flex flex-wrap justify-center gap-3">
-                    <button
-                        class="filter-btn active px-6 py-2 rounded-xl bg-slate-900 text-white text-xs font-bold transition-all shadow-lg shadow-slate-900/10"
-                        onclick="filterPrograms('all', this)">
-                        Semua
+                {{-- Filter Buttons --}}
+                <div class="flex flex-wrap gap-3">
+                    <button @click="filterStatus = 'all'"
+                        class="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 h-10 px-4 py-2"
+                        :class="filterStatus === 'all' ? 'bg-primary text-primary-foreground hover:bg-primary/90' :
+                            'border border-input bg-background hover:bg-accent hover:text-accent-foreground'">
+                        Semua Program
                     </button>
-                    <button
-                        class="filter-btn px-6 py-2 rounded-xl bg-white border border-slate-200 text-slate-600 text-xs font-bold hover:bg-slate-50 transition-all shadow-sm"
-                        onclick="filterPrograms('selesai', this)">
+
+                    {{-- Selesai --}}
+                    <button @click="filterStatus = 'selesai'"
+                        class="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 h-10 px-4 py-2"
+                        :class="filterStatus === 'selesai' ? 'bg-primary text-primary-foreground hover:bg-primary/90' :
+                            'border border-input bg-background hover:bg-accent hover:text-accent-foreground'">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 mr-2" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <circle cx="12" cy="12" r="10" />
+                            <path d="m9 12 2 2 4-4" />
+                        </svg>
                         Selesai
                     </button>
-                    <button
-                        class="filter-btn px-6 py-2 rounded-xl bg-white border border-slate-200 text-slate-600 text-xs font-bold hover:bg-slate-50 transition-all shadow-sm"
-                        onclick="filterPrograms('berjalan', this)">
-                        Berjalan
+
+                    {{-- Sedang Berjalan --}}
+                    <button @click="filterStatus = 'berjalan'"
+                        class="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 h-10 px-4 py-2"
+                        :class="filterStatus === 'berjalan' ? 'bg-primary text-primary-foreground hover:bg-primary/90' :
+                            'border border-input bg-background hover:bg-accent hover:text-accent-foreground'">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 mr-2" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <circle cx="12" cy="12" r="10" />
+                            <polygon points="10 8 16 12 10 16 10 8" />
+                        </svg>
+                        Sedang Berjalan
                     </button>
-                    <button
-                        class="filter-btn px-6 py-2 rounded-xl bg-white border border-slate-200 text-slate-600 text-xs font-bold hover:bg-slate-50 transition-all shadow-sm"
-                        onclick="filterPrograms('mendatang', this)">
-                        Mendatang
+
+                    {{-- Akan Datang --}}
+                    <button @click="filterStatus = 'mendatang'"
+                        class="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 h-10 px-4 py-2"
+                        :class="filterStatus === 'mendatang' ? 'bg-primary text-primary-foreground hover:bg-primary/90' :
+                            'border border-input bg-background hover:bg-accent hover:text-accent-foreground'">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 mr-2" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <circle cx="12" cy="12" r="10" />
+                            <polyline points="12 6 12 12 16 14" />
+                        </svg>
+                        Akan Datang
                     </button>
                 </div>
             </div>
-        </section>
+        </div>
 
-        <!-- Timeline Content -->
-        <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
+        {{-- Timeline Content --}}
+        <div class="max-w-7xl mx-auto px-6 py-12">
             <div class="relative">
-                <!-- Vertical Progress Line (The Tree) -->
-                <div
-                    class="absolute left-6 md:left-12 top-0 bottom-0 w-1 bg-gradient-to-b from-slate-200 via-slate-200 to-transparent rounded-full">
-                </div>
+                {{-- Timeline Line --}}
+                <div class="absolute left-8 top-0 bottom-0 w-0.5 bg-border timeline-line"></div>
 
-                <div class="space-y-16" id="programs-container">
-                    @forelse($programs as $program)
-                        <div class="program-item relative pl-16 md:pl-28 transition-all duration-700 reveal-on-scroll"
-                            data-status="{{ $program->status }}">
-
-                            <!-- Timeline Marker (Branching Point) -->
-                            <div
-                                class="absolute left-2.5 md:left-8 top-0 w-8 h-8 md:w-10 md:h-10 rounded-xl bg-white border-2 flex items-center justify-center shadow-md z-10 transition-all duration-300
-                                @if ($program->status == 'selesai') border-emerald-500 text-emerald-500 
-                                @elseif($program->status == 'berjalan') border-blue-500 text-blue-500 
-                                @else border-slate-300 text-slate-400 @endif">
-                                <i
-                                    class="fas @if ($program->status == 'selesai') fa-check @elseif($program->status == 'berjalan') fa-spinner fa-spin @else fa-calendar @endif text-xs md:text-sm"></i>
+                {{-- Timeline Items --}}
+                <div class="space-y-12">
+                    <template x-for="program in filteredPrograms" :key="program.id">
+                        <div class="relative flex items-start gap-8">
+                            {{-- Timeline Dot --}}
+                            <div class="relative flex items-center justify-center w-16 h-16 rounded-full shrink-0 glow-effect"
+                                :class="getStatusColorClass(program.status)">
+                                <template x-if="program.status === 'selesai'">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="w-8 h-8 text-white" viewBox="0 0 24 24"
+                                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                        stroke-linejoin="round">
+                                        <circle cx="12" cy="12" r="10" />
+                                        <path d="m9 12 2 2 4-4" />
+                                    </svg>
+                                </template>
+                                <template x-if="program.status === 'berjalan'">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="w-8 h-8 text-white" viewBox="0 0 24 24"
+                                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                        stroke-linejoin="round">
+                                        <circle cx="12" cy="12" r="10" />
+                                        <polygon points="10 8 16 12 10 16 10 8" />
+                                    </svg>
+                                </template>
+                                <template x-if="program.status === 'mendatang'">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="w-8 h-8 text-white" viewBox="0 0 24 24"
+                                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                        stroke-linejoin="round">
+                                        <circle cx="12" cy="12" r="10" />
+                                        <polyline points="12 6 12 12 16 14" />
+                                    </svg>
+                                </template>
                             </div>
 
-                            <!-- Modern Card Design -->
-                            <div
-                                class="group bg-white rounded-2xl border border-slate-200 p-6 md:p-8 shadow-sm hover:shadow-md transition-all duration-300 flex flex-col md:flex-row gap-6 md:items-center">
-                                <div class="flex-grow">
-                                    <div class="flex items-center gap-3 mb-4">
-                                        <span
-                                            class="px-2.5 py-0.5 rounded-full text-[9px] font-bold uppercase tracking-wider border 
-                                            @if ($program->status == 'selesai') bg-emerald-50 text-emerald-600 border-emerald-100 
-                                            @elseif($program->status == 'berjalan') bg-blue-50 text-blue-600 border-blue-100 
-                                            @else bg-slate-50 text-slate-500 border-slate-100 @endif">
-                                            {{ $program->status }}
-                                        </span>
-                                        <span
-                                            class="text-[10px] font-bold text-slate-400 uppercase tracking-widest">{{ $program->division->name ?? 'General' }}</span>
+                            {{-- Content Card --}}
+                            <div class="flex-1 p-8 rounded-xl bg-card/80 backdrop-blur-sm border border-border hover:bg-card/90 transition-all duration-300 cursor-pointer shadow-sm"
+                                @click="openModal(program)">
+                                <div class="flex flex-col lg:flex-row lg:items-start lg:justify-between gap-6">
+                                    <div class="flex-1">
+                                        <div class="flex items-center gap-3 mb-4">
+                                            <span
+                                                class="inline-flex items-center rounded-full border px-3 py-1 text-xs font-semibold"
+                                                :class="getStatusBadgeClass(program.status)"
+                                                x-text="getStatusLabel(program.status)"></span>
+                                            <span
+                                                class="inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold text-muted-foreground border-border">
+                                                <span x-text="program.department"></span>
+                                            </span>
+                                        </div>
+
+                                        <h3 class="text-2xl font-bold text-balance mb-3" x-text="program.title"></h3>
+                                        <p class="text-muted-foreground text-pretty mb-6 leading-relaxed"
+                                            x-text="program.description"></p>
+
+                                        {{-- Progress Bar for Ongoing --}}
+                                        <template x-if="program.status === 'berjalan'">
+                                            <div class="mb-6">
+                                                <div class="flex justify-between items-center mb-2">
+                                                    <span class="text-sm font-medium">Progress</span>
+                                                    <span class="text-sm text-muted-foreground"
+                                                        x-text="program.progress + '%'"></span>
+                                                </div>
+                                                <div class="w-full bg-secondary rounded-full h-2">
+                                                    <div class="bg-primary h-2 rounded-full transition-all duration-300"
+                                                        :style="'width: ' + program.progress + '%'"></div>
+                                                </div>
+                                            </div>
+                                        </template>
+
+                                        {{-- Details --}}
+                                        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 text-sm">
+                                            <div class="flex items-center gap-2 text-muted-foreground">
+                                                <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4"
+                                                    viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                                    stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                                    <rect width="18" height="18" x="3" y="4" rx="2"
+                                                        ry="2" />
+                                                    <line x1="16" x2="16" y1="2" y2="6" />
+                                                    <line x1="8" x2="8" y1="2" y2="6" />
+                                                    <line x1="3" x2="21" y1="10" y2="10" />
+                                                </svg>
+                                                <span x-text="formatDate(program.startDate)"></span>
+                                            </div>
+                                            <div class="flex items-center gap-2 text-muted-foreground">
+                                                <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4"
+                                                    viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                                    stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                                    <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2" />
+                                                    <circle cx="9" cy="7" r="4" />
+                                                    <path d="M22 21v-2a4 4 0 0 0-3-3.87" />
+                                                    <path d="M16 3.13a4 4 0 0 1 0 7.75" />
+                                                </svg>
+                                                <span x-text="program.participants + ' peserta'"></span>
+                                            </div>
+                                            <div class="flex items-center gap-2 text-muted-foreground">
+                                                <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4"
+                                                    viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                                    stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                                    <circle cx="12" cy="12" r="10" />
+                                                    <circle cx="12" cy="12" r="6" />
+                                                    <circle cx="12" cy="12" r="2" />
+                                                </svg>
+                                                <span x-text="program.budget"></span>
+                                            </div>
+                                        </div>
+
+                                        <div class="mt-4 text-sm text-primary/70 hover:text-primary transition-colors">
+                                            Klik untuk melihat detail lengkap →
+                                        </div>
                                     </div>
 
-                                    <h3
-                                        class="text-xl font-bold text-slate-900 mb-3 group-hover:text-primary transition-colors">
-                                        {{ $program->name }}
-                                    </h3>
-                                    <p class="text-slate-500 text-sm leading-relaxed mb-6 line-clamp-2 max-w-2xl">
-                                        {{ $program->description }}
-                                    </p>
-
-                                    <div
-                                        class="flex flex-wrap items-center gap-4 md:gap-8 text-[11px] font-bold text-slate-400 uppercase tracking-widest">
-                                        <div class="flex items-center gap-2">
-                                            <i class="far fa-calendar text-primary"></i>
-                                            {{ \Carbon\Carbon::parse($program->start_date)->format('d M Y') }}
-                                        </div>
-                                        <div class="flex items-center gap-2">
-                                            <i class="fas fa-map-marker-alt text-primary"></i>
-                                            {{ $program->location }}
-                                        </div>
-                                        <div class="flex items-center gap-2">
-                                            <i class="fas fa-users text-primary"></i>
-                                            {{ $program->team_count }} Panitia
+                                    {{-- Date Badge --}}
+                                    <div class="text-right hidden lg:block">
+                                        <div class="bg-secondary/50 rounded-lg p-4 min-w-[140px]">
+                                            <div class="flex items-center justify-center gap-2 mb-2">
+                                                <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 text-primary"
+                                                    viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                                    stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                                    <rect width="18" height="18" x="3" y="4" rx="2"
+                                                        ry="2" />
+                                                    <line x1="16" x2="16" y1="2" y2="6" />
+                                                    <line x1="8" x2="8" y1="2" y2="6" />
+                                                    <line x1="3" x2="21" y1="10" y2="10" />
+                                                    <path d="M8 14h.01" />
+                                                    <path d="M12 14h.01" />
+                                                    <path d="M16 14h.01" />
+                                                    <path d="M8 18h.01" />
+                                                    <path d="M12 18h.01" />
+                                                    <path d="M16 18h.01" />
+                                                </svg>
+                                                <span
+                                                    class="text-xs font-medium text-muted-foreground uppercase tracking-wide">Periode</span>
+                                            </div>
+                                            <div class="text-sm font-medium" x-text="formatDate(program.startDate)"></div>
+                                            <div class="text-xs text-muted-foreground"
+                                                x-text="'s/d ' + formatDate(program.endDate)"></div>
                                         </div>
                                     </div>
-                                </div>
-
-                                <div
-                                    class="shrink-0 pt-4 md:pt-0 border-t md:border-t-0 md:border-l border-slate-100 md:pl-8">
-                                    <button onclick="showDetail({{ $program->id }})"
-                                        class="inline-flex items-center justify-center gap-2 px-6 py-3 bg-slate-50 hover:bg-slate-900 text-slate-900 hover:text-white rounded-xl text-xs font-bold transition-all border border-slate-100 whitespace-nowrap">
-                                        <span>Detail</span>
-                                        <i class="fas fa-arrow-right text-[10px]"></i>
-                                    </button>
                                 </div>
                             </div>
                         </div>
-                    @empty
+                    </template>
+                </div>
+            </div>
+
+            {{-- Summary Stats --}}
+            <div class="mt-16 grid grid-cols-1 md:grid-cols-3 gap-6">
+                <!-- Selesai -->
+                <div class="p-6 rounded-lg bg-card/50 backdrop-blur-sm border border-border">
+                    <div class="flex items-center gap-4">
+                        <div class="p-3 rounded-lg bg-gradient-to-br from-green-500 to-green-600">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 text-white" viewBox="0 0 24 24"
+                                fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                stroke-linejoin="round">
+                                <circle cx="12" cy="12" r="10" />
+                                <path d="m9 12 2 2 4-4" />
+                            </svg>
+                        </div>
+                        <div>
+                            <div class="text-2xl font-bold" x-text="programs.filter(p => p.status === 'selesai').length">0
+                            </div>
+                            <div class="text-sm text-muted-foreground">Selesai</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Sedang Berjalan -->
+                <div class="p-6 rounded-lg bg-card/50 backdrop-blur-sm border border-border">
+                    <div class="flex items-center gap-4">
+                        <div class="p-3 rounded-lg bg-gradient-to-br from-orange-500 to-orange-600">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 text-white" viewBox="0 0 24 24"
+                                fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                stroke-linejoin="round">
+                                <circle cx="12" cy="12" r="10" />
+                                <polygon points="10 8 16 12 10 16 10 8" />
+                            </svg>
+                        </div>
+                        <div>
+                            <div class="text-2xl font-bold" x-text="programs.filter(p => p.status === 'berjalan').length">
+                                0
+                            </div>
+                            <div class="text-sm text-muted-foreground">Sedang Berjalan</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Akan Datang -->
+                <div class="p-6 rounded-lg bg-card/50 backdrop-blur-sm border border-border">
+                    <div class="flex items-center gap-4">
+                        <div class="p-3 rounded-lg bg-gradient-to-br from-blue-500 to-blue-600">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 text-white" viewBox="0 0 24 24"
+                                fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                stroke-linejoin="round">
+                                <circle cx="12" cy="12" r="10" />
+                                <polyline points="12 6 12 12 16 14" />
+                            </svg>
+                        </div>
+                        <div>
+                            <div class="text-2xl font-bold"
+                                x-text="programs.filter(p => p.status === 'mendatang').length">
+                                0</div>
+                            <div class="text-sm text-muted-foreground">Akan Datang</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        {{-- Modal --}}
+        <div x-show="selectedProgram" style="display: none;"
+            class="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-4 transition-opacity"
+            x-transition:enter="transition ease-out duration-300" x-transition:enter-start="opacity-0"
+            x-transition:enter-end="opacity-100" x-transition:leave="transition ease-in duration-200"
+            x-transition:leave-start="opacity-100" x-transition:leave-end="opacity-0" @click.self="closeModal()">
+            <div class="bg-card rounded-xl max-w-4xl w-full max-h-[90vh] overflow-y-auto shadow-lg"
+                x-show="selectedProgram" x-transition:enter="transition ease-out duration-300"
+                x-transition:enter-start="opacity-0 scale-95" x-transition:enter-end="opacity-100 scale-100"
+                x-transition:leave="transition ease-in duration-200" x-transition:leave-start="opacity-100 scale-100"
+                x-transition:leave-end="opacity-0 scale-95">
+                <template x-if="selectedProgram">
+                    <div class="relative">
+                        {{-- Modal Header --}}
                         <div
-                            class="text-center py-20 bg-slate-50 rounded-2xl border border-dashed border-slate-200 ml-16 md:ml-28">
-                            <div
-                                class="w-16 h-16 bg-white rounded-full flex items-center justify-center mx-auto mb-4 border border-slate-100 text-slate-300">
-                                <i class="fas fa-clipboard-list text-2xl"></i>
+                            class="sticky top-0 bg-card border-b border-border p-6 flex items-center justify-between z-10">
+                            <div>
+                                <h2 class="text-2xl font-bold text-balance" x-text="selectedProgram.title"></h2>
+                                <p class="text-muted-foreground" x-text="selectedProgram.department"></p>
                             </div>
-                            <p class="text-slate-400 font-medium font-italic">Belum ada program kerja yang ditambahkan.</p>
+                            <button @click="closeModal()"
+                                class="inline-flex items-center justify-center rounded-md text-sm font-medium transition-colors hover:bg-secondary h-10 w-10">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" viewBox="0 0 24 24"
+                                    fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                    stroke-linejoin="round">
+                                    <path d="M18 6 6 18" />
+                                    <path d="m6 6 12 12" />
+                                </svg>
+                            </button>
                         </div>
-                    @endforelse
-                </div>
+
+                        <div class="p-6 space-y-8">
+                            {{-- Status & Info --}}
+                            <div class="flex flex-wrap gap-4">
+                                <span class="inline-flex items-center rounded-full border px-3 py-1 text-xs font-semibold"
+                                    :class="getStatusBadgeClass(selectedProgram.status)"
+                                    x-text="getStatusLabel(selectedProgram.status)"></span>
+                                <div class="flex items-center gap-2 text-sm text-muted-foreground">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" viewBox="0 0 24 24"
+                                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                        stroke-linejoin="round">
+                                        <rect width="18" height="18" x="3" y="4" rx="2" ry="2" />
+                                        <line x1="16" x2="16" y1="2" y2="6" />
+                                        <line x1="8" x2="8" y1="2" y2="6" />
+                                        <line x1="3" x2="21" y1="10" y2="10" />
+                                    </svg>
+                                    <span
+                                        x-text="formatDate(selectedProgram.startDate) + ' - ' + formatDate(selectedProgram.endDate)"></span>
+                                </div>
+                                <div class="flex items-center gap-2 text-sm text-muted-foreground">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" viewBox="0 0 24 24"
+                                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                        stroke-linejoin="round">
+                                        <path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z" />
+                                        <circle cx="12" cy="10" r="3" />
+                                    </svg>
+                                    <span x-text="selectedProgram.location"></span>
+                                </div>
+                            </div>
+
+                            {{-- Detailed Desc --}}
+                            <div>
+                                <h3 class="text-lg font-semibold mb-3">Deskripsi Program</h3>
+                                <p class="text-muted-foreground leading-relaxed"
+                                    x-text="selectedProgram.detailedDescription"></p>
+                            </div>
+
+                            {{-- Leader --}}
+                            <div>
+                                <h3 class="text-lg font-semibold mb-3">Ketua Program</h3>
+                                <div class="flex items-center gap-3 p-4 bg-secondary/30 rounded-lg">
+                                    <img :src="selectedProgram.leaderAvatar || '/placeholder.svg'"
+                                        :alt="selectedProgram.leader" class="w-12 h-12 rounded-full object-cover">
+                                    <div>
+                                        <div class="font-medium" x-text="selectedProgram.leader"></div>
+                                        <div class="text-sm text-muted-foreground">Ketua Program Kerja</div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            {{-- Team --}}
+                            <div>
+                                <h3 class="text-lg font-semibold mb-3">Tim Pelaksana</h3>
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+                                    <template x-for="member in selectedProgram.team">
+                                        <div class="flex items-center gap-3 p-3 bg-secondary/20 rounded-lg">
+                                            <img :src="member.avatar || '/placeholder.svg'" :alt="member.name"
+                                                class="w-10 h-10 rounded-full object-cover">
+                                            <div>
+                                                <div class="font-medium text-sm" x-text="member.name"></div>
+                                                <div class="text-xs text-muted-foreground" x-text="member.role"></div>
+                                            </div>
+                                        </div>
+                                    </template>
+                                </div>
+                            </div>
+
+                            {{-- Stats --}}
+                            <div>
+                                <h3 class="text-lg font-semibold mb-3">Informasi Program</h3>
+                                <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                                    <div class="p-4 bg-secondary/20 rounded-lg text-center">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 mx-auto mb-2 text-primary"
+                                            viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                            stroke-linecap="round" stroke-linejoin="round">
+                                            <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2" />
+                                            <circle cx="9" cy="7" r="4" />
+                                            <path d="M22 21v-2a4 4 0 0 0-3-3.87" />
+                                            <path d="M16 3.13a4 4 0 0 1 0 7.75" />
+                                        </svg>
+                                        <div class="text-2xl font-bold" x-text="selectedProgram.participants"></div>
+                                        <div class="text-sm text-muted-foreground">Peserta</div>
+                                    </div>
+                                    <div class="p-4 bg-secondary/20 rounded-lg text-center">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 mx-auto mb-2 text-primary"
+                                            viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                            stroke-linecap="round" stroke-linejoin="round">
+                                            <circle cx="12" cy="12" r="10" />
+                                            <circle cx="12" cy="12" r="6" />
+                                            <circle cx="12" cy="12" r="2" />
+                                        </svg>
+                                        <div class="text-lg font-bold" x-text="selectedProgram.budget"></div>
+                                        <div class="text-sm text-muted-foreground">Anggaran</div>
+                                    </div>
+                                    <div class="p-4 bg-secondary/20 rounded-lg text-center">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 mx-auto mb-2 text-primary"
+                                            viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                            stroke-linecap="round" stroke-linejoin="round">
+                                            <path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2" />
+                                            <circle cx="12" cy="7" r="4" />
+                                        </svg>
+                                        <div class="text-2xl font-bold" x-text="selectedProgram.team.length + 1"></div>
+                                        <div class="text-sm text-muted-foreground">Tim Inti</div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            {{-- Progress --}}
+                            <template x-if="selectedProgram.status === 'berjalan'">
+                                <div>
+                                    <h3 class="text-lg font-semibold mb-3">Progress Program</h3>
+                                    <div class="p-4 bg-secondary/20 rounded-lg">
+                                        <div class="flex justify-between items-center mb-2">
+                                            <span class="font-medium">Kemajuan Pelaksanaan</span>
+                                            <span class="text-lg font-bold text-primary"
+                                                x-text="selectedProgram.progress + '%'"></span>
+                                        </div>
+                                        <div class="w-full bg-secondary rounded-full h-3">
+                                            <div class="bg-primary h-3 rounded-full transition-all duration-300"
+                                                :style="'width: ' + selectedProgram.progress + '%'"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </template>
+
+                            {{-- Photos --}}
+                            <template x-if="selectedProgram.photos.length > 0">
+                                <div>
+                                    <h3 class="text-lg font-semibold mb-3 flex items-center gap-2">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" viewBox="0 0 24 24"
+                                            fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                            stroke-linejoin="round">
+                                            <path
+                                                d="M14.5 4h-5L7 7H4a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-3l-2.5-3z" />
+                                            <circle cx="12" cy="13" r="3" />
+                                        </svg>
+                                        Dokumentasi
+                                    </h3>
+                                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                        <template x-for="(photo, index) in selectedProgram.photos">
+                                            <div class="relative group">
+                                                <img :src="photo || '/placeholder.svg'"
+                                                    class="w-full h-48 object-cover rounded-lg">
+                                                <div
+                                                    class="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors rounded-lg">
+                                                </div>
+                                            </div>
+                                        </template>
+                                    </div>
+                                </div>
+                            </template>
+
+                            <template x-if="selectedProgram.photos.length === 0 && selectedProgram.status === 'mendatang'">
+                                <div>
+                                    <h3 class="text-lg font-semibold mb-3 flex items-center gap-2">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" viewBox="0 0 24 24"
+                                            fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                            stroke-linejoin="round">
+                                            <path
+                                                d="M14.5 4h-5L7 7H4a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-3l-2.5-3z" />
+                                            <circle cx="12" cy="13" r="3" />
+                                        </svg>
+                                        Dokumentasi
+                                    </h3>
+                                    <div class="p-8 bg-secondary/20 rounded-lg text-center">
+                                        <svg xmlns="http://www.w3.org/2000/svg"
+                                            class="w-12 h-12 mx-auto mb-3 text-muted-foreground" viewBox="0 0 24 24"
+                                            fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                            stroke-linejoin="round">
+                                            <path
+                                                d="M14.5 4h-5L7 7H4a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-3l-2.5-3z" />
+                                            <circle cx="12" cy="13" r="3" />
+                                        </svg>
+                                        <p class="text-muted-foreground">Dokumentasi akan tersedia setelah program
+                                            dilaksanakan</p>
+                                    </div>
+                                </div>
+                            </template>
+
+                        </div>
+                    </div>
+                </template>
             </div>
         </div>
     </div>
 
-    <!-- Modal Detail (Updated Design) -->
-    <div id="program-modal" class="fixed inset-0 z-[60] hidden">
-        <div class="absolute inset-0 bg-slate-900/60 backdrop-blur-sm transition-opacity" onclick="closeModal()"></div>
-        <div class="absolute inset-0 flex items-center justify-center p-4 md:p-6 pointer-events-none">
-            <div class="bg-white w-full max-w-4xl max-h-[90vh] rounded-3xl shadow-2xl overflow-hidden pointer-events-auto flex flex-col transform transition-all scale-95 opacity-0 duration-300"
-                id="modal-content">
-                <!-- Modal Header -->
-                <div class="p-8 border-b border-slate-100 relative shrink-0">
-                    <button onclick="closeModal()"
-                        class="absolute top-8 right-8 w-10 h-10 flex items-center justify-center text-slate-400 hover:text-slate-900 hover:bg-slate-50 rounded-full transition-all">
-                        <i class="fas fa-times"></i>
-                    </button>
-                    <div class="flex items-center gap-3 mb-2">
-                        <span id="m-status-badge"
-                            class="px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider">Status</span>
-                        <span id="m-division"
-                            class="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Divisi</span>
-                    </div>
-                    <h2 id="m-title" class="text-2xl md:text-3xl font-bold text-slate-900 leading-tight">Judul Program
-                    </h2>
-                </div>
-
-                <!-- Modal Body -->
-                <div class="p-8 overflow-y-auto space-y-10 custom-scrollbar">
-                    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-                        <div class="p-4 rounded-2xl bg-slate-50 border border-slate-100">
-                            <p class="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-2">Waktu Pelaksanaan
-                            </p>
-                            <p id="m-date" class="text-sm font-bold text-slate-900">Tanggal</p>
-                        </div>
-                        <div class="p-4 rounded-2xl bg-slate-50 border border-slate-100">
-                            <p class="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-2">Lokasi Kegiatan
-                            </p>
-                            <p id="m-location" class="text-sm font-bold text-slate-900">Lokasi</p>
-                        </div>
-                        <div class="p-4 rounded-2xl bg-slate-50 border border-slate-100">
-                            <p class="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-2">Tim Pelaksana</p>
-                            <p id="m-team-count" class="text-sm font-bold text-slate-900">0 Panitia</p>
-                        </div>
-                    </div>
-
-                    <div class="space-y-4">
-                        <h4 class="text-lg font-bold text-slate-900">Deskripsi Program</h4>
-                        <p id="m-description" class="text-slate-500 text-sm leading-relaxed whitespace-pre-line"></p>
-                    </div>
-
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-                        <!-- Head of Program -->
-                        <div class="space-y-4">
-                            <h4 class="text-lg font-bold text-slate-900">Ketua Program</h4>
-                            <div class="p-4 rounded-2xl border border-slate-100 bg-slate-50/50 flex items-center gap-4">
-                                <div
-                                    class="w-14 h-14 rounded-xl overflow-hidden bg-white border border-slate-200 shrink-0">
-                                    <img id="m-head-image" src="" class="w-full h-full object-cover">
-                                </div>
-                                <div class="min-w-0">
-                                    <h5 id="m-head-name" class="font-bold text-slate-900 text-sm truncate">Nama Ketua</h5>
-                                    <p id="m-head-role" class="text-[10px] text-primary font-bold uppercase mt-0.5">Ketua
-                                        Proker</p>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Quick Stats -->
-                        <div class="space-y-4">
-                            <h4 class="text-lg font-bold text-slate-900">Informasi Tambahan</h4>
-                            <div class="grid grid-cols-2 gap-4">
-                                <div class="p-4 rounded-2xl border border-slate-100 bg-slate-50/50">
-                                    <p class="text-[9px] font-bold text-slate-400 uppercase tracking-widest mb-1">Peserta
-                                    </p>
-                                    <p id="m-participants" class="font-bold text-slate-900">0 Orang</p>
-                                </div>
-                                <div class="p-4 rounded-2xl border border-slate-100 bg-slate-50/50">
-                                    <p class="text-[9px] font-bold text-slate-400 uppercase tracking-widest mb-1">Anggaran
-                                    </p>
-                                    <p id="m-budget" class="font-bold text-slate-900">Rp -</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Tim Pelaksana -->
-                    <div class="space-y-4">
-                        <h4 class="text-lg font-bold text-slate-900">Tim Pelaksana</h4>
-                        <div id="m-team-container" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-                            <!-- Team cards injected here -->
-                        </div>
-                    </div>
-
-                    <!-- Dokumentasi -->
-                    <div class="space-y-4 pb-4">
-                        <h4 class="text-lg font-bold text-slate-900">Dokumentasi</h4>
-                        <div id="m-images-container" class="grid grid-cols-1 gap-6">
-                            <!-- Documentation images injected here -->
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <style>
-        .custom-scrollbar::-webkit-scrollbar {
-            width: 6px;
-        }
-
-        .custom-scrollbar::-webkit-scrollbar-track {
-            background: transparent;
-        }
-
-        .custom-scrollbar::-webkit-scrollbar-thumb {
-            background: #e2e8f0;
-            border-radius: 10px;
-        }
-
-        .filter-btn.active {
-            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
-        }
-
-        .program-item {
-            opacity: 0;
-            transform: translateY(30px);
-        }
-
-        .program-item.revealed {
-            opacity: 1;
-            transform: translateY(0);
-        }
-    </style>
-
+    {{-- Script Alpine.js --}}
+    <script src="//unpkg.com/alpinejs" defer></script>
     <script>
-        const programs = @json($programs);
+        function programKerjaApp() {
+            return {
+                filterStatus: 'all', // all, selesai, berjalan, mendatang
+                selectedProgram: null,
+                programs: @json($programs ?? []), // Inject data from Laravel
 
-        function showDetail(id) {
-            const program = programs.find(p => p.id === id);
-            if (!program) return;
+                get filteredPrograms() {
+                    if (this.filterStatus === 'all') {
+                        return this.programs;
+                    }
+                    return this.programs.filter(p => p.status === this.filterStatus);
+                },
 
-            document.getElementById('m-title').innerText = program.name;
-            document.getElementById('m-division').innerText = program.division ? program.division.name : 'UMUM';
-            document.getElementById('m-description').innerText = program.description;
-            document.getElementById('m-location').innerText = program.location;
+                openModal(program) {
+                    this.selectedProgram = program;
+                    document.body.style.overflow = 'hidden'; // Prevent scroll
+                },
 
-            const start = new Date(program.start_date);
-            const end = new Date(program.end_date);
-            const options = {
-                day: 'numeric',
-                month: 'long',
-                year: 'numeric'
-            };
-            document.getElementById('m-date').innerText = start.toLocaleDateString('id-ID', options) + (program
-                .start_date !== program.end_date ? ' - ' + end.toLocaleDateString('id-ID', options) : '');
+                closeModal() {
+                    this.selectedProgram = null;
+                    document.body.style.overflow = ''; // Restore scroll (better than 'auto')
+                },
 
-            const badge = document.getElementById('m-status-badge');
-            badge.innerText = program.status;
-            badge.className = `px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider ${
-                program.status === 'selesai' ? 'bg-emerald-50 text-emerald-600' : 
-                (program.status === 'berjalan' ? 'bg-blue-50 text-blue-600' : 'bg-slate-50 text-slate-500')
-            }`;
+                // Watcher equivalent using Alpine effect if needed, usually x-effect
+                // But simple methods are enough here
 
-            document.getElementById('m-participants').innerText = (program.participants_count || 0) + ' Peserta';
+                formatDate(dateString) {
+                    if (!dateString) return '-';
+                    const options = {
+                        day: 'numeric',
+                        month: 'long',
+                        year: 'numeric'
+                    };
+                    return new Date(dateString).toLocaleDateString('id-ID', options);
+                },
 
-            // Smarter budget display
-            let budgetText = 'Rp -';
-            if (program.budget) {
-                // If it's just numbers, format it
-                if (!isNaN(program.budget) && !isNaN(parseFloat(program.budget))) {
-                    budgetText = 'Rp ' + Number(program.budget).toLocaleString('id-ID');
-                } else {
-                    // If it already has symbols or text, show as is
-                    budgetText = program.budget;
+                getStatusColorClass(status) {
+                    // Corresponds to tailwind classes from React version
+                    switch (status) {
+                        case 'selesai':
+                            return 'bg-gradient-to-br from-green-500 to-green-600';
+                        case 'berjalan':
+                            return 'bg-gradient-to-br from-orange-500 to-orange-600';
+                        case 'mendatang':
+                            return 'bg-gradient-to-br from-blue-500 to-blue-600';
+                        default:
+                            return 'bg-gray-500';
+                    }
+                },
+
+                getStatusBadgeClass(status) {
+                    switch (status) {
+                        case 'selesai':
+                            return 'bg-green-500/10 text-green-600 border-green-500/20';
+                        case 'berjalan':
+                            return 'bg-orange-500/10 text-orange-600 border-orange-500/20';
+                        case 'mendatang':
+                            return 'bg-blue-500/10 text-blue-600 border-blue-500/20';
+                        default:
+                            return 'bg-gray-100 text-gray-800';
+                    }
+                },
+
+                getStatusLabel(status) {
+                    switch (status) {
+                        case 'selesai':
+                            return 'Selesai';
+                        case 'berjalan':
+                            return 'Sedang Berjalan';
+                        case 'mendatang':
+                            return 'Akan Datang';
+                        default:
+                            return status;
+                    }
                 }
             }
-            document.getElementById('m-budget').innerText = budgetText;
-            document.getElementById('m-team-count').innerText = program.team_count + ' Panitia';
-
-            if (program.head) {
-                document.getElementById('m-head-name').innerText = program.head.name;
-                document.getElementById('m-head-image').src = program.head.image ? `/storage/${program.head.image}` :
-                    `https://ui-avatars.com/api/?name=${encodeURIComponent(program.head.name)}&background=f8fafc&color=0f172a&bold=true`;
-                document.getElementById('m-head-role').innerText = program.head.position ? program.head.position.name :
-                    'Ketua Pelaksana';
-            }
-
-            const teamContainer = document.getElementById('m-team-container');
-            teamContainer.innerHTML = '';
-            program.teams.forEach(team => {
-                const member = team.member;
-                teamContainer.innerHTML += `
-                    <div class="bg-white rounded-xl p-3 flex items-center gap-3 border border-slate-100 shadow-sm">
-                        <div class="w-10 h-10 rounded-lg overflow-hidden shrink-0 border border-slate-100">
-                            <img src="${member.image ? '/storage/'+member.image : 'https://ui-avatars.com/api/?name='+encodeURIComponent(member.name)+'&background=f8fafc'}" class="w-full h-full object-cover">
-                        </div>
-                        <div class="min-w-0">
-                            <h6 class="text-xs font-bold text-slate-900 truncate">${member.name}</h6>
-                            <p class="text-[9px] text-slate-400 font-bold uppercase tracking-wider">${team.role || 'Anggota'}</p>
-                        </div>
-                    </div>
-                `;
-            });
-
-            const imgContainer = document.getElementById('m-images-container');
-            if (program.images && program.images.length > 0) {
-                imgContainer.innerHTML = '';
-                program.images.forEach(img => {
-                    imgContainer.innerHTML += `<div class="rounded-2xl overflow-hidden border border-slate-100 shadow-sm">
-                        <img src="/storage/${img.image_path}" class="w-full h-auto">
-                    </div>`;
-                });
-            } else {
-                imgContainer.innerHTML = `<div class="bg-slate-50 rounded-2xl border border-slate-100 aspect-video flex items-center justify-center text-slate-300 italic text-sm">
-                    <p>Belum ada dokumentasi</p>
-                </div>`;
-            }
-
-            const modal = document.getElementById('program-modal');
-            const content = document.getElementById('modal-content');
-            modal.classList.remove('hidden');
-            setTimeout(() => content.classList.remove('scale-95', 'opacity-0'), 10);
-            document.body.style.overflow = 'hidden';
         }
-
-        function closeModal() {
-            const modal = document.getElementById('program-modal');
-            const content = document.getElementById('modal-content');
-            content.classList.add('scale-95', 'opacity-0');
-            setTimeout(() => {
-                modal.classList.add('hidden');
-                document.body.style.overflow = 'auto';
-            }, 300);
-        }
-
-        function filterPrograms(status, btn) {
-            document.querySelectorAll('.filter-btn').forEach(b => {
-                b.classList.remove('active', 'bg-slate-900', 'text-white');
-                b.classList.add('bg-white', 'text-slate-600');
-            });
-            btn.classList.add('active', 'bg-slate-900', 'text-white');
-            btn.classList.remove('bg-white', 'text-slate-600');
-
-            const items = document.querySelectorAll('.program-item');
-            items.forEach(item => {
-                if (status === 'all' || item.getAttribute('data-status') === status) {
-                    item.style.display = 'block';
-                } else {
-                    item.style.display = 'none';
-                }
-            });
-        }
-
-        // Scroll Reveal Animation
-        window.addEventListener('scroll', () => {
-            document.querySelectorAll('.reveal-on-scroll').forEach(item => {
-                const rect = item.getBoundingClientRect();
-                if (rect.top < window.innerHeight * 0.9) {
-                    item.classList.add('revealed');
-                }
-            });
-        });
-        window.dispatchEvent(new Event('scroll'));
     </script>
 @endsection

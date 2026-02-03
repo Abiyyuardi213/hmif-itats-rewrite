@@ -191,7 +191,8 @@
                     <i class="fas fa-times text-sm"></i>
                 </button>
             </div>
-            <form id="proker-form" method="POST" class="p-6 space-y-4 overflow-y-auto max-h-[70vh]">
+            <form id="proker-form" method="POST" class="p-6 space-y-4 overflow-y-auto max-h-[70vh]"
+                enctype="multipart/form-data">
                 @csrf
                 <input type="hidden" name="_method" id="form-method" value="POST">
 
@@ -212,6 +213,19 @@
                             @foreach ($divisions as $div)
                                 <option value="{{ $div->id }}">{{ $div->name }}</option>
                             @endforeach
+                        </select>
+                    </div>
+
+                    <div class="space-y-1.5">
+                        <label class="text-xs font-semibold text-slate-700">Kategori</label>
+                        <select name="category" id="f-category"
+                            class="w-full px-3 py-2 border border-slate-200 rounded-md text-sm bg-white focus:outline-none focus:ring-2 focus:ring-slate-900/5 transition-all">
+                            <option value="">Pilih Kategori</option>
+                            <option value="AKADEMIK">AKADEMIK</option>
+                            <option value="KOMPETISI">KOMPETISI</option>
+                            <option value="PELATIHAN">PELATIHAN</option>
+                            <option value="SOSIAL">SOSIAL</option>
+                            <option value="KUNJUNGAN">KUNJUNGAN</option>
                         </select>
                     </div>
 
@@ -280,6 +294,26 @@
                         <textarea name="description" id="f-description" rows="3"
                             placeholder="Jelaskan secara singkat mengenai program ini..."
                             class="w-full px-3 py-2 border border-slate-200 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-slate-900/5 transition-all resize-none"></textarea>
+                    </div>
+
+                    <div class="space-y-1.5 md:col-span-2">
+                        <label class="text-xs font-semibold text-slate-700">Dokumentasi (Foto)</label>
+                        <input type="file" name="images[]" multiple accept="image/*"
+                            class="w-full px-3 py-2 border border-slate-200 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-slate-900/5 transition-all">
+                        <p class="text-[10px] text-slate-500">Bisa pilih banyak foto sekaligus. Akan ditambahkan ke foto
+                            yang sudah ada.</p>
+                    </div>
+
+                    <div class="space-y-1.5 md:col-span-2">
+                        <label class="text-xs font-semibold text-slate-700">Tim Pelaksana (Anggota)</label>
+                        <select name="team_members[]" id="f-team_members" multiple
+                            class="w-full px-3 py-2 border border-slate-200 rounded-md text-sm bg-white focus:outline-none focus:ring-2 focus:ring-slate-900/5 transition-all h-32">
+                            @foreach ($members as $m)
+                                <option value="{{ $m->id }}">{{ $m->name }}</option>
+                            @endforeach
+                        </select>
+                        <p class="text-[10px] text-slate-500">Tahan tombol Ctrl (Windows) atau Cmd (Mac) untuk memilih
+                            banyak.</p>
                     </div>
                 </div>
 
@@ -393,6 +427,7 @@
 
             document.getElementById('f-name').value = p.name || '';
             document.getElementById('f-division_id').value = p.division_id || '';
+            document.getElementById('f-category').value = p.category || '';
             document.getElementById('f-status').value = p.status || 'mendatang';
             document.getElementById('f-start_date').value = p.start_date || '';
             document.getElementById('f-end_date').value = p.end_date || '';
@@ -402,6 +437,18 @@
             document.getElementById('f-budget').value = p.budget || '';
             document.getElementById('f-team_count').value = p.team_count || 0;
             document.getElementById('f-description').value = p.description || '';
+
+            const teamSelect = document.getElementById('f-team_members');
+            Array.from(teamSelect.options).forEach(option => option.selected = false);
+
+            if (p.teams) {
+                const memberIds = p.teams.map(t => t.member_id);
+                Array.from(teamSelect.options).forEach(option => {
+                    if (memberIds.includes(parseInt(option.value))) {
+                        option.selected = true;
+                    }
+                });
+            }
 
             toggleModal('form');
         }

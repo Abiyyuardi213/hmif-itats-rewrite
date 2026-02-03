@@ -4,22 +4,23 @@ use Illuminate\Support\Facades\Route;
 
 use App\Http\Controllers\AdminAuthController;
 
-Route::get('/', function () {
-    return view('welcome');
-});
+Route::get('/', [\App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
 Route::get('/program-kerja', [\App\Http\Controllers\WorkProgramController::class, 'index']);
 
-Route::get('/kegiatan', function () {
-    return view('kegiatan');
-});
+Route::get('/kegiatan', [\App\Http\Controllers\ActivityController::class, 'index'])->name('kegiatan.index');
+Route::get('/kegiatan/{slug}', [\App\Http\Controllers\ActivityController::class, 'show'])->name('kegiatan.show');
 
 Route::get('/pengumuman', [App\Http\Controllers\AnnouncementController::class, 'index'])->name('pengumuman.index');
 Route::get('/pengumuman/{slug}', [App\Http\Controllers\AnnouncementController::class, 'show'])->name('pengumuman.show');
 
 Route::get('/merchandise', [App\Http\Controllers\MerchandiseController::class, 'index'])->name('merchandise.index');
 Route::get('/merchandise/{slug}', [App\Http\Controllers\MerchandiseController::class, 'show'])->name('merchandise.show');
-Route::post('/merchandise/{merchandise}/order', [App\Http\Controllers\MerchandiseController::class, 'order'])->name('merchandise.order');
+Route::get('/merchandise/order/{slug}', [App\Http\Controllers\MerchandiseController::class, 'createOrder'])->name('merchandise.order.create');
+Route::post('/merchandise/order/{slug}', [App\Http\Controllers\MerchandiseController::class, 'storeOrder'])->name('merchandise.order.store');
+Route::get('/merchandise/checkout/{transaction_id}', [App\Http\Controllers\MerchandiseController::class, 'checkout'])->name('merchandise.checkout');
+Route::post('/merchandise/checkout/{transaction_id}/upload', [App\Http\Controllers\MerchandiseController::class, 'uploadProof'])->name('merchandise.upload_proof');
+Route::get('/merchandise/order-status/{transaction_id}', [App\Http\Controllers\MerchandiseController::class, 'orderStatus'])->name('merchandise.order_status');
 
 
 Route::get('/login-admin', [AdminAuthController::class, 'showLoginForm'])->name('login');
@@ -51,6 +52,7 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/admin/merchandise-orders', [App\Http\Controllers\Admin\MerchandiseOrderController::class, 'index'])->name('admin.merchandise-orders.index');
     Route::put('/admin/merchandise-orders/{order}/status', [App\Http\Controllers\Admin\MerchandiseOrderController::class, 'updateStatus'])->name('admin.merchandise-orders.updateStatus');
     Route::delete('/admin/merchandise-orders/{order}', [App\Http\Controllers\Admin\MerchandiseOrderController::class, 'destroy'])->name('admin.merchandise-orders.destroy');
+    Route::resource('/admin/payment-methods', App\Http\Controllers\Admin\PaymentMethodController::class, ['as' => 'admin']);
 });
 
 Route::get('/struktur-organisasi', [App\Http\Controllers\Admin\OrgMemberController::class, 'publicIndex']);

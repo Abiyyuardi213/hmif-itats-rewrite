@@ -11,8 +11,27 @@
         "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
     --color-primary: #eb329a;
     --color-primary-hover: #c91c7f;
-    --color-secondary: #f59e0b;
-    --color-secondary-hover: #d97706;
+    --color-primary-foreground: #ffffff;
+    
+    --color-secondary: #f1f5f9;
+    --color-secondary-hover: #e2e8f0;
+    --color-secondary-foreground: #0f172a;
+
+    --color-background: #ffffff;
+    --color-foreground: #0f172a;
+    
+    --color-muted: #f1f5f9;
+    --color-muted-foreground: #64748b;
+    
+    --color-accent: #f1f5f9;
+    --color-accent-foreground: #0f172a;
+    
+    --color-card: #ffffff;
+    --color-card-foreground: #0f172a;
+    
+    --color-border: #e2e8f0;
+    --color-input: #e2e8f0;
+    --color-ring: #eb329a;
 
     /* Custom breakpoint for extra small screens */
     --breakpoint-xs: 480px;
