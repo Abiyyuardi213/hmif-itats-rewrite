@@ -42,6 +42,7 @@ Route::middleware(['auth'])->group(function () {
     Route::resource('/admin/positions', App\Http\Controllers\Admin\PositionController::class, ['as' => 'admin']);
     Route::resource('/admin/divisions', App\Http\Controllers\Admin\DivisionController::class, ['as' => 'admin']);
     Route::resource('/admin/members', App\Http\Controllers\Admin\OrgMemberController::class, ['as' => 'admin']);
+    Route::post('/admin/members/{member}', [App\Http\Controllers\Admin\OrgMemberController::class, 'update'])->name('admin.members.update_post');
     Route::resource('/admin/work-programs', App\Http\Controllers\Admin\WorkProgramController::class, ['as' => 'admin']);
     Route::resource('/admin/announcements', App\Http\Controllers\Admin\AnnouncementController::class, ['as' => 'admin']);
     Route::resource('/admin/merchandises', App\Http\Controllers\Admin\MerchandiseController::class, ['as' => 'admin']);
