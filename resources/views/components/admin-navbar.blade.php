@@ -101,22 +101,25 @@
                     </button>
                     <!-- Dropdown -->
                     <div
-                        class="absolute top-full right-0 mt-4 w-56 bg-white rounded-xl shadow-xl border border-slate-100 overflow-hidden hidden group-hover:block transition-all animate-in fade-in slide-in-from-top-2">
-                        <div class="px-4 py-3 bg-slate-50/50 border-b border-slate-100">
-                            <p class="text-xs font-bold text-slate-400 uppercase tracking-widest mb-1">Signed in as</p>
-                            <p class="text-sm font-bold text-slate-900 truncate">{{ Auth::user()->email }}</p>
-                        </div>
-                        <div class="p-1">
-                            <a href="{{ url('/') }}"
-                                class="flex items-center gap-2 px-3 py-2 text-sm text-slate-600 rounded-lg hover:bg-slate-50">
-                                <i class="fas fa-external-link-alt text-xs"></i>
-                                Lihat Website
-                            </a>
-                            <button type="button" onclick="confirmLogout()"
-                                class="w-full text-left flex items-center gap-2 px-3 py-2 text-sm text-rose-600 rounded-lg hover:bg-rose-50 font-bold">
-                                <i class="fas fa-sign-out-alt text-xs"></i>
-                                Logout
-                            </button>
+                        class="absolute top-full right-0 pt-3 w-56 hidden group-hover:block transition-all animate-in fade-in slide-in-from-top-2">
+                        <div class="bg-white rounded-xl shadow-xl border border-slate-100 overflow-hidden">
+                            <div class="px-4 py-3 bg-slate-50/50 border-b border-slate-100">
+                                <p class="text-xs font-bold text-slate-400 uppercase tracking-widest mb-1">Signed in as
+                                </p>
+                                <p class="text-sm font-bold text-slate-900 truncate">{{ Auth::user()->email }}</p>
+                            </div>
+                            <div class="p-1">
+                                <a href="{{ url('/') }}"
+                                    class="flex items-center gap-2 px-3 py-2 text-sm text-slate-600 rounded-lg hover:bg-slate-50">
+                                    <i class="fas fa-external-link-alt text-xs"></i>
+                                    Lihat Website
+                                </a>
+                                <button type="button" onclick="confirmLogout()"
+                                    class="w-full text-left flex items-center gap-2 px-3 py-2 text-sm text-rose-600 rounded-lg hover:bg-rose-50 font-bold">
+                                    <i class="fas fa-sign-out-alt text-xs"></i>
+                                    Logout
+                                </button>
+                            </div>
                         </div>
                     </div>
                 </div>
