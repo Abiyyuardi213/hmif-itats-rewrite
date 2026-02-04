@@ -54,6 +54,20 @@
                         class="absolute -bottom-1 left-1/2 w-0 h-0.5 bg-primary transition-all duration-300 -translate-x-1/2 group-hover:w-full {{ request()->is('admin/work-programs*') ? 'w-full' : '' }}"></span>
                 </a>
 
+                <a href="{{ route('admin.activity-reports.index') }}"
+                    class="relative group text-sm font-semibold transition-colors hover:text-primary {{ request()->is('admin/activity-reports*') ? 'text-primary' : 'text-slate-600' }}">
+                    Artikel
+                    <span
+                        class="absolute -bottom-1 left-1/2 w-0 h-0.5 bg-primary transition-all duration-300 -translate-x-1/2 group-hover:w-full {{ request()->is('admin/activity-reports*') ? 'w-full' : '' }}"></span>
+                </a>
+
+                <a href="{{ route('admin.about-pages.index') }}"
+                    class="relative group text-sm font-semibold transition-colors hover:text-primary {{ request()->is('admin/about-pages*') ? 'text-primary' : 'text-slate-600' }}">
+                    Halaman
+                    <span
+                        class="absolute -bottom-1 left-1/2 w-0 h-0.5 bg-primary transition-all duration-300 -translate-x-1/2 group-hover:w-full {{ request()->is('admin/about-pages*') ? 'w-full' : '' }}"></span>
+                </a>
+
                 <a href="{{ route('admin.announcements.index') }}"
                     class="relative group text-sm font-semibold transition-colors hover:text-primary {{ request()->is('admin/announcements*') ? 'text-primary' : 'text-slate-600' }}">
                     Pengumuman
@@ -153,6 +167,10 @@
                 class="block px-3 sm:px-4 py-2.5 sm:py-3 rounded-xl text-sm font-bold {{ request()->is('admin/members*') ? 'bg-primary/5 text-primary' : 'text-slate-600' }}">Anggota</a>
             <a href="{{ route('admin.work-programs.index') }}"
                 class="block px-3 sm:px-4 py-2.5 sm:py-3 rounded-xl text-sm font-bold {{ request()->is('admin/work-programs*') ? 'bg-primary/5 text-primary' : 'text-slate-600' }}">Proker</a>
+            <a href="{{ route('admin.activity-reports.index') }}"
+                class="block px-3 sm:px-4 py-2.5 sm:py-3 rounded-xl text-sm font-bold {{ request()->is('admin/activity-reports*') ? 'bg-primary/5 text-primary' : 'text-slate-600' }}">Artikel</a>
+            <a href="{{ route('admin.about-pages.index') }}"
+                class="block px-3 sm:px-4 py-2.5 sm:py-3 rounded-xl text-sm font-bold {{ request()->is('admin/about-pages*') ? 'bg-primary/5 text-primary' : 'text-slate-600' }}">Halaman</a>
             <a href="{{ route('admin.announcements.index') }}"
                 class="block px-3 sm:px-4 py-2.5 sm:py-3 rounded-xl text-sm font-bold {{ request()->is('admin/announcements*') ? 'bg-primary/5 text-primary' : 'text-slate-600' }}">Pengumuman</a>
             <a href="{{ route('admin.merchandises.index') }}"

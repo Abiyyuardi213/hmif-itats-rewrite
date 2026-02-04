@@ -68,6 +68,7 @@
                     @php
                         $navItems = [
                             ['label' => 'Beranda', 'href' => '/'],
+                            ['label' => 'Tentang', 'href' => '/tentang'],
                             ['label' => 'Struktur Organisasi', 'href' => '/struktur-organisasi'],
                             ['label' => 'Program Kerja', 'href' => '/program-kerja'],
                             ['label' => 'Kegiatan', 'href' => '/kegiatan'],
@@ -78,10 +79,10 @@
 
                     @foreach ($navItems as $item)
                         <a href="{{ $item['href'] }}"
-                            class="group relative px-4 py-3 rounded-md text-sm font-medium text-slate-700 hover:text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary">
+                            class="group relative px-4 py-3 rounded-md text-sm font-medium hover:text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary {{ ($item['href'] === '/' ? request()->path() === '/' : request()->is(trim($item['href'], '/') . '*')) ? 'text-primary' : 'text-slate-700' }}">
                             {{ $item['label'] }}
                             <span aria-hidden="true"
-                                class="pointer-events-none absolute inset-x-3 -bottom-0.5 h-0.5 scale-x-0 bg-primary transition-transform duration-200 group-hover:scale-x-100 group-focus-visible:scale-x-100"></span>
+                                class="pointer-events-none absolute inset-x-3 -bottom-0.5 h-0.5 scale-x-0 bg-primary transition-transform duration-200 group-hover:scale-x-100 group-focus-visible:scale-x-100 {{ ($item['href'] === '/' ? request()->path() === '/' : request()->is(trim($item['href'], '/') . '*')) ? 'scale-x-100' : '' }}"></span>
                         </a>
                     @endforeach
                 </nav>
@@ -122,7 +123,7 @@
                     @foreach ($navItems as $item)
                         <li>
                             <a href="{{ $item['href'] }}"
-                                class="block w-full px-3 py-2 rounded-md text-sm font-medium text-slate-700 hover:bg-slate-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary">
+                                class="block w-full px-3 py-2 rounded-md text-sm font-medium hover:bg-slate-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary {{ ($item['href'] === '/' ? request()->path() === '/' : request()->is(trim($item['href'], '/') . '*')) ? 'text-primary bg-slate-50' : 'text-slate-700' }}">
                                 {{ $item['label'] }}
                             </a>
                         </li>

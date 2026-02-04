@@ -10,6 +10,7 @@ Route::get('/program-kerja', [\App\Http\Controllers\WorkProgramController::class
 
 Route::get('/kegiatan', [\App\Http\Controllers\ActivityController::class, 'index'])->name('kegiatan.index');
 Route::get('/kegiatan/{slug}', [\App\Http\Controllers\ActivityController::class, 'show'])->name('kegiatan.show');
+Route::get('/tentang', [App\Http\Controllers\AboutController::class, 'index'])->name('about.index');
 
 Route::get('/pengumuman', [App\Http\Controllers\AnnouncementController::class, 'index'])->name('pengumuman.index');
 Route::get('/pengumuman/{slug}', [App\Http\Controllers\AnnouncementController::class, 'show'])->name('pengumuman.show');
@@ -45,8 +46,10 @@ Route::middleware(['auth'])->group(function () {
     Route::resource('/admin/members', App\Http\Controllers\Admin\OrgMemberController::class, ['as' => 'admin']);
     Route::post('/admin/members/{member}', [App\Http\Controllers\Admin\OrgMemberController::class, 'update'])->name('admin.members.update_post');
     Route::resource('/admin/work-programs', App\Http\Controllers\Admin\WorkProgramController::class, ['as' => 'admin']);
+    Route::resource('/admin/about-pages', App\Http\Controllers\Admin\AboutPageController::class, ['as' => 'admin']);
     Route::resource('/admin/announcements', App\Http\Controllers\Admin\AnnouncementController::class, ['as' => 'admin']);
     Route::resource('/admin/merchandises', App\Http\Controllers\Admin\MerchandiseController::class, ['as' => 'admin']);
+    Route::resource('/admin/activity-reports', App\Http\Controllers\Admin\ActivityReportController::class, ['as' => 'admin']);
 
     // Merchandise Orders
     Route::get('/admin/merchandise-orders', [App\Http\Controllers\Admin\MerchandiseOrderController::class, 'index'])->name('admin.merchandise-orders.index');

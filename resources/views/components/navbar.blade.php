@@ -16,10 +16,16 @@
             <!-- Desktop Menu -->
             <div class="hidden md:flex items-center space-x-10">
                 <a href="{{ url('/') }}"
-                    class="relative group text-sm font-semibold transition-colors hover:text-primary {{ request()->is('/') ? 'text-primary' : 'text-slate-600' }}">
+                    class="relative group text-sm font-semibold transition-colors hover:text-primary {{ request()->path() == '/' ? 'text-primary' : 'text-slate-600' }}">
                     Beranda
                     <span
-                        class="absolute -bottom-1 left-1/2 w-0 h-0.5 bg-primary transition-all duration-300 -translate-x-1/2 group-hover:w-full {{ request()->is('/') ? 'w-full' : '' }}"></span>
+                        class="absolute -bottom-1 left-1/2 w-0 h-0.5 bg-primary transition-all duration-300 -translate-x-1/2 group-hover:w-full {{ request()->path() == '/' ? 'w-full' : '' }}"></span>
+                </a>
+                <a href="{{ url('/tentang') }}"
+                    class="relative group text-sm font-semibold transition-colors hover:text-primary {{ request()->is('tentang*') ? 'text-primary' : 'text-slate-600' }}">
+                    Tentang
+                    <span
+                        class="absolute -bottom-1 left-1/2 w-0 h-0.5 bg-primary transition-all duration-300 -translate-x-1/2 group-hover:w-full {{ request()->is('tentang*') ? 'w-full' : '' }}"></span>
                 </a>
                 <a href="{{ url('/struktur-organisasi') }}"
                     class="relative group text-sm font-semibold transition-colors hover:text-primary {{ request()->is('struktur-organisasi*') ? 'text-primary' : 'text-slate-600' }}">
@@ -77,7 +83,9 @@
     <div id="mobile-menu" class="hidden md:hidden bg-white border-t border-slate-100 shadow-xl">
         <div class="px-4 pt-2 pb-6 space-y-1">
             <a href="{{ url('/') }}"
-                class="block px-3 py-2 rounded-md text-base font-semibold {{ request()->is('/') ? 'text-primary bg-slate-50' : 'text-slate-600' }}">Beranda</a>
+                class="block px-3 py-2 rounded-md text-base font-semibold {{ request()->path() == '/' ? 'text-primary bg-slate-50' : 'text-slate-600' }}">Beranda</a>
+            <a href="{{ url('/tentang') }}"
+                class="block px-3 py-2 rounded-md text-base font-semibold {{ request()->is('tentang*') ? 'text-primary bg-slate-50' : 'text-slate-600 hover:text-primary hover:bg-slate-50' }}">Tentang</a>
             <a href="{{ url('/struktur-organisasi') }}"
                 class="block px-3 py-2 rounded-md text-base font-semibold {{ request()->is('struktur-organisasi*') ? 'text-primary bg-slate-50' : 'text-slate-600 hover:text-primary hover:bg-slate-50' }}">Struktur
                 Organisasi</a>

@@ -158,6 +158,10 @@
                                                     </span>
                                                 </div>
                                                 <p class="text-xs text-slate-500 truncate">{{ $coord->position->name }}</p>
+                                                @if ($coord->npm)
+                                                    <p class="text-[10px] text-slate-400 font-mono mt-0.5">
+                                                        {{ $coord->npm }}</p>
+                                                @endif
                                             </div>
                                         </div>
                                     @endforeach
@@ -187,6 +191,10 @@
                                                         {{ $member->name }}</p>
                                                     <p class="text-xs text-slate-500 truncate">
                                                         {{ $member->position->name }}</p>
+                                                    @if ($member->npm)
+                                                        <p class="text-[10px] text-slate-400 font-mono mt-0.5">
+                                                            {{ $member->npm }}</p>
+                                                    @endif
                                                 </div>
                                             </div>
                                         @endforeach
