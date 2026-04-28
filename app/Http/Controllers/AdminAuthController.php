@@ -37,6 +37,6 @@ class AdminAuthController extends Controller
         $request->session()->invalidate();
         $request->session()->regenerateToken();
 
-        return redirect('/login-admin');
+        return redirect('/login-admin')->with('success', 'Anda telah berhasil keluar dari sistem.');
     }
 }

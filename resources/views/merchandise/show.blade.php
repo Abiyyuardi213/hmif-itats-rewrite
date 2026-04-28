@@ -5,8 +5,12 @@
 @section('content')
     <div class="min-h-screen bg-slate-50/50">
         {{-- Slim Header Section --}}
-        <section class="relative bg-white py-8 border-b border-slate-200">
-            <div class="container mx-auto px-6">
+        <section class="relative bg-slate-50 overflow-hidden py-8 border-b border-slate-200">
+            <!-- Grid Pattern Backdrop -->
+            <div class="absolute inset-0 pointer-events-none"
+                style="background-image: linear-gradient(to right, #80808012 1px, transparent 1px), linear-gradient(to bottom, #80808012 1px, transparent 1px); background-size: 24px 24px;">
+            </div>
+            <div class="relative container mx-auto px-6">
                 <div class="max-w-5xl mx-auto">
                     <nav class="flex items-center gap-2 text-xs font-medium text-slate-500 mb-2">
                         <a href="{{ route('merchandise.index') }}" class="hover:text-slate-900 transition-colors">Katalog</a>

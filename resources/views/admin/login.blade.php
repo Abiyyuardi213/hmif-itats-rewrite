@@ -106,3 +106,24 @@
             btnSpinner.classList.remove('hidden');
         });
     </script>
+
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    @if (session('success'))
+        <script>
+            Swal.fire({
+                toast: true,
+                position: 'top-end',
+                icon: 'success',
+                title: "{{ session('success') }}",
+                showConfirmButton: false,
+                timer: 4000,
+                timerProgressBar: true,
+                customClass: {
+                    popup: 'rounded-lg border border-slate-100 shadow-lg'
+                }
+            });
+        </script>
+    @endif
+</body>
+
+</html>

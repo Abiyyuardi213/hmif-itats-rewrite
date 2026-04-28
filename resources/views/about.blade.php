@@ -45,6 +45,87 @@
 
         {{-- Content Sections --}}
         <div class="container mx-auto px-6 py-16 space-y-24">
+            {{-- Study Program Vision & Mission Section --}}
+            <section class="relative overflow-hidden rounded-3xl bg-slate-50 border border-slate-200 p-8 md:p-16 shadow-sm">
+                {{-- Decorative elements --}}
+                <div class="absolute -top-24 -right-24 w-64 h-64 bg-primary/5 rounded-full blur-3xl"></div>
+                <div class="absolute -bottom-24 -left-24 w-64 h-64 bg-blue-500/5 rounded-full blur-3xl"></div>
+
+                <div class="relative z-10 max-w-5xl mx-auto">
+                    <div class="text-center mb-16 space-y-4">
+                        <span
+                            class="inline-flex items-center gap-2 rounded-full bg-primary/10 border border-primary/20 px-4 py-1.5 text-sm font-semibold text-primary">
+                            Akademik
+                        </span>
+                        <h2 class="text-3xl md:text-5xl font-bold text-slate-900 tracking-tight">Visi & Misi Program Studi
+                        </h2>
+                        <p class="text-slate-500 text-lg">Teknik Informatika - Institut Teknologi Adhi Tama Surabaya</p>
+                    </div>
+
+                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-16 items-start">
+                        {{-- Vision Card --}}
+                        <div class="space-y-8">
+                            <div
+                                class="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-white shadow-md border border-slate-100 text-primary">
+                                <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
+                                        d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
+                                        d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                                </svg>
+                            </div>
+                            <div class="space-y-4">
+                                <h3 class="text-2xl font-bold text-slate-900">Visi</h3>
+                                <p
+                                    class="text-slate-600 text-lg leading-relaxed italic border-l-4 border-primary/30 pl-6 py-2 bg-primary/5 rounded-r-xl">
+                                    "Menjadi program studi yang menghasilkan lulusan inovatif, berwawasan lingkungan, dan
+                                    berkelanjutan di bidang rekayasa perangkat lunak terintegrasi, pembelajaran mesin, serta
+                                    manajemen jaringan komputer di tingkat regional untuk mencapai reputasi internasional
+                                    pada 2045."
+                                </p>
+                            </div>
+                        </div>
+
+                        {{-- Mission List --}}
+                        <div class="space-y-8">
+                            <div
+                                class="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-white shadow-md border border-slate-100 text-blue-500">
+                                <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
+                                        d="M13 10V3L4 14h7v7l9-11h-7z" />
+                                </svg>
+                            </div>
+                            <div class="space-y-6">
+                                <h3 class="text-2xl font-bold text-slate-900">Misi</h3>
+                                <div class="space-y-4">
+                                    @php
+                                        $misiProdi = [
+                                            'Menyelenggarakan pendidikan tinggi yang unggul dan adaptif dalam bidang rekayasa perangkat lunak terintegrasi, pembelajaran mesin, dan manajemen jaringan komputer, guna menghasilkan lulusan yang inovatif, beretika, dan berwawasan lingkungan.',
+                                            'Mengembangkan penelitian terapan dan inovatif di bidang informatika yang mendukung kemajuan sains dan teknologi informasi serta berkontribusi terhadap penyelesaian masalah di tingkat lokal, nasional, dan regional.',
+                                            'Melaksanakan pengabdian kepada masyarakat berbasis teknologi informasi yang mampu meningkatkan literasi digital, produktivitas masyarakat, serta menunjang pembangunan berkelanjutan.',
+                                            'Membangun kerja sama strategis dengan industri, pemerintah, dan lembaga pendidikan di dalam dan luar negeri guna meningkatkan daya saing lulusan dan reputasi internasional program studi.',
+                                            'Mendorong budaya inovasi, kewirausahaan, dan pembelajaran dalam lingkungan akademik yang inklusif, kolaboratif, dan mendukung keberlanjutan teknologi informasi di era transformasi digital.',
+                                        ];
+                                    @endphp
+                                    @foreach ($misiProdi as $key => $misi)
+                                        <div
+                                            class="group flex gap-4 p-4 rounded-2xl hover:bg-white hover:shadow-sm transition-all border border-transparent hover:border-slate-100">
+                                            <div
+                                                class="flex-none flex items-center justify-center w-8 h-8 rounded-full bg-slate-900 text-white text-xs font-bold shadow-sm group-hover:scale-110 transition-transform">
+                                                {{ $key + 1 }}
+                                            </div>
+                                            <p class="text-slate-600 text-sm leading-relaxed pt-0.5">
+                                                {{ $misi }}
+                                            </p>
+                                        </div>
+                                    @endforeach
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
             @forelse($pages as $index => $page)
                 <div
                     class="flex flex-col lg:flex-row gap-12 items-center {{ $index % 2 != 0 ? 'lg:flex-row-reverse' : '' }}">

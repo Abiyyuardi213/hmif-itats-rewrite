@@ -54,40 +54,62 @@
                         class="absolute -bottom-1 left-1/2 w-0 h-0.5 bg-primary transition-all duration-300 -translate-x-1/2 group-hover:w-full {{ request()->is('admin/work-programs*') ? 'w-full' : '' }}"></span>
                 </a>
 
-                <a href="{{ route('admin.activity-reports.index') }}"
-                    class="relative group text-sm font-semibold transition-colors hover:text-primary {{ request()->is('admin/activity-reports*') ? 'text-primary' : 'text-slate-600' }}">
-                    Artikel
-                    <span
-                        class="absolute -bottom-1 left-1/2 w-0 h-0.5 bg-primary transition-all duration-300 -translate-x-1/2 group-hover:w-full {{ request()->is('admin/activity-reports*') ? 'w-full' : '' }}"></span>
-                </a>
+                <div class="relative group">
+                    <button
+                        class="relative flex items-center gap-1 text-sm font-semibold transition-colors hover:text-primary {{ request()->is('admin/activity-reports*') || request()->is('admin/about-pages*') || request()->is('admin/announcements*') ? 'text-primary' : 'text-slate-600' }}">
+                        Konten
+                        <i class="fas fa-chevron-down text-[10px] transition-transform group-hover:rotate-180"></i>
+                        <span
+                            class="absolute -bottom-1 left-1/2 w-0 h-0.5 bg-primary transition-all duration-300 -translate-x-1/2 group-hover:w-full {{ request()->is('admin/activity-reports*') || request()->is('admin/about-pages*') || request()->is('admin/announcements*') ? 'w-full' : '' }}"></span>
+                    </button>
+                    <!-- Dropdown -->
+                    <div
+                        class="absolute top-full left-1/2 -translate-x-1/2 pt-3 w-48 hidden group-hover:block transition-all animate-in fade-in slide-in-from-top-2">
+                        <div class="bg-white rounded-xl shadow-xl border border-slate-100 overflow-hidden p-1">
+                            <a href="{{ route('admin.activity-reports.index') }}"
+                                class="flex items-center gap-2 px-3 py-2 text-sm {{ request()->is('admin/activity-reports*') ? 'bg-primary/5 text-primary' : 'text-slate-600' }} rounded-lg hover:bg-slate-50 transition-colors">
+                                <i class="fas fa-newspaper text-xs"></i>
+                                Artikel
+                            </a>
+                            <a href="{{ route('admin.about-pages.index') }}"
+                                class="flex items-center gap-2 px-3 py-2 text-sm {{ request()->is('admin/about-pages*') ? 'bg-primary/5 text-primary' : 'text-slate-600' }} rounded-lg hover:bg-slate-50 transition-colors">
+                                <i class="fas fa-file-alt text-xs"></i>
+                                Halaman
+                            </a>
+                            <a href="{{ route('admin.announcements.index') }}"
+                                class="flex items-center gap-2 px-3 py-2 text-sm {{ request()->is('admin/announcements*') ? 'bg-primary/5 text-primary' : 'text-slate-600' }} rounded-lg hover:bg-slate-50 transition-colors">
+                                <i class="fas fa-bullhorn text-xs"></i>
+                                Pengumuman
+                            </a>
+                        </div>
+                    </div>
+                </div>
 
-                <a href="{{ route('admin.about-pages.index') }}"
-                    class="relative group text-sm font-semibold transition-colors hover:text-primary {{ request()->is('admin/about-pages*') ? 'text-primary' : 'text-slate-600' }}">
-                    Halaman
-                    <span
-                        class="absolute -bottom-1 left-1/2 w-0 h-0.5 bg-primary transition-all duration-300 -translate-x-1/2 group-hover:w-full {{ request()->is('admin/about-pages*') ? 'w-full' : '' }}"></span>
-                </a>
-
-                <a href="{{ route('admin.announcements.index') }}"
-                    class="relative group text-sm font-semibold transition-colors hover:text-primary {{ request()->is('admin/announcements*') ? 'text-primary' : 'text-slate-600' }}">
-                    Pengumuman
-                    <span
-                        class="absolute -bottom-1 left-1/2 w-0 h-0.5 bg-primary transition-all duration-300 -translate-x-1/2 group-hover:w-full {{ request()->is('admin/announcements*') ? 'w-full' : '' }}"></span>
-                </a>
-
-                <a href="{{ route('admin.merchandises.index') }}"
-                    class="relative group text-sm font-semibold transition-colors hover:text-primary {{ request()->is('admin/merchandises*') ? 'text-primary' : 'text-slate-600' }}">
-                    Merchandise
-                    <span
-                        class="absolute -bottom-1 left-1/2 w-0 h-0.5 bg-primary transition-all duration-300 -translate-x-1/2 group-hover:w-full {{ request()->is('admin/merchandises*') ? 'w-full' : '' }}"></span>
-                </a>
-
-                <a href="{{ route('admin.merchandise-orders.index') }}"
-                    class="relative group text-sm font-semibold transition-colors hover:text-primary {{ request()->is('admin/merchandise-orders*') ? 'text-primary' : 'text-slate-600' }}">
-                    Pesanan
-                    <span
-                        class="absolute -bottom-1 left-1/2 w-0 h-0.5 bg-primary transition-all duration-300 -translate-x-1/2 group-hover:w-full {{ request()->is('admin/merchandise-orders*') ? 'w-full' : '' }}"></span>
-                </a>
+                <div class="relative group">
+                    <button
+                        class="relative flex items-center gap-1 text-sm font-semibold transition-colors hover:text-primary {{ request()->is('admin/merchandises*') || request()->is('admin/merchandise-orders*') ? 'text-primary' : 'text-slate-600' }}">
+                        Merchandise
+                        <i class="fas fa-chevron-down text-[10px] transition-transform group-hover:rotate-180"></i>
+                        <span
+                            class="absolute -bottom-1 left-1/2 w-0 h-0.5 bg-primary transition-all duration-300 -translate-x-1/2 group-hover:w-full {{ request()->is('admin/merchandises*') || request()->is('admin/merchandise-orders*') ? 'w-full' : '' }}"></span>
+                    </button>
+                    <!-- Dropdown -->
+                    <div
+                        class="absolute top-full left-1/2 -translate-x-1/2 pt-3 w-48 hidden group-hover:block transition-all animate-in fade-in slide-in-from-top-2">
+                        <div class="bg-white rounded-xl shadow-xl border border-slate-100 overflow-hidden p-1">
+                            <a href="{{ route('admin.merchandises.index') }}"
+                                class="flex items-center gap-2 px-3 py-2 text-sm {{ request()->is('admin/merchandises*') ? 'bg-primary/5 text-primary' : 'text-slate-600' }} rounded-lg hover:bg-slate-50 transition-colors">
+                                <i class="fas fa-box text-xs"></i>
+                                Daftar Produk
+                            </a>
+                            <a href="{{ route('admin.merchandise-orders.index') }}"
+                                class="flex items-center gap-2 px-3 py-2 text-sm {{ request()->is('admin/merchandise-orders*') ? 'bg-primary/5 text-primary' : 'text-slate-600' }} rounded-lg hover:bg-slate-50 transition-colors">
+                                <i class="fas fa-shopping-cart text-xs"></i>
+                                Pesanan
+                            </a>
+                        </div>
+                    </div>
+                </div>
 
                 <div class="h-4 w-px bg-slate-200"></div>
 
@@ -167,14 +189,16 @@
                 class="block px-3 sm:px-4 py-2.5 sm:py-3 rounded-xl text-sm font-bold {{ request()->is('admin/members*') ? 'bg-primary/5 text-primary' : 'text-slate-600' }}">Anggota</a>
             <a href="{{ route('admin.work-programs.index') }}"
                 class="block px-3 sm:px-4 py-2.5 sm:py-3 rounded-xl text-sm font-bold {{ request()->is('admin/work-programs*') ? 'bg-primary/5 text-primary' : 'text-slate-600' }}">Proker</a>
+            <div class="px-3 sm:px-4 py-2 mt-2 text-[10px] font-bold text-slate-400 uppercase tracking-widest">Konten & Publikasi</div>
             <a href="{{ route('admin.activity-reports.index') }}"
                 class="block px-3 sm:px-4 py-2.5 sm:py-3 rounded-xl text-sm font-bold {{ request()->is('admin/activity-reports*') ? 'bg-primary/5 text-primary' : 'text-slate-600' }}">Artikel</a>
             <a href="{{ route('admin.about-pages.index') }}"
                 class="block px-3 sm:px-4 py-2.5 sm:py-3 rounded-xl text-sm font-bold {{ request()->is('admin/about-pages*') ? 'bg-primary/5 text-primary' : 'text-slate-600' }}">Halaman</a>
             <a href="{{ route('admin.announcements.index') }}"
                 class="block px-3 sm:px-4 py-2.5 sm:py-3 rounded-xl text-sm font-bold {{ request()->is('admin/announcements*') ? 'bg-primary/5 text-primary' : 'text-slate-600' }}">Pengumuman</a>
+            <div class="px-3 sm:px-4 py-2 mt-2 text-[10px] font-bold text-slate-400 uppercase tracking-widest">Store & Merchandise</div>
             <a href="{{ route('admin.merchandises.index') }}"
-                class="block px-3 sm:px-4 py-2.5 sm:py-3 rounded-xl text-sm font-bold {{ request()->is('admin/merchandises*') ? 'bg-primary/5 text-primary' : 'text-slate-600' }}">Merchandise</a>
+                class="block px-3 sm:px-4 py-2.5 sm:py-3 rounded-xl text-sm font-bold {{ request()->is('admin/merchandises*') ? 'bg-primary/5 text-primary' : 'text-slate-600' }}">Daftar Produk</a>
             <a href="{{ route('admin.merchandise-orders.index') }}"
                 class="block px-3 sm:px-4 py-2.5 sm:py-3 rounded-xl text-sm font-bold {{ request()->is('admin/merchandise-orders*') ? 'bg-primary/5 text-primary' : 'text-slate-600' }}">Pesanan</a>
             <a href="{{ url('/admin/users') }}"
@@ -202,18 +226,22 @@
         Swal.fire({
             title: 'Konfirmasi Logout',
             text: "Apakah Anda yakin ingin mengakhiri sesi admin?",
-            icon: 'question',
+            icon: 'warning',
+            iconColor: '#e11d48',
             showCancelButton: true,
-            confirmButtonColor: '#0f172a',
-            cancelButtonColor: '#f1f5f9',
             confirmButtonText: 'Ya, Logout Sekarang',
             cancelButtonText: 'Batal',
+            confirmButtonColor: '#e11d48',
+            cancelButtonColor: '#f1f5f9',
             reverseButtons: true,
             customClass: {
-                popup: 'rounded-3xl',
-                confirmButton: 'px-6 py-3 rounded-xl font-bold text-sm',
-                cancelButton: 'px-6 py-3 rounded-xl font-bold text-sm text-slate-600'
-            }
+                popup: 'rounded-[1.5rem] border-none shadow-2xl',
+                title: 'text-xl font-bold text-slate-900',
+                htmlContainer: 'text-slate-500 text-sm',
+                confirmButton: 'px-6 py-3 rounded-xl font-bold text-sm shadow-lg shadow-rose-600/20 focus:ring-0',
+                cancelButton: 'px-6 py-3 rounded-xl font-bold text-sm !text-slate-900 border border-slate-200 focus:ring-0'
+            },
+            buttonsStyling: true
         }).then((result) => {
             if (result.isConfirmed) {
                 document.getElementById('logout-form').submit();

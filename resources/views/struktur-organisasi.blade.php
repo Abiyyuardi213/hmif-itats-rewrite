@@ -3,7 +3,7 @@
 @section('content')
     <div class="min-h-screen bg-white" x-data="{ selectedDivision: null }">
         {{-- Header Section --}}
-        <section class="relative overflow-hidden bg-slate-50 py-16 md:py-24 border-b border-slate-200">
+        <section class="relative overflow-hidden bg-slate-50 py-12 md:py-16 border-b border-slate-200">
             {{-- Grid Pattern Background --}}
             <div
                 class="absolute inset-0 bg-[linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] bg-[size:24px_24px]">
@@ -32,195 +32,137 @@
         </section>
 
         {{-- Pengurus Inti Section --}}
-        <section class="py-16 px-6">
-            <div class="container mx-auto max-w-7xl space-y-12">
-                @if ($pengurusInti->count() > 0)
-                    <div class="flex flex-col items-center space-y-12">
-                        <div class="text-center space-y-2">
-                            <h2 class="text-2xl font-bold text-slate-900">Pengurus Inti</h2>
-                            <div class="w-16 h-1 bg-[#EB329A] mx-auto rounded-full"></div>
-                        </div>
+        <section class="py-20 px-6 bg-white relative overflow-hidden">
+            <div
+                class="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[300px] bg-primary/5 rounded-full blur-[120px] -z-10">
+            </div>
 
-                        {{-- Determine Grid based on count to center nicely --}}
-                        <div
-                            class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 w-full justify-center">
-                            @foreach ($pengurusInti as $member)
-                                @include('components.member-card', ['member' => $member])
+            <div class="container mx-auto max-w-7xl">
+                <div class="text-center space-y-4 mb-12">
+                    <h2 class="text-3xl md:text-4xl font-black text-slate-900 uppercase tracking-tighter">Pengurus Inti</h2>
+                    <p class="text-slate-500 max-w-2xl mx-auto font-medium text-sm">Pemimpin dan penggerak utama organisasi HMIF
+                        ITATS periode 2024/2025.</p>
+                    <div class="w-16 h-1 bg-primary mx-auto rounded-full"></div>
+                </div>
+
+                @if ($pengurusInti->count() > 0)
+                    @php
+                        // Logic to find specific roles for Pengurus Inti
+                        $ketua = $pengurusInti
+                            ->filter(
+                                fn($m) => str_contains(strtolower($m->position->name), 'ketua') &&
+                                    !str_contains(strtolower($m->position->name), 'wakil'),
+                            )
+                            ->first();
+                        $wakil = $pengurusInti
+                            ->filter(fn($m) => str_contains(strtolower($m->position->name), 'wakil'))
+                            ->first();
+                        $sekretaris = $pengurusInti
+                            ->filter(fn($m) => str_contains(strtolower($m->position->name), 'sekretaris'))
+                            ->values();
+                        $bendahara = $pengurusInti
+                            ->filter(fn($m) => str_contains(strtolower($m->position->name), 'bendahara'))
+                            ->values();
+
+                        // Remaining inti members who are not specifically handled
+                        $others = $pengurusInti->filter(function ($m) use ($ketua, $wakil, $sekretaris, $bendahara) {
+                            $handledIds = collect([$ketua?->id, $wakil?->id])
+                                ->merge($sekretaris->pluck('id'))
+                                ->merge($bendahara->pluck('id'));
+                            return !$handledIds->contains($m->id);
+                        });
+                    @endphp
+
+                    <div class="flex flex-col gap-16">
+                        {{-- Top: Ketua Himpunan --}}
+                        @if ($ketua)
+                            <div class="flex justify-center">
+                                <div class="w-full max-w-sm">
+                                    <x-premium-member-card :member="$ketua" />
+                                </div>
+                            </div>
+                        @endif
+
+                        {{-- Middle: Wakil, Sekretaris, Bendahara --}}
+                        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 lg:gap-12">
+                            @if ($wakil)
+                                <x-premium-member-card :member="$wakil" />
+                            @endif
+
+                            @foreach ($sekretaris as $sekre)
+                                <x-premium-member-card :member="$sekre" />
+                            @endforeach
+
+                            @foreach ($bendahara as $bend)
+                                <x-premium-member-card :member="$bend" />
+                            @endforeach
+
+                            {{-- Fallback for others if any --}}
+                            @foreach ($others as $other)
+                                <x-premium-member-card :member="$other" />
                             @endforeach
                         </div>
                     </div>
-
-                    {{-- Connection Line --}}
-                    <div class="flex justify-center my-8">
-                        <div class="w-px h-16 bg-gradient-to-b from-slate-200 to-transparent"></div>
-                    </div>
                 @else
-                    <div class="text-center py-10 bg-slate-50 border border-dashed border-slate-300 rounded-lg">
-                        <p class="text-slate-500">Data Pengurus Inti belum tersedia.</p>
+                    <div class="text-center py-20 bg-slate-50 border-2 border-dashed border-slate-200 rounded-[2rem]">
+                        <p class="text-slate-400 font-medium italic">Data Pengurus Inti belum tersedia.</p>
                     </div>
                 @endif
             </div>
         </section>
 
         {{-- Divisions Section --}}
-        <section class="py-16 px-6 bg-slate-50/50">
-            <div class="container mx-auto max-w-7xl">
-                <div class="text-center max-w-2xl mx-auto mb-16">
-                    <h2 class="text-3xl font-bold text-slate-900 mb-4">Divisi Himpunan</h2>
-                    <p class="text-slate-500">
-                        Unit - unit pelaksana yang membidangi aspek spesifik dalam pengembangan organisasi dan mahasiswa.
-                    </p>
-                </div>
+        @foreach ($divisions as $division)
+            <section class="py-16 px-6 {{ $loop->even ? 'bg-slate-50' : 'bg-white' }}">
+                <div class="container mx-auto max-w-7xl">
+                    {{-- Division Header --}}
+                    <div class="text-center space-y-4 mb-12">
+                        <span
+                            class="inline-flex items-center gap-2 rounded-full bg-primary/10 border border-primary/20 px-4 py-1 text-xs font-bold text-primary uppercase tracking-widest">
+                            Divisi {{ $loop->iteration }}
+                        </span>
+                        <h2 class="text-3xl md:text-4xl font-black text-slate-900 uppercase tracking-tighter">
+                            {{ $division->name }}</h2>
+                        <p class="text-slate-500 max-w-2xl mx-auto font-medium text-sm leading-relaxed">
+                            {{ $division->description ?? 'Unit pelaksana yang membidangi aspek spesifik pengembangan organisasi.' }}
+                        </p>
+                        <div class="w-16 h-1 bg-primary mx-auto rounded-full"></div>
+                    </div>
 
-                <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
-                    @foreach ($divisions as $division)
-                        <div class="bg-white rounded-xl border border-slate-200 shadow-sm transition-all duration-300 hover:shadow-md cursor-pointer group"
-                            @click="selectedDivision = selectedDivision === '{{ $division->id }}' ? null : '{{ $division->id }}'">
-                            <div class="p-6 space-y-6">
-                                {{-- Division Header --}}
-                                <div class="space-y-4">
-                                    <div class="flex items-center justify-between">
-                                        {{-- Icon Container based on division name or generic --}}
-                                        <div
-                                            class="w-12 h-12 rounded-xl bg-gradient-to-br from-purple-500 to-[#EC4899] flex items-center justify-center shadow-lg shadow-pink-500/20 text-white">
-                                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-                                                viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                                                stroke-linecap="round" stroke-linejoin="round">
-                                                <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
-                                                <circle cx="9" cy="7" r="4"></circle>
-                                                <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
-                                                <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
-                                            </svg>
-                                        </div>
-                                        <span
-                                            class="inline-flex items-center rounded-full border border-slate-200 bg-slate-100 px-3 py-1 text-xs font-semibold text-slate-600">
-                                            {{ $division->members->count() }} Anggota
-                                        </span>
-                                    </div>
-                                    <div>
-                                        <h3
-                                            class="text-xl font-bold text-slate-900 group-hover:text-[#EB329A] transition-colors">
-                                            {{ $division->name }}
-                                        </h3>
-                                        <p class="text-sm text-slate-500 mt-2 line-clamp-2">
-                                            {{ $division->description ?? 'Deskripsi divisi belum ditambahkan.' }}
-                                        </p>
-                                    </div>
-                                </div>
+                    @php
+                        // Logic for division members
+                        $koordinator = $division->members
+                            ->filter(function ($m) {
+                                $p = strtolower($m->position->name);
+                                return str_contains($p, 'koordinator') || str_contains($p, 'ketua');
+                            })
+                            ->first();
 
-                                {{-- Members Section --}}
-                                <div class="space-y-4">
-                                    {{-- Find Coordinators --}}
-                                    @php
-                                        // Simple logic using 'Koordinator' or 'Ketua' in position name
-                                        $coordinators = $division->members->filter(function ($m) {
-                                            return stripos($m->position->name, 'Koordinator') !== false ||
-                                                stripos($m->position->name, 'Ketua') !== false;
-                                        });
+                        $staff = $division->members->filter(fn($m) => $m->id !== $koordinator?->id);
+                    @endphp
 
-                                        $members = $division->members->filter(function ($m) use ($coordinators) {
-                                            return !$coordinators->contains('id', $m->id);
-                                        });
-                                    @endphp
-
-                                    {{-- Coordinators Display --}}
-                                    @foreach ($coordinators as $coord)
-                                        <div
-                                            class="flex items-center gap-4 p-4 rounded-lg bg-pink-50 border border-pink-100">
-                                            <div class="relative">
-                                                <div
-                                                    class="h-12 w-12 rounded-full border-2 border-white shadow-sm overflow-hidden bg-white">
-                                                    @if ($coord->image)
-                                                        <img src="{{ asset('storage/' . $coord->image) }}"
-                                                            alt="{{ $coord->name }}" class="w-full h-full object-cover">
-                                                    @else
-                                                        <div
-                                                            class="w-full h-full flex items-center justify-center bg-pink-100 text-[#EB329A] font-bold text-sm">
-                                                            {{ substr($coord->name, 0, 2) }}
-                                                        </div>
-                                                    @endif
-                                                </div>
-                                                <div
-                                                    class="absolute -top-1 -right-1 w-5 h-5 bg-[#EB329A] rounded-full flex items-center justify-center border border-white">
-                                                    <svg class="w-3 h-3 text-white" fill="none" viewBox="0 0 24 24"
-                                                        stroke="currentColor">
-                                                        <path stroke-linecap="round" stroke-linejoin="round"
-                                                            stroke-width="2" d="M5 13l4 4L19 7" />
-                                                    </svg>
-                                                </div>
-                                            </div>
-                                            <div class="flex-1 min-w-0">
-                                                <div class="flex items-center gap-2 flex-wrap">
-                                                    <p class="font-semibold text-slate-900 truncate">{{ $coord->name }}</p>
-                                                    <span
-                                                        class="px-2 py-0.5 rounded text-[10px] font-bold bg-pink-100 text-[#EB329A] uppercase tracking-wide">
-                                                        Koordinator
-                                                    </span>
-                                                </div>
-                                                <p class="text-xs text-slate-500 truncate">{{ $coord->position->name }}</p>
-                                                @if ($coord->npm)
-                                                    <p class="text-[10px] text-slate-400 font-mono mt-0.5">
-                                                        {{ $coord->npm }}</p>
-                                                @endif
-                                            </div>
-                                        </div>
-                                    @endforeach
-
-                                    {{-- Expandable Members Grid --}}
-                                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 transition-all duration-500 ease-in-out overflow-hidden"
-                                        :class="selectedDivision === '{{ $division->id }}' ? 'max-h-[1000px] opacity-100' :
-                                            'max-h-0 opacity-0'"
-                                        x-cloak>
-                                        @foreach ($members as $member)
-                                            <div
-                                                class="flex items-center gap-3 p-3 rounded-lg bg-slate-50 hover:bg-slate-100 transition-colors border border-transparent hover:border-slate-200">
-                                                <div
-                                                    class="h-10 w-10 rounded-full bg-slate-200 overflow-hidden flex-shrink-0">
-                                                    @if ($member->image)
-                                                        <img src="{{ asset('storage/' . $member->image) }}"
-                                                            alt="{{ $member->name }}" class="w-full h-full object-cover">
-                                                    @else
-                                                        <div
-                                                            class="w-full h-full flex items-center justify-center text-slate-500 text-xs font-medium">
-                                                            {{ substr($member->name, 0, 2) }}
-                                                        </div>
-                                                    @endif
-                                                </div>
-                                                <div class="min-w-0 flex-1">
-                                                    <p class="text-sm font-medium text-slate-900 truncate">
-                                                        {{ $member->name }}</p>
-                                                    <p class="text-xs text-slate-500 truncate">
-                                                        {{ $member->position->name }}</p>
-                                                    @if ($member->npm)
-                                                        <p class="text-[10px] text-slate-400 font-mono mt-0.5">
-                                                            {{ $member->npm }}</p>
-                                                    @endif
-                                                </div>
-                                            </div>
-                                        @endforeach
-                                    </div>
-
-                                    {{-- Footer/Toggle --}}
-                                    <div class="pt-2">
-                                        <button
-                                            class="w-full flex items-center justify-center gap-2 text-sm font-medium text-[#EB329A] hover:text-[#c91c7f] transition-colors py-2 rounded-lg hover:bg-pink-50/50">
-                                            <span
-                                                x-text="selectedDivision === '{{ $division->id }}' ? 'Sembunyikan Anggota' : 'Lihat ' + {{ $members->count() }} + ' Anggota Lainnya'"></span>
-                                            <svg class="w-4 h-4 transition-transform duration-300"
-                                                :class="selectedDivision === '{{ $division->id }}' ? 'rotate-180' : ''"
-                                                fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                                    d="M19 9l-7 7-7-7" />
-                                            </svg>
-                                        </button>
-                                    </div>
+                    <div class="space-y-12">
+                        {{-- Koordinator Divisi --}}
+                        @if ($koordinator)
+                            <div class="flex justify-center">
+                                <div class="w-full max-w-sm">
+                                    <x-premium-member-card :member="$koordinator" />
                                 </div>
                             </div>
-                        </div>
-                    @endforeach
+                        @endif
+
+                        {{-- Staff Grid --}}
+                        @if ($staff->count() > 0)
+                            <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6">
+                                @foreach ($staff as $member)
+                                    <x-premium-member-card :member="$member" />
+                                @endforeach
+                            </div>
+                        @endif
+                    </div>
                 </div>
-            </div>
-        </section>
+            </section>
+        @endforeach
 
         {{-- Join/CTA Footer --}}
         <section class="py-12 border-t border-slate-200 bg-white">

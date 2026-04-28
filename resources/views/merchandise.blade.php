@@ -4,25 +4,32 @@
 
 @section('content')
     <!-- Hero Section -->
-    <section class="relative py-12 md:py-20 overflow-hidden bg-white mt-[-1px]">
-        <!-- Radial Gradient Background -->
-        <div class="absolute inset-0 bg-[radial-gradient(circle_at_50%_-20%,rgba(244,114,182,0.12),rgba(255,255,255,0))]">
+    <section class="relative py-12 md:py-20 overflow-hidden bg-slate-50 mt-[-1px] border-b border-slate-200">
+        <!-- Background Decorations -->
+        <div class="absolute inset-0 pointer-events-none overflow-hidden">
+            <!-- Grid Pattern -->
+            <div class="absolute inset-0"
+                style="background-image: linear-gradient(to right, #80808012 1px, transparent 1px), linear-gradient(to bottom, #80808012 1px, transparent 1px); background-size: 24px 24px;">
+            </div>
+            <!-- Radial Glow -->
+            <div class="absolute inset-0 bg-[radial-gradient(circle_at_50%_-20%,rgba(235,50,154,0.1),transparent)]">
+            </div>
         </div>
 
         <div class="max-w-[1600px] mx-auto px-6 sm:px-10 lg:px-12 relative">
             <div class="mb-16 text-center">
                 <div
-                    class="inline-flex items-center gap-2 rounded-full border border-pink-100 bg-pink-50/50 px-3 py-1.5 text-[10px] font-bold text-pink-500 mb-5 backdrop-blur-sm shadow-sm uppercase tracking-widest">
+                    class="inline-flex items-center gap-2 rounded-full border border-pink-100 bg-pink-50/50 px-3 py-1.5 text-[10px] font-bold text-[#EB329A] mb-5 backdrop-blur-sm shadow-sm uppercase tracking-widest">
                     <i class="fas fa-shopping-bag"></i>
-                    Koleksi Eksklusif HMIF
+                    Official Merchandise
                 </div>
                 <h1 class="text-4xl md:text-6xl font-black tracking-tighter text-slate-900 mb-5 leading-[1.1]">
-                    Official <br>
-                    <span class="text-pink-500">Merchandise</span>
+                    Koleksi <br class="hidden sm:block" />
+                    HMIF <span class="text-[#EB329A]">ITATS</span>
                 </h1>
-                <p class="text-base text-slate-500 max-w-xl mx-auto leading-relaxed font-medium opacity-90">
-                    Tunjukkan identitasmu sebagai bagian dari keluarga besar Informatika ITATS dengan koleksi merchandise
-                    eksklusif kami.
+                <p class="text-base text-slate-500 max-w-xl mx-auto leading-relaxed font-medium opacity-90 text-balance">
+                    Tunjukkan identitasmu sebagai bagian dari keluarga besar Informatika ITATS dengan merchandise
+                    eksklusif.
                 </p>
             </div>
 

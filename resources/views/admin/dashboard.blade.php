@@ -198,72 +198,39 @@
                 <button class="text-xs sm:text-sm text-primary font-medium hover:underline">Lihat Semua</button>
             </div>
             <div class="divide-y divide-slate-100">
-                <!-- Item 1 -->
-                <div
-                    class="px-4 sm:px-6 py-3 sm:py-4 flex items-start sm:items-center gap-3 sm:gap-4 hover:bg-slate-50 transition-colors cursor-pointer">
+                @forelse($recentActivities as $activity)
                     <div
-                        class="w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-blue-100 flex items-center justify-center text-blue-600 shrink-0">
-                        <svg class="w-4 h-4 sm:w-5 sm:h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z">
-                            </path>
-                        </svg>
+                        class="px-4 sm:px-6 py-3 sm:py-4 flex items-start sm:items-center gap-3 sm:gap-4 hover:bg-slate-50 transition-colors cursor-pointer">
+                        <div
+                            class="w-8 h-8 sm:w-10 sm:h-10 rounded-full {{ $activity->icon_bg }} flex items-center justify-center {{ $activity->icon_color }} shrink-0">
+                            <svg class="w-4 h-4 sm:w-5 sm:h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                {!! $activity->icon_svg !!}
+                            </svg>
+                        </div>
+                        <div class="flex-grow min-w-0">
+                            <p class="text-xs sm:text-sm font-medium text-slate-900 truncate">{{ $activity->title }}</p>
+                            <p class="text-[10px] sm:text-xs text-slate-500 mt-0.5">{{ $activity->subtitle }} •
+                                {{ $activity->time->diffForHumans() }}</p>
+                        </div>
+                        <div class="shrink-0">
+                            <span
+                                class="px-1.5 sm:px-2 py-0.5 sm:py-1 rounded text-[9px] sm:text-[10px] font-bold 
+                                @if($activity->status_color == 'green') bg-green-100 text-green-700 border-green-200 
+                                @elseif($activity->status_color == 'amber') bg-amber-100 text-amber-700 border-amber-200 
+                                @elseif($activity->status_color == 'blue') bg-blue-100 text-blue-700 border-blue-200 
+                                @elseif($activity->status_color == 'indigo') bg-indigo-100 text-indigo-700 border-indigo-200 
+                                @elseif($activity->status_color == 'purple') bg-purple-100 text-purple-700 border-purple-200 
+                                @else bg-gray-100 text-gray-700 border-gray-200 @endif border uppercase">
+                                {{ $activity->status }}
+                            </span>
+                        </div>
                     </div>
-                    <div class="flex-grow min-w-0">
-                        <p class="text-xs sm:text-sm font-medium text-slate-900 truncate">Postingan baru dibuat: "Open
-                            Recruitment 2026"</p>
-                        <p class="text-[10px] sm:text-xs text-slate-500 mt-0.5">Oleh <span
-                                class="font-medium text-slate-700">Dimas Admin</span>
-                            •
-                            2 jam yang lalu</p>
+                @empty
+                    <div class="px-6 py-10 text-center text-slate-500">
+                        <i class="fas fa-history text-2xl mb-2 opacity-20"></i>
+                        <p class="text-sm">Belum ada aktivitas terbaru</p>
                     </div>
-                    <div class="shrink-0">
-                        <span
-                            class="px-1.5 sm:px-2 py-0.5 sm:py-1 rounded text-[9px] sm:text-[10px] font-bold bg-green-100 text-green-700 border border-green-200 uppercase">Published</span>
-                    </div>
-                </div>
-                <!-- Item 2 -->
-                <div
-                    class="px-4 sm:px-6 py-3 sm:py-4 flex items-start sm:items-center gap-3 sm:gap-4 hover:bg-slate-50 transition-colors cursor-pointer">
-                    <div
-                        class="w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-amber-100 flex items-center justify-center text-amber-600 shrink-0">
-                        <svg class="w-4 h-4 sm:w-5 sm:h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z">
-                            </path>
-                        </svg>
-                    </div>
-                    <div class="flex-grow min-w-0">
-                        <p class="text-xs sm:text-sm font-medium text-slate-900 truncate">Percobaan login gagal terdeteksi
-                        </p>
-                        <p class="text-[10px] sm:text-xs text-slate-500 mt-0.5">IP: 192.168.1.10 • 5 jam yang lalu</p>
-                    </div>
-                    <div class="shrink-0">
-                        <span
-                            class="px-1.5 sm:px-2 py-0.5 sm:py-1 rounded text-[9px] sm:text-[10px] font-bold bg-gray-100 text-gray-700 border border-gray-200 uppercase">Security</span>
-                    </div>
-                </div>
-                <!-- Item 3 -->
-                <div
-                    class="px-4 sm:px-6 py-3 sm:py-4 flex items-start sm:items-center gap-3 sm:gap-4 hover:bg-slate-50 transition-colors cursor-pointer">
-                    <div
-                        class="w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-purple-100 flex items-center justify-center text-purple-600 shrink-0">
-                        <svg class="w-4 h-4 sm:w-5 sm:h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                        </svg>
-                    </div>
-                    <div class="flex-grow min-w-0">
-                        <p class="text-xs sm:text-sm font-medium text-slate-900 truncate">Data anggota diperbarui</p>
-                        <p class="text-[10px] sm:text-xs text-slate-500 mt-0.5">Oleh <span
-                                class="font-medium text-slate-700">Dimas Admin</span>
-                            • 1 hari yang lalu</p>
-                    </div>
-                    <div class="shrink-0">
-                        <span
-                            class="px-1.5 sm:px-2 py-0.5 sm:py-1 rounded text-[9px] sm:text-[10px] font-bold bg-blue-100 text-blue-700 border border-blue-200 uppercase">System</span>
-                    </div>
-                </div>
+                @endforelse
             </div>
         </div>
     </div>

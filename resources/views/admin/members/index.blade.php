@@ -587,9 +587,9 @@
 
             if (cropper) cropper.destroy();
             cropper = new Cropper(cropperImage, {
-                aspectRatio: 1,
+                aspectRatio: 4 / 5,
                 viewMode: 1,
-                autoCropArea: 0.8,
+                autoCropArea: 1,
             });
         }
 
@@ -607,8 +607,8 @@
         function applyCrop() {
             if (!cropper) return;
             cropper.getCroppedCanvas({
-                width: 500,
-                height: 500
+                width: 800,
+                height: 1000
             }).toBlob((blob) => {
                 croppedImageBlob = blob;
                 const url = URL.createObjectURL(blob);

@@ -3,87 +3,104 @@
 @section('title', 'Manajemen Divisi')
 
 @section('content')
-    <div class="space-y-8 animate-in fade-in duration-700">
-        <!-- Header Section -->
+    <div class="max-w-7xl mx-auto space-y-6">
+        <!-- Breadcrumbs & Header -->
         <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
-            <div>
-                <h1 class="text-3xl font-extrabold text-slate-900 tracking-tight">Data Divisi</h1>
-                <p class="text-slate-500 mt-1 font-medium">Kelola struktur bidang dan departemen dalam organisasi HMIF.</p>
+            <div class="space-y-1">
+                <nav class="flex items-center gap-2 text-xs font-medium text-slate-400 mb-2">
+                    <span class="hover:text-slate-600 transition-colors">Admin</span>
+                    <i class="fas fa-chevron-right text-[8px]"></i>
+                    <span class="text-slate-900">Divisi</span>
+                </nav>
+                <h1 class="text-2xl font-bold text-slate-900 tracking-tight">Data Divisi</h1>
+                <p class="text-sm text-slate-500">Kelola struktur bidang dan departemen dalam organisasi HMIF.</p>
             </div>
             <button onclick="openCreateModal()"
-                class="inline-flex items-center justify-center px-5 py-2.5 bg-slate-900 text-white rounded-xl text-sm font-bold shadow-xl shadow-slate-900/20 hover:bg-slate-800 transition-all active:scale-95 group">
-                <i class="fas fa-plus mr-2 text-xs group-hover:rotate-90 transition-transform"></i>
-                Tambah Divisi Baru
+                class="inline-flex items-center justify-center px-4 py-2 bg-slate-900 text-slate-50 rounded-md text-sm font-medium hover:bg-slate-800 transition-colors shadow-sm active:scale-95">
+                <i class="fas fa-plus mr-2 text-[10px]"></i>
+                Tambah Divisi
             </button>
         </div>
 
+        <!-- Stats Row -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <div class="p-4 bg-white border border-slate-200 rounded-lg shadow-sm">
+                <p class="text-[11px] font-bold text-slate-400 uppercase tracking-wider mb-1">Total Divisi</p>
+                <p class="text-2xl font-bold text-slate-900 tracking-tight">{{ count($divisions) }}</p>
+            </div>
+            <div class="p-4 bg-white border border-slate-200 rounded-lg shadow-sm">
+                <p class="text-[11px] font-bold text-slate-400 uppercase tracking-wider mb-1">Total Anggota</p>
+                <p class="text-2xl font-bold text-slate-900 tracking-tight">
+                    {{ \App\Models\OrgMember::count() }}
+                </p>
+            </div>
+            <div class="p-4 bg-white border border-slate-200 rounded-lg shadow-sm">
+                <p class="text-[11px] font-bold text-slate-400 uppercase tracking-wider mb-1">Urutan Terakhir</p>
+                <p class="text-2xl font-bold text-slate-900 tracking-tight">
+                    #{{ $divisions->max('order') ?? 0 }}
+                </p>
+            </div>
+        </div>
+
         <!-- Table Card -->
-        <div class="bg-white rounded-3xl border border-slate-200 shadow-sm overflow-hidden bg-white/50 backdrop-blur-sm">
-            <div class="overflow-x-auto">
+        <div class="bg-white rounded-lg border border-slate-200 shadow-sm overflow-hidden">
+            <div class="overflow-x-auto text-sm">
                 <table class="w-full text-left border-collapse">
                     <thead>
-                        <tr class="bg-slate-50/50 border-b border-slate-100">
-                            <th class="px-8 py-5 text-[10px] font-black uppercase tracking-[0.2em] text-slate-400">Divisi
-                            </th>
-                            <th class="px-8 py-5 text-[10px] font-black uppercase tracking-[0.2em] text-slate-400">Visual &
-                                Deskripsi</th>
-                            <th
-                                class="px-8 py-5 text-[10px] font-black uppercase tracking-[0.2em] text-slate-400 text-center">
-                                Urutan</th>
-                            <th
-                                class="px-8 py-5 text-[10px] font-black uppercase tracking-[0.2em] text-slate-400 text-right">
-                                Manajemen</th>
+                        <tr class="bg-slate-50/50 border-b border-slate-200">
+                            <th class="px-6 py-3 text-xs font-semibold text-slate-500 uppercase tracking-tight">Divisi</th>
+                            <th class="px-6 py-3 text-xs font-semibold text-slate-500 uppercase tracking-tight">Deskripsi</th>
+                            <th class="px-6 py-3 text-xs font-semibold text-slate-500 uppercase tracking-tight">Visual</th>
+                            <th class="px-6 py-3 text-xs font-semibold text-slate-500 uppercase tracking-tight text-center">Urutan</th>
+                            <th class="px-6 py-3 text-xs font-semibold text-slate-500 uppercase tracking-tight text-right">Aksi</th>
                         </tr>
                     </thead>
-                    <tbody class="divide-y divide-slate-50">
+                    <tbody class="divide-y divide-slate-100">
                         @forelse($divisions as $division)
-                            <tr class="group hover:bg-slate-50/80 transition-all duration-300">
-                                <td class="px-8 py-5">
-                                    <div class="flex items-center gap-4">
-                                        <div
-                                            class="w-12 h-12 rounded-2xl {{ $division->color ?: 'bg-slate-100 text-slate-400' }} flex items-center justify-center shadow-inner">
-                                            <i class="fas {{ $division->icon ?: 'fa-layer-group' }} text-lg"></i>
+                            <tr class="group hover:bg-slate-50/40 transition-colors">
+                                <td class="px-6 py-4">
+                                    <div class="flex items-center gap-3">
+                                        <div class="w-8 h-8 rounded-lg {{ $division->color ?: 'bg-slate-100 text-slate-400' }} flex items-center justify-center">
+                                            <i class="fas {{ $division->icon ?: 'fa-layer-group' }} text-xs"></i>
                                         </div>
-                                        <div>
-                                            <span class="font-bold text-slate-900 block">{{ $division->name }}</span>
-                                            <span
-                                                class="text-[10px] font-bold text-slate-400 uppercase tracking-tighter">HMIF
-                                                Department</span>
-                                        </div>
+                                        <span class="font-medium text-slate-900">{{ $division->name }}</span>
                                     </div>
                                 </td>
-                                <td class="px-8 py-5">
-                                    <p class="text-sm text-slate-500 line-clamp-1 max-w-xs italic">
-                                        {{ $division->description ?: 'Tidak ada deskripsi tersedia.' }}
+                                <td class="px-6 py-4">
+                                    <p class="text-sm text-slate-600 max-w-xs line-clamp-2">
+                                        {{ $division->description ?? '-' }}
                                     </p>
                                 </td>
-                                <td class="px-8 py-5 text-center">
-                                    <span
-                                        class="px-3 py-1 rounded-lg bg-slate-100 text-slate-600 text-xs font-bold ring-1 ring-slate-200/50">
+                                <td class="px-6 py-4">
+                                    <div class="flex items-center gap-2">
+                                        <span class="px-2 py-0.5 rounded bg-slate-50 border border-slate-100 text-[10px] font-mono text-slate-500">{{ $division->icon ?: 'N/A' }}</span>
+                                        <div class="w-3 h-3 rounded-full border border-slate-200" style="background-color: {{ str_contains($division->color, 'bg-') ? 'transparent' : ($division->color ?: '#e2e8f0') }}"></div>
+                                    </div>
+                                </td>
+                                <td class="px-6 py-4 text-center">
+                                    <span class="px-2.5 py-1 rounded-md bg-slate-100 text-slate-700 text-xs font-bold">
                                         #{{ $division->order }}
                                     </span>
                                 </td>
-                                <td class="px-8 py-5 text-right">
-                                    <div class="flex items-center justify-end gap-2">
+                                <td class="px-6 py-4 text-right">
+                                    <div class="flex items-center justify-end gap-1">
                                         <button onclick="openEditModal({{ json_encode($division) }})"
-                                            class="w-9 h-9 flex items-center justify-center text-slate-400 hover:text-primary hover:bg-white hover:shadow-sm rounded-xl transition-all border border-transparent hover:border-slate-100">
-                                            <i class="fas fa-edit text-sm"></i>
+                                            class="p-1.5 text-slate-400 hover:text-slate-900 rounded-md hover:bg-slate-100 transition-colors"
+                                            title="Edit">
+                                            <i class="fas fa-edit text-xs"></i>
                                         </button>
                                         <button onclick="confirmDelete({{ $division->id }}, '{{ $division->name }}')"
-                                            class="w-9 h-9 flex items-center justify-center text-slate-400 hover:text-rose-600 hover:bg-white hover:shadow-sm rounded-xl transition-all border border-transparent hover:border-slate-100">
-                                            <i class="fas fa-trash-alt text-sm"></i>
+                                            class="p-1.5 text-slate-400 hover:text-rose-600 rounded-md hover:bg-slate-100 transition-colors"
+                                            title="Hapus">
+                                            <i class="fas fa-trash-alt text-xs"></i>
                                         </button>
                                     </div>
                                 </td>
                             </tr>
                         @empty
                             <tr>
-                                <td colspan="4" class="px-8 py-20 text-center">
-                                    <div
-                                        class="bg-slate-50 w-16 h-16 rounded-2xl flex items-center justify-center mx-auto mb-4 border border-dashed border-slate-200 text-slate-300">
-                                        <i class="fas fa-sitemap text-2xl"></i>
-                                    </div>
-                                    <p class="text-slate-400 font-medium italic">Belum ada data divisi yang tersimpan.</p>
+                                <td colspan="5" class="px-6 py-12 text-center text-slate-400 italic">
+                                    Belum ada data divisi yang tersimpan.
                                 </td>
                             </tr>
                         @endforelse
@@ -94,134 +111,105 @@
     </div>
 
     <!-- Create Modal -->
-    <div id="create-modal" class="fixed inset-0 z-[60] hidden">
-        <div class="absolute inset-0 bg-slate-900/60 backdrop-blur-sm transition-opacity" onclick="closeCreateModal()">
-        </div>
-        <div class="absolute inset-0 flex items-center justify-center p-4">
-            <div class="bg-white w-full max-w-xl rounded-3xl shadow-2xl overflow-hidden transform transition-all scale-95 opacity-0 duration-300"
-                id="create-content">
-                <div class="p-8 border-b border-slate-100 flex items-center justify-between">
-                    <div>
-                        <h2 class="text-xl font-bold text-slate-900">Tambah Divisi</h2>
-                        <p class="text-xs text-slate-500 mt-0.5 font-medium uppercase tracking-widest">Konfigurasi Divisi
-                            Organisasi</p>
-                    </div>
-                    <button onclick="closeCreateModal()"
-                        class="w-10 h-10 flex items-center justify-center text-slate-400 hover:text-slate-900 hover:bg-slate-50 rounded-full transition-all">
-                        <i class="fas fa-times"></i>
-                    </button>
-                </div>
-                <form action="{{ route('admin.divisions.store') }}" method="POST" class="p-8 space-y-5">
-                    @csrf
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
-                        <div class="space-y-2">
-                            <label class="text-[10px] font-black text-slate-400 uppercase tracking-widest ml-1">Nama
-                                Divisi</label>
-                            <input type="text" name="name" required placeholder="Contoh: Humas"
-                                class="w-full px-4 py-3 rounded-xl border border-slate-200 focus:ring-4 focus:ring-primary/10 focus:border-primary outline-none transition-all text-sm font-medium">
-                        </div>
-                        <div class="space-y-2">
-                            <label
-                                class="text-[10px] font-black text-slate-400 uppercase tracking-widest ml-1">Urutan</label>
-                            <input type="number" name="order" required value="0"
-                                class="w-full px-4 py-3 rounded-xl border border-slate-200 focus:ring-4 focus:ring-primary/10 focus:border-primary outline-none transition-all text-sm font-medium">
-                        </div>
-                    </div>
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
-                        <div class="space-y-2">
-                            <label class="text-[10px] font-black text-slate-400 uppercase tracking-widest ml-1">Icon
-                                (FontAwesome)</label>
-                            <input type="text" name="icon" placeholder="fa-users"
-                                class="w-full px-4 py-3 rounded-xl border border-slate-200 focus:ring-4 focus:ring-primary/10 focus:border-primary outline-none transition-all text-sm font-medium">
-                        </div>
-                        <div class="space-y-2">
-                            <label class="text-[10px] font-black text-slate-400 uppercase tracking-widest ml-1">Color Class
-                                (Tailwind)</label>
-                            <input type="text" name="color" placeholder="bg-pink-500 text-white"
-                                class="w-full px-4 py-3 rounded-xl border border-slate-200 focus:ring-4 focus:ring-primary/10 focus:border-primary outline-none transition-all text-sm font-medium">
-                        </div>
-                    </div>
-                    <div class="space-y-2">
-                        <label class="text-[10px] font-black text-slate-400 uppercase tracking-widest ml-1">Deskripsi
-                            Singkat</label>
-                        <textarea name="description" rows="3" placeholder="Jelaskan peran divisi ini..."
-                            class="w-full px-4 py-3 rounded-xl border border-slate-200 focus:ring-4 focus:ring-primary/10 focus:border-primary outline-none transition-all text-sm font-medium resize-none"></textarea>
-                    </div>
-                    <div class="pt-4 flex gap-3">
-                        <button type="button" onclick="closeCreateModal()"
-                            class="flex-1 px-6 py-3 border border-slate-200 text-slate-600 rounded-xl text-sm font-bold hover:bg-slate-50 transition-all">Batal</button>
-                        <button type="submit"
-                            class="flex-1 px-6 py-3 bg-slate-900 text-white rounded-xl text-sm font-bold shadow-xl shadow-slate-900/20 hover:bg-slate-800 transition-all">Simpan
-                            Divisi</button>
-                    </div>
-                </form>
+    <div id="create-modal-root" class="fixed inset-0 z-[100] hidden items-center justify-center p-4">
+        <div id="create-overlay" class="fixed inset-0 bg-slate-950/20 opacity-0 transition-opacity duration-200"
+            onclick="closeCreateModal()"></div>
+        <div id="create-content"
+            class="relative bg-white w-full max-w-lg rounded-lg shadow-xl translate-y-4 opacity-0 transition-all duration-200 border border-slate-200">
+            <div class="px-6 py-4 border-b border-slate-100 flex items-center justify-between bg-slate-50/50">
+                <h3 class="font-semibold text-slate-900">Tambah Divisi</h3>
+                <button onclick="closeCreateModal()" class="p-1 text-slate-400 hover:text-slate-900 transition-colors">
+                    <i class="fas fa-times text-sm"></i>
+                </button>
             </div>
+            <form action="{{ route('admin.divisions.store') }}" method="POST" class="p-6 space-y-4">
+                @csrf
+                <div class="space-y-1.5">
+                    <label class="text-xs font-semibold text-slate-700 uppercase tracking-wider">Nama Divisi</label>
+                    <input type="text" name="name" required placeholder="Contoh: Hubungan Masyarakat"
+                        class="w-full px-3 py-2 rounded-md border border-slate-200 text-sm focus:ring-2 focus:ring-slate-900/5 focus:border-slate-400 outline-none transition-all">
+                </div>
+                <div class="space-y-1.5">
+                    <label class="text-xs font-semibold text-slate-700 uppercase tracking-wider">Deskripsi (Opsional)</label>
+                    <textarea name="description" rows="3" placeholder="Deskripsi singkat tentang divisi..."
+                        class="w-full px-3 py-2 rounded-md border border-slate-200 text-sm focus:ring-2 focus:ring-slate-900/5 focus:border-slate-400 outline-none transition-all resize-none"></textarea>
+                </div>
+                <div class="grid grid-cols-2 gap-4">
+                    <div class="space-y-1.5">
+                        <label class="text-xs font-semibold text-slate-700 uppercase tracking-wider">Icon (FontAwesome)</label>
+                        <input type="text" name="icon" placeholder="fa-users"
+                            class="w-full px-3 py-2 rounded-md border border-slate-200 text-sm focus:ring-2 focus:ring-slate-900/5 focus:border-slate-400 outline-none transition-all">
+                    </div>
+                    <div class="space-y-1.5">
+                        <label class="text-xs font-semibold text-slate-700 uppercase tracking-wider">Urutan</label>
+                        <input type="number" name="order" required value="0"
+                            class="w-full px-3 py-2 rounded-md border border-slate-200 text-sm focus:ring-2 focus:ring-slate-900/5 focus:border-slate-400 outline-none transition-all">
+                    </div>
+                </div>
+                <div class="space-y-1.5">
+                    <label class="text-xs font-semibold text-slate-700 uppercase tracking-wider">Color Class (Tailwind)</label>
+                    <input type="text" name="color" placeholder="bg-blue-500 text-white"
+                        class="w-full px-3 py-2 rounded-md border border-slate-200 text-sm focus:ring-2 focus:ring-slate-900/5 focus:border-slate-400 outline-none transition-all">
+                </div>
+                <div class="pt-4 flex items-center justify-end gap-3 border-t border-slate-100">
+                    <button type="button" onclick="closeCreateModal()"
+                        class="px-4 py-2 text-slate-600 text-sm font-medium hover:bg-slate-50 rounded-md transition-colors">Batal</button>
+                    <button type="submit"
+                        class="px-4 py-2 bg-slate-900 text-slate-50 rounded-md text-sm font-medium hover:bg-slate-800 transition-colors shadow-sm active:scale-95">Simpan Data</button>
+                </div>
+            </form>
         </div>
     </div>
 
     <!-- Edit Modal -->
-    <div id="edit-modal" class="fixed inset-0 z-[60] hidden">
-        <div class="absolute inset-0 bg-slate-900/60 backdrop-blur-sm transition-opacity" onclick="closeEditModal()"></div>
-        <div class="absolute inset-0 flex items-center justify-center p-4">
-            <div class="bg-white w-full max-w-xl rounded-3xl shadow-2xl overflow-hidden transform transition-all scale-95 opacity-0 duration-300"
-                id="edit-content">
-                <div class="p-8 border-b border-slate-100 flex items-center justify-between">
-                    <div>
-                        <h2 class="text-xl font-bold text-slate-900">Perbarui Divisi</h2>
-                        <p class="text-xs text-slate-500 mt-0.5 font-medium uppercase tracking-widest">Master Data Divisi
-                        </p>
-                    </div>
-                    <button onclick="closeEditModal()"
-                        class="w-10 h-10 flex items-center justify-center text-slate-400 hover:text-slate-900 hover:bg-slate-50 rounded-full transition-all">
-                        <i class="fas fa-times"></i>
-                    </button>
-                </div>
-                <form id="edit-form" method="POST" class="p-8 space-y-5">
-                    @csrf
-                    @method('PUT')
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
-                        <div class="space-y-2">
-                            <label class="text-[10px] font-black text-slate-400 uppercase tracking-widest ml-1">Nama
-                                Divisi</label>
-                            <input type="text" name="name" id="edit-name" required
-                                class="w-full px-4 py-3 rounded-xl border border-slate-200 focus:ring-4 focus:ring-primary/10 focus:border-primary outline-none transition-all text-sm font-medium">
-                        </div>
-                        <div class="space-y-2">
-                            <label
-                                class="text-[10px] font-black text-slate-400 uppercase tracking-widest ml-1">Urutan</label>
-                            <input type="number" name="order" id="edit-order" required
-                                class="w-full px-4 py-3 rounded-xl border border-slate-200 focus:ring-4 focus:ring-primary/10 focus:border-primary outline-none transition-all text-sm font-medium">
-                        </div>
-                    </div>
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
-                        <div class="space-y-2">
-                            <label class="text-[10px] font-black text-slate-400 uppercase tracking-widest ml-1">Icon
-                                (FontAwesome)</label>
-                            <input type="text" name="icon" id="edit-icon"
-                                class="w-full px-4 py-3 rounded-xl border border-slate-200 focus:ring-4 focus:ring-primary/10 focus:border-primary outline-none transition-all text-sm font-medium">
-                        </div>
-                        <div class="space-y-2">
-                            <label class="text-[10px] font-black text-slate-400 uppercase tracking-widest ml-1">Color Class
-                                (Tailwind)</label>
-                            <input type="text" name="color" id="edit-color"
-                                class="w-full px-4 py-3 rounded-xl border border-slate-200 focus:ring-4 focus:ring-primary/10 focus:border-primary outline-none transition-all text-sm font-medium">
-                        </div>
-                    </div>
-                    <div class="space-y-2">
-                        <label class="text-[10px] font-black text-slate-400 uppercase tracking-widest ml-1">Deskripsi
-                            Singkat</label>
-                        <textarea name="description" id="edit-description" rows="3"
-                            class="w-full px-4 py-3 rounded-xl border border-slate-200 focus:ring-4 focus:ring-primary/10 focus:border-primary outline-none transition-all text-sm font-medium resize-none"></textarea>
-                    </div>
-                    <div class="pt-4 flex gap-3">
-                        <button type="button" onclick="closeEditModal()"
-                            class="flex-1 px-6 py-3 border border-slate-200 text-slate-600 rounded-xl text-sm font-bold hover:bg-slate-50 transition-all">Batal</button>
-                        <button type="submit"
-                            class="flex-1 px-6 py-3 bg-slate-900 text-white rounded-xl text-sm font-bold shadow-xl shadow-slate-900/20 hover:bg-slate-800 transition-all active:scale-95">Update
-                            Divisi</button>
-                    </div>
-                </form>
+    <div id="edit-modal-root" class="fixed inset-0 z-[100] hidden items-center justify-center p-4">
+        <div id="edit-overlay" class="fixed inset-0 bg-slate-950/20 opacity-0 transition-opacity duration-200"
+            onclick="closeEditModal()"></div>
+        <div id="edit-content"
+            class="relative bg-white w-full max-w-lg rounded-lg shadow-xl translate-y-4 opacity-0 transition-all duration-200 border border-slate-200">
+            <div class="px-6 py-4 border-b border-slate-100 flex items-center justify-between bg-slate-50/50">
+                <h3 class="font-semibold text-slate-900">Perbarui Divisi</h3>
+                <button onclick="closeEditModal()" class="p-1 text-slate-400 hover:text-slate-900 transition-colors">
+                    <i class="fas fa-times text-sm"></i>
+                </button>
             </div>
+            <form id="edit-form" method="POST" class="p-6 space-y-4">
+                @csrf
+                @method('PUT')
+                <div class="space-y-1.5">
+                    <label class="text-xs font-semibold text-slate-700 uppercase tracking-wider">Nama Divisi</label>
+                    <input type="text" name="name" id="edit-name" required
+                        class="w-full px-3 py-2 rounded-md border border-slate-200 text-sm focus:ring-2 focus:ring-slate-900/5 focus:border-slate-400 outline-none transition-all">
+                </div>
+                <div class="space-y-1.5">
+                    <label class="text-xs font-semibold text-slate-700 uppercase tracking-wider">Deskripsi (Opsional)</label>
+                    <textarea name="description" id="edit-description" rows="3"
+                        class="w-full px-3 py-2 rounded-md border border-slate-200 text-sm focus:ring-2 focus:ring-slate-900/5 focus:border-slate-400 outline-none transition-all resize-none"></textarea>
+                </div>
+                <div class="grid grid-cols-2 gap-4">
+                    <div class="space-y-1.5">
+                        <label class="text-xs font-semibold text-slate-700 uppercase tracking-wider">Icon (FontAwesome)</label>
+                        <input type="text" name="icon" id="edit-icon"
+                            class="w-full px-3 py-2 rounded-md border border-slate-200 text-sm focus:ring-2 focus:ring-slate-900/5 focus:border-slate-400 outline-none transition-all">
+                    </div>
+                    <div class="space-y-1.5">
+                        <label class="text-xs font-semibold text-slate-700 uppercase tracking-wider">Urutan</label>
+                        <input type="number" name="order" id="edit-order" required
+                            class="w-full px-3 py-2 rounded-md border border-slate-200 text-sm focus:ring-2 focus:ring-slate-900/5 focus:border-slate-400 outline-none transition-all">
+                    </div>
+                </div>
+                <div class="space-y-1.5">
+                    <label class="text-xs font-semibold text-slate-700 uppercase tracking-wider">Color Class (Tailwind)</label>
+                    <input type="text" name="color" id="edit-color"
+                        class="w-full px-3 py-2 rounded-md border border-slate-200 text-sm focus:ring-2 focus:ring-slate-900/5 focus:border-slate-400 outline-none transition-all">
+                </div>
+                <div class="pt-4 flex items-center justify-end gap-3 border-t border-slate-100">
+                    <button type="button" onclick="closeEditModal()"
+                        class="px-4 py-2 text-slate-600 text-sm font-medium hover:bg-slate-50 rounded-md transition-colors">Batal</button>
+                    <button type="submit"
+                        class="px-4 py-2 bg-slate-900 text-slate-50 rounded-md text-sm font-medium hover:bg-slate-800 transition-colors shadow-sm active:scale-95">Update Divisi</button>
+                </div>
+            </form>
         </div>
     </div>
 
@@ -232,7 +220,91 @@
     </form>
 
     <script>
-        // Success Notification
+        // Create Modal
+        const createModalRoot = document.getElementById('create-modal-root');
+        const createOverlay = document.getElementById('create-overlay');
+        const createContent = document.getElementById('create-content');
+
+        function openCreateModal() {
+            createModalRoot.classList.remove('hidden');
+            createModalRoot.classList.add('flex');
+            document.body.style.overflow = 'hidden';
+            setTimeout(() => {
+                createOverlay.classList.replace('opacity-0', 'opacity-100');
+                createContent.classList.remove('translate-y-4', 'opacity-0');
+                createContent.classList.add('translate-y-0', 'opacity-100');
+            }, 10);
+        }
+
+        function closeCreateModal() {
+            createOverlay.classList.replace('opacity-100', 'opacity-0');
+            createContent.classList.replace('translate-y-0', 'opacity-100');
+            createContent.classList.add('translate-y-4', 'opacity-0');
+            setTimeout(() => {
+                createModalRoot.classList.replace('flex', 'hidden');
+                document.body.style.overflow = 'auto';
+            }, 200);
+        }
+
+        // Edit Modal
+        const editModalRoot = document.getElementById('edit-modal-root');
+        const editOverlay = document.getElementById('edit-overlay');
+        const editContent = document.getElementById('edit-content');
+
+        function openEditModal(division) {
+            const form = document.getElementById('edit-form');
+            form.action = `/admin/divisions/${division.id}`;
+            document.getElementById('edit-name').value = division.name;
+            document.getElementById('edit-description').value = division.description || '';
+            document.getElementById('edit-order').value = division.order;
+            document.getElementById('edit-icon').value = division.icon || '';
+            document.getElementById('edit-color').value = division.color || '';
+
+            editModalRoot.classList.remove('hidden');
+            editModalRoot.classList.add('flex');
+            document.body.style.overflow = 'hidden';
+            setTimeout(() => {
+                editOverlay.classList.replace('opacity-0', 'opacity-100');
+                editContent.classList.remove('translate-y-4', 'opacity-0');
+                editContent.classList.add('translate-y-0', 'opacity-100');
+            }, 10);
+        }
+
+        function closeEditModal() {
+            editOverlay.classList.replace('opacity-100', 'opacity-0');
+            editContent.classList.replace('translate-y-0', 'opacity-100');
+            editContent.classList.add('translate-y-4', 'opacity-0');
+            setTimeout(() => {
+                editModalRoot.classList.replace('flex', 'hidden');
+                document.body.style.overflow = 'auto';
+            }, 200);
+        }
+
+        function confirmDelete(id, name) {
+            Swal.fire({
+                title: 'Hapus Divisi?',
+                text: `Anda akan menghapus divisi "${name}". Tindakan ini tidak dapat dibatalkan.`,
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#e11d48',
+                cancelButtonColor: '#f1f5f9',
+                confirmButtonText: 'Hapus',
+                cancelButtonText: 'Batal',
+                reverseButtons: true,
+                customClass: {
+                    popup: 'rounded-lg border border-slate-200 shadow-xl',
+                    confirmButton: 'px-6 py-3 rounded-xl font-bold text-sm',
+                    cancelButton: 'px-6 py-3 rounded-xl font-bold text-sm text-slate-600'
+                }
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    const form = document.getElementById('delete-form');
+                    form.action = `/admin/divisions/${id}`;
+                    form.submit();
+                }
+            });
+        }
+
         @if (session('success'))
             Swal.fire({
                 toast: true,
@@ -243,79 +315,9 @@
                 timer: 3000,
                 timerProgressBar: true,
                 customClass: {
-                    popup: 'rounded-2xl shadow-xl border border-emerald-100',
+                    popup: 'rounded-md border border-slate-100 shadow-lg'
                 }
             });
         @endif
-
-        function openCreateModal() {
-            const modal = document.getElementById('create-modal');
-            const content = document.getElementById('create-content');
-            modal.classList.remove('hidden');
-            setTimeout(() => content.classList.remove('scale-95', 'opacity-0'), 10);
-            document.body.style.overflow = 'hidden';
-        }
-
-        function closeCreateModal() {
-            const modal = document.getElementById('create-modal');
-            const content = document.getElementById('create-content');
-            content.classList.add('scale-95', 'opacity-0');
-            setTimeout(() => {
-                modal.classList.add('hidden');
-                document.body.style.overflow = 'auto';
-            }, 300);
-        }
-
-        function openEditModal(division) {
-            const modal = document.getElementById('edit-modal');
-            const content = document.getElementById('edit-content');
-            const form = document.getElementById('edit-form');
-
-            form.action = `/admin/divisions/${division.id}`;
-            document.getElementById('edit-name').value = division.name;
-            document.getElementById('edit-order').value = division.order;
-            document.getElementById('edit-icon').value = division.icon || '';
-            document.getElementById('edit-color').value = division.color || '';
-            document.getElementById('edit-description').value = division.description || '';
-
-            modal.classList.remove('hidden');
-            setTimeout(() => content.classList.remove('scale-95', 'opacity-0'), 10);
-            document.body.style.overflow = 'hidden';
-        }
-
-        function closeEditModal() {
-            const modal = document.getElementById('edit-modal');
-            const content = document.getElementById('edit-content');
-            content.classList.add('scale-95', 'opacity-0');
-            setTimeout(() => {
-                modal.classList.add('hidden');
-                document.body.style.overflow = 'auto';
-            }, 300);
-        }
-
-        function confirmDelete(id, name) {
-            Swal.fire({
-                title: 'Hapus Divisi?',
-                text: `Anda akan menghapus divisi "${name}". Anggota di dalamnya mungkin akan kehilangan asosiasi divisi.`,
-                icon: 'warning',
-                showCancelButton: true,
-                confirmButtonColor: '#e11d48',
-                cancelButtonColor: '#f1f5f9',
-                confirmButtonText: 'Ya, Hapus Divisi',
-                cancelButtonText: 'Batal',
-                reverseButtons: true,
-                customClass: {
-                    popup: 'rounded-3xl',
-                    confirmButton: 'px-6 py-3 rounded-xl font-bold text-sm',
-                    cancelButton: 'px-6 py-3 rounded-xl font-bold text-sm text-slate-600'
-                }
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    const form = document.getElementById('delete-form');
-                    form.action = `/admin/divisions/${id}`;
-                    form.submit();
-                }
-            })
-        }
     </script>
 @endsection
