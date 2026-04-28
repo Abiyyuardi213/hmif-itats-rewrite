@@ -25,7 +25,7 @@ class MerchandiseController extends Controller
             'stock' => 'required|integer|min:0',
             'category' => 'nullable|string',
             'sizes' => 'nullable|array',
-            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:2048',
             'is_available' => 'boolean',
         ]);
 
@@ -49,7 +49,7 @@ class MerchandiseController extends Controller
             'stock' => 'required|integer|min:0',
             'category' => 'nullable|string',
             'sizes' => 'nullable|array',
-            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:2048',
             'is_available' => 'boolean',
         ]);
 

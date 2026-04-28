@@ -228,7 +228,7 @@
                         <label class="text-xs font-semibold text-slate-700 uppercase tracking-wider">Gambar Produk</label>
                         <input type="file" name="image" id="f-image" accept="image/*"
                             class="w-full text-xs text-slate-500 file:mr-4 file:py-1.5 file:px-3 file:rounded-md file:border-0 file:bg-slate-100 hover:file:bg-slate-200 transition-all">
-                        <p class="text-[10px] text-slate-400">PNG, JPG, GIF (Max. 2MB)</p>
+                        <p class="text-[10px] text-slate-400">PNG, JPG, GIF, WEBP (Max. 2MB)</p>
                     </div>
 
                     <div class="flex items-center space-x-3 pt-6">
