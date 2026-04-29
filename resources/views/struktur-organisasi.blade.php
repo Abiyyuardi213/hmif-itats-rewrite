@@ -41,7 +41,7 @@
                 <div class="text-center space-y-4 mb-12">
                     <h2 class="text-3xl md:text-4xl font-black text-slate-900 uppercase tracking-tighter">Pengurus Inti</h2>
                     <p class="text-slate-500 max-w-2xl mx-auto font-medium text-sm">Pemimpin dan penggerak utama organisasi HMIF
-                        ITATS periode 2024/2025.</p>
+                        ITATS Kabinet Reboot periode 2025/2026.</p>
                     <div class="w-16 h-1 bg-primary mx-auto rounded-full"></div>
                 </div>
 
