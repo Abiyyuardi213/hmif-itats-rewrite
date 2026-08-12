@@ -9,6 +9,7 @@ class AboutPage extends Model
     protected $fillable = [
         'key',
         'title',
+        'subtitle',
         'slug',
         'content',
         'image',

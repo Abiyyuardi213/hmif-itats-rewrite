@@ -39,6 +39,8 @@ class WorkProgramController extends Controller
             'team_members.*' => 'exists:org_members,id',
         ]);
 
+        $validated['team_count'] = $validated['team_count'] ?? 0;
+        $validated['participants_count'] = $validated['participants_count'] ?? 0;
         $validated['slug'] = Str::slug($validated['name']);
 
         // Ensure unique slug
@@ -86,6 +88,9 @@ class WorkProgramController extends Controller
             'team_members' => 'nullable|array',
             'team_members.*' => 'exists:org_members,id',
         ]);
+
+        $validated['team_count'] = $validated['team_count'] ?? 0;
+        $validated['participants_count'] = $validated['participants_count'] ?? 0;
 
         if ($workProgram->name !== $validated['name']) {
             $validated['slug'] = Str::slug($validated['name']);

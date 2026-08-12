@@ -45,86 +45,257 @@
 
         {{-- Content Sections --}}
         <div class="container mx-auto px-6 py-16 space-y-24">
-            {{-- Study Program Vision & Mission Section --}}
-            <section class="relative overflow-hidden rounded-3xl bg-slate-50 border border-slate-200 p-8 md:p-16 shadow-sm">
+            <style>
+                .visi-misi-styled h3 {
+                    font-size: 1.5rem;
+                    font-weight: 700;
+                    color: #0f172a;
+                    margin-top: 2rem;
+                    margin-bottom: 1rem;
+                    display: flex;
+                    align-items: center;
+                    gap: 0.75rem;
+                }
+                .visi-misi-styled h3:first-child {
+                    margin-top: 0;
+                }
+                .visi-misi-styled p {
+                    color: #475569;
+                    font-size: 1.125rem;
+                    line-height: 1.75;
+                    border-left: 4px solid rgba(15, 23, 42, 0.2);
+                    padding-left: 1.25rem;
+                    padding-top: 0.5rem;
+                    padding-bottom: 0.5rem;
+                    background-color: rgba(248, 250, 252, 0.8);
+                    border-top-right-radius: 0.75rem;
+                    border-bottom-right-radius: 0.75rem;
+                    font-style: italic;
+                    margin-bottom: 1.5rem;
+                }
+                .visi-misi-styled ol {
+                    list-style: none;
+                    counter-reset: visi-misi-counter;
+                    padding: 0;
+                    margin: 0;
+                    display: flex;
+                    flex-direction: column;
+                    gap: 1rem;
+                }
+                .visi-misi-styled ol li {
+                    counter-increment: visi-misi-counter;
+                    position: relative;
+                    padding: 1rem 1.25rem 1rem 3.5rem;
+                    color: #475569;
+                    font-size: 0.95rem;
+                    line-height: 1.6;
+                    background: #ffffff;
+                    border-radius: 1rem;
+                    border: 1px solid #f1f5f9;
+                    box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.02);
+                    transition: all 0.2s ease;
+                }
+                .visi-misi-styled ol li:hover {
+                    border-color: #cbd5e1;
+                    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+                }
+                .visi-misi-styled ol li::before {
+                    content: counter(visi-misi-counter);
+                    position: absolute;
+                    left: 1rem;
+                    top: 1rem;
+                    width: 1.75rem;
+                    height: 1.75rem;
+                    background-color: #0f172a;
+                    color: #ffffff;
+                    font-size: 0.75rem;
+                    font-weight: 700;
+                    border-radius: 9999px;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                }
+                .visi-misi-styled ul {
+                    list-style: disc;
+                    padding-left: 1.5rem;
+                    color: #475569;
+                    margin-bottom: 1.5rem;
+                }
+            </style>
+
+            {{-- Study Program Vision & Mission Section (Dynamic from Admin) --}}
+            @if ($visiMisi && $visiMisi->is_active)
+            <section class="relative overflow-hidden rounded-3xl bg-slate-50 border border-slate-200 p-8 md:p-12 shadow-sm">
                 {{-- Decorative elements --}}
                 <div class="absolute -top-24 -right-24 w-64 h-64 bg-primary/5 rounded-full blur-3xl"></div>
                 <div class="absolute -bottom-24 -left-24 w-64 h-64 bg-blue-500/5 rounded-full blur-3xl"></div>
 
-                <div class="relative z-10 max-w-5xl mx-auto">
-                    <div class="text-center mb-16 space-y-4">
-                        <span
-                            class="inline-flex items-center gap-2 rounded-full bg-primary/10 border border-primary/20 px-4 py-1.5 text-sm font-semibold text-primary">
-                            Akademik
-                        </span>
-                        <h2 class="text-3xl md:text-5xl font-bold text-slate-900 tracking-tight">Visi & Misi Program Studi
-                        </h2>
-                        <p class="text-slate-500 text-lg">Teknik Informatika - Institut Teknologi Adhi Tama Surabaya</p>
-                    </div>
-
-                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-16 items-start">
-                        {{-- Vision Card --}}
-                        <div class="space-y-8">
-                            <div
-                                class="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-white shadow-md border border-slate-100 text-primary">
-                                <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
-                                        d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
-                                        d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
-                                </svg>
-                            </div>
-                            <div class="space-y-4">
-                                <h3 class="text-2xl font-bold text-slate-900">Visi</h3>
-                                <p
-                                    class="text-slate-600 text-lg leading-relaxed italic border-l-4 border-primary/30 pl-6 py-2 bg-primary/5 rounded-r-xl">
-                                    "Menjadi program studi yang menghasilkan lulusan inovatif, berwawasan lingkungan, dan
-                                    berkelanjutan di bidang rekayasa perangkat lunak terintegrasi, pembelajaran mesin, serta
-                                    manajemen jaringan komputer di tingkat regional untuk mencapai reputasi internasional
-                                    pada 2045."
-                                </p>
-                            </div>
-                        </div>
-
-                        {{-- Mission List --}}
-                        <div class="space-y-8">
-                            <div
-                                class="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-white shadow-md border border-slate-100 text-blue-500">
-                                <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
-                                        d="M13 10V3L4 14h7v7l9-11h-7z" />
-                                </svg>
-                            </div>
-                            <div class="space-y-6">
-                                <h3 class="text-2xl font-bold text-slate-900">Misi</h3>
-                                <div class="space-y-4">
-                                    @php
-                                        $misiProdi = [
-                                            'Menyelenggarakan pendidikan tinggi yang unggul dan adaptif dalam bidang rekayasa perangkat lunak terintegrasi, pembelajaran mesin, dan manajemen jaringan komputer, guna menghasilkan lulusan yang inovatif, beretika, dan berwawasan lingkungan.',
-                                            'Mengembangkan penelitian terapan dan inovatif di bidang informatika yang mendukung kemajuan sains dan teknologi informasi serta berkontribusi terhadap penyelesaian masalah di tingkat lokal, nasional, dan regional.',
-                                            'Melaksanakan pengabdian kepada masyarakat berbasis teknologi informasi yang mampu meningkatkan literasi digital, produktivitas masyarakat, serta menunjang pembangunan berkelanjutan.',
-                                            'Membangun kerja sama strategis dengan industri, pemerintah, dan lembaga pendidikan di dalam dan luar negeri guna meningkatkan daya saing lulusan dan reputasi internasional program studi.',
-                                            'Mendorong budaya inovasi, kewirausahaan, dan pembelajaran dalam lingkungan akademik yang inklusif, kolaboratif, dan mendukung keberlanjutan teknologi informasi di era transformasi digital.',
-                                        ];
-                                    @endphp
-                                    @foreach ($misiProdi as $key => $misi)
-                                        <div
-                                            class="group flex gap-4 p-4 rounded-2xl hover:bg-white hover:shadow-sm transition-all border border-transparent hover:border-slate-100">
-                                            <div
-                                                class="flex-none flex items-center justify-center w-8 h-8 rounded-full bg-slate-900 text-white text-xs font-bold shadow-sm group-hover:scale-110 transition-transform">
-                                                {{ $key + 1 }}
-                                            </div>
-                                            <p class="text-slate-600 text-sm leading-relaxed pt-0.5">
-                                                {{ $misi }}
-                                            </p>
+                <div class="relative z-10 max-w-6xl mx-auto">
+                    @if ($visiMisi->images->count() > 0 || $visiMisi->image)
+                        {{-- Data 1: Side-by-Side (Media LEFT, Content RIGHT) --}}
+                        <div class="flex flex-col lg:flex-row gap-12 items-center">
+                            {{-- Media / Image Side (Left) --}}
+                            <div class="w-full lg:w-1/2">
+                                @if ($visiMisi->images->count() > 1)
+                                    <div class="relative rounded-2xl overflow-hidden shadow-2xl aspect-[4/3] group border border-slate-200" x-data="{ activeSlide: 0, slides: {{ $visiMisi->images->count() }} }">
+                                        <div class="relative w-full h-full">
+                                            @foreach ($visiMisi->images as $key => $img)
+                                                <div x-show="activeSlide === {{ $key }}"
+                                                    x-transition:enter="transition ease-out duration-500"
+                                                    x-transition:enter-start="opacity-0 transform scale-95"
+                                                    x-transition:enter-end="opacity-100 transform scale-100"
+                                                    x-transition:leave="transition ease-in duration-300"
+                                                    x-transition:leave-start="opacity-100 transform scale-100"
+                                                    x-transition:leave-end="opacity-0 transform scale-95"
+                                                    class="absolute inset-0 w-full h-full">
+                                                    <img src="{{ asset('storage/' . $img->image) }}" alt="{{ $visiMisi->title }}"
+                                                        class="w-full h-full object-cover">
+                                                    <div class="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent"></div>
+                                                </div>
+                                            @endforeach
                                         </div>
-                                    @endforeach
+                                        <button @click="activeSlide = activeSlide === 0 ? slides - 1 : activeSlide - 1"
+                                            class="absolute left-3 top-1/2 -translate-y-1/2 p-2 rounded-full bg-white/20 backdrop-blur-sm hover:bg-white/40 text-white transition-all opacity-0 group-hover:opacity-100">
+                                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path></svg>
+                                        </button>
+                                        <button @click="activeSlide = activeSlide === slides - 1 ? 0 : activeSlide + 1"
+                                            class="absolute right-3 top-1/2 -translate-y-1/2 p-2 rounded-full bg-white/20 backdrop-blur-sm hover:bg-white/40 text-white transition-all opacity-0 group-hover:opacity-100">
+                                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
+                                        </button>
+                                        <div class="absolute bottom-3 left-1/2 -translate-x-1/2 flex gap-1.5">
+                                            @foreach ($visiMisi->images as $key => $img)
+                                                <button @click="activeSlide = {{ $key }}"
+                                                    class="w-2 h-2 rounded-full transition-all"
+                                                    :class="activeSlide === {{ $key }} ? 'bg-white w-5' : 'bg-white/50 hover:bg-white/80'">
+                                                </button>
+                                            @endforeach
+                                        </div>
+                                    </div>
+                                @else
+                                    <div class="relative rounded-2xl overflow-hidden shadow-2xl aspect-[4/3] w-full border border-slate-200">
+                                        <img src="{{ asset('storage/' . ($visiMisi->images->first()->image ?? $visiMisi->image)) }}" alt="{{ $visiMisi->title }}"
+                                            class="w-full h-full object-cover">
+                                    </div>
+                                @endif
+                            </div>
+
+                            {{-- Content Side (Right) --}}
+                            <div class="w-full lg:w-1/2 space-y-6">
+                                <div class="space-y-3">
+                                    <span class="inline-flex items-center gap-2 rounded-full bg-slate-900/5 border border-slate-200 px-4 py-1.5 text-sm font-semibold text-slate-700">
+                                        {{ $visiMisi->subtitle ?: 'Akademik' }}
+                                    </span>
+                                    <h2 class="text-3xl lg:text-4xl font-bold text-slate-900 tracking-tight">{{ $visiMisi->title }}</h2>
+                                    <p class="text-slate-500 text-sm">Teknik Informatika - Institut Teknologi Adhi Tama Surabaya</p>
+                                </div>
+                                <div class="visi-misi-styled">
+                                    {!! $visiMisi->content !!}
                                 </div>
                             </div>
                         </div>
-                    </div>
+                    @else
+                        {{-- Fallback: Full Width Single Column when No Image --}}
+                        <div class="text-center mb-12 space-y-4">
+                            <span class="inline-flex items-center gap-2 rounded-full bg-slate-900/5 border border-slate-200 px-4 py-1.5 text-sm font-semibold text-slate-700">
+                                {{ $visiMisi->subtitle ?: 'Akademik' }}
+                            </span>
+                            <h2 class="text-3xl md:text-5xl font-bold text-slate-900 tracking-tight">{{ $visiMisi->title }}</h2>
+                            <p class="text-slate-500 text-lg">Teknik Informatika - Institut Teknologi Adhi Tama Surabaya</p>
+                        </div>
+                        <div class="visi-misi-styled">
+                            {!! $visiMisi->content !!}
+                        </div>
+                    @endif
                 </div>
             </section>
+            @endif
+
+            {{-- Kabinet REBOOT Vision & Mission Section (Dynamic from Admin) --}}
+            @if ($visiMisiKabinet && $visiMisiKabinet->is_active)
+            <section class="relative overflow-hidden rounded-3xl bg-gradient-to-br from-slate-900 to-slate-950 text-white p-8 md:p-12 shadow-xl border border-slate-800">
+                {{-- Decorative elements --}}
+                <div class="absolute -top-24 -right-24 w-64 h-64 bg-blue-500/10 rounded-full blur-3xl"></div>
+                <div class="absolute -bottom-24 -left-24 w-64 h-64 bg-purple-500/10 rounded-full blur-3xl"></div>
+
+                <div class="relative z-10 max-w-6xl mx-auto">
+                    @if ($visiMisiKabinet->images->count() > 0 || $visiMisiKabinet->image)
+                        {{-- Data 2: Zig-Zag Side-by-Side (Media RIGHT, Content LEFT) --}}
+                        <div class="flex flex-col lg:flex-row-reverse gap-12 items-center">
+                            {{-- Media / Image Side (Right) --}}
+                            <div class="w-full lg:w-1/2">
+                                @if ($visiMisiKabinet->images->count() > 1)
+                                    <div class="relative rounded-2xl overflow-hidden shadow-2xl aspect-[4/3] group border border-slate-800" x-data="{ activeSlide: 0, slides: {{ $visiMisiKabinet->images->count() }} }">
+                                        <div class="relative w-full h-full">
+                                            @foreach ($visiMisiKabinet->images as $key => $img)
+                                                <div x-show="activeSlide === {{ $key }}"
+                                                    x-transition:enter="transition ease-out duration-500"
+                                                    x-transition:enter-start="opacity-0 transform scale-95"
+                                                    x-transition:enter-end="opacity-100 transform scale-100"
+                                                    x-transition:leave="transition ease-in duration-300"
+                                                    x-transition:leave-start="opacity-100 transform scale-100"
+                                                    x-transition:leave-end="opacity-0 transform scale-95"
+                                                    class="absolute inset-0 w-full h-full">
+                                                    <img src="{{ asset('storage/' . $img->image) }}" alt="{{ $visiMisiKabinet->title }}"
+                                                        class="w-full h-full object-cover">
+                                                    <div class="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent"></div>
+                                                </div>
+                                            @endforeach
+                                        </div>
+                                        <button @click="activeSlide = activeSlide === 0 ? slides - 1 : activeSlide - 1"
+                                            class="absolute left-3 top-1/2 -translate-y-1/2 p-2 rounded-full bg-white/20 backdrop-blur-sm hover:bg-white/40 text-white transition-all opacity-0 group-hover:opacity-100">
+                                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path></svg>
+                                        </button>
+                                        <button @click="activeSlide = activeSlide === slides - 1 ? 0 : activeSlide + 1"
+                                            class="absolute right-3 top-1/2 -translate-y-1/2 p-2 rounded-full bg-white/20 backdrop-blur-sm hover:bg-white/40 text-white transition-all opacity-0 group-hover:opacity-100">
+                                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
+                                        </button>
+                                        <div class="absolute bottom-3 left-1/2 -translate-x-1/2 flex gap-1.5">
+                                            @foreach ($visiMisiKabinet->images as $key => $img)
+                                                <button @click="activeSlide = {{ $key }}"
+                                                    class="w-2 h-2 rounded-full transition-all"
+                                                    :class="activeSlide === {{ $key }} ? 'bg-white w-5' : 'bg-white/50 hover:bg-white/80'">
+                                                </button>
+                                            @endforeach
+                                        </div>
+                                    </div>
+                                @else
+                                    <div class="relative rounded-2xl overflow-hidden shadow-2xl aspect-[4/3] w-full border border-slate-800">
+                                        <img src="{{ asset('storage/' . ($visiMisiKabinet->images->first()->image ?? $visiMisiKabinet->image)) }}" alt="{{ $visiMisiKabinet->title }}"
+                                            class="w-full h-full object-cover">
+                                    </div>
+                                @endif
+                            </div>
+
+                            {{-- Content Side (Left) --}}
+                            <div class="w-full lg:w-1/2 space-y-6">
+                                <div class="space-y-3">
+                                    <span class="inline-flex items-center gap-2 rounded-full bg-white/10 border border-white/20 px-4 py-1.5 text-sm font-semibold text-white">
+                                        {{ $visiMisiKabinet->subtitle ?: 'HMIF 2024/2025' }}
+                                    </span>
+                                    <h2 class="text-3xl lg:text-4xl font-bold text-white tracking-tight">{{ $visiMisiKabinet->title }}</h2>
+                                    <p class="text-slate-400 text-sm">Himpunan Mahasiswa Teknik Informatika ITATS</p>
+                                </div>
+                                <div class="visi-misi-styled [&_h3]:text-white [&_p]:bg-white/5 [&_p]:text-slate-200 [&_p]:border-blue-400 [&_ol_li]:bg-slate-900/80 [&_ol_li]:border-slate-800 [&_ol_li]:text-slate-300 [&_ol_li::before]:bg-white [&_ol_li::before]:text-slate-950">
+                                    {!! $visiMisiKabinet->content !!}
+                                </div>
+                            </div>
+                        </div>
+                    @else
+                        {{-- Fallback: Full Width Single Column when No Image --}}
+                        <div class="text-center mb-12 space-y-4">
+                            <span class="inline-flex items-center gap-2 rounded-full bg-white/10 border border-white/20 px-4 py-1.5 text-sm font-semibold text-white">
+                                {{ $visiMisiKabinet->subtitle ?: 'HMIF 2024/2025' }}
+                            </span>
+                            <h2 class="text-3xl md:text-5xl font-bold text-white tracking-tight">{{ $visiMisiKabinet->title }}</h2>
+                            <p class="text-slate-400 text-lg">Himpunan Mahasiswa Teknik Informatika ITATS</p>
+                        </div>
+                        <div class="visi-misi-styled [&_h3]:text-white [&_p]:bg-white/5 [&_p]:text-slate-200 [&_p]:border-blue-400 [&_ol_li]:bg-slate-900/80 [&_ol_li]:border-slate-800 [&_ol_li]:text-slate-300 [&_ol_li::before]:bg-white [&_ol_li::before]:text-slate-950">
+                            {!! $visiMisiKabinet->content !!}
+                        </div>
+                    @endif
+                </div>
+            </section>
+            @endif
 
             @forelse($pages as $index => $page)
                 <div

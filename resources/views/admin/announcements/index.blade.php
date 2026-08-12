@@ -192,7 +192,7 @@
                         Anda</p>
                 </div>
 
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
                     <div class="space-y-1.5">
                         <label class="text-xs font-semibold text-slate-700 uppercase tracking-wider">Gambar
                             Unggulan</label>
@@ -200,7 +200,13 @@
                             class="w-full text-xs text-slate-500 file:mr-4 file:py-1.5 file:px-3 file:rounded-md file:border-0 file:bg-slate-100 hover:file:bg-slate-200 transition-all tracking-tight">
                         <p class="text-[10px] text-slate-400">PNG, JPG, GIF (Max. 2MB)</p>
                     </div>
-                    <div class="flex items-center space-x-3 pt-6">
+                    <div class="space-y-1.5">
+                        <label class="text-xs font-semibold text-slate-700 uppercase tracking-wider">Tanggal Upload / Publish</label>
+                        <input type="datetime-local" name="published_at" id="f-published_at"
+                            class="w-full px-3 py-1.5 border border-slate-200 rounded-md text-xs text-slate-700 focus:ring-2 focus:ring-slate-900/5 focus:border-slate-400 transition-all">
+                        <p class="text-[10px] text-slate-400">Kosongkan untuk otomatis tanggal saat ini</p>
+                    </div>
+                    <div class="flex items-center space-x-3 pt-4">
                         <input type="checkbox" name="is_published" id="f-is_published" value="1"
                             class="w-4 h-4 text-slate-900 border-slate-300 rounded focus:ring-slate-900/5 transition-all">
                         <label for="f-is_published" class="text-sm font-medium text-slate-700">Publish sekarang</label>
@@ -294,6 +300,7 @@
             document.getElementById('form-method').value = 'POST';
             document.getElementById('modal-title').innerText = 'Buat Pengumuman Baru';
             document.getElementById('submit-btn').innerText = 'Simpan';
+            document.getElementById('f-published_at').value = '';
 
             if (quill) {
                 quill.setContents([]);
@@ -311,6 +318,19 @@
 
             document.getElementById('f-title').value = a.title;
             document.getElementById('f-is_published').checked = a.is_published;
+            
+            if (a.published_at) {
+                // Format to YYYY-MM-DDTHH:mm for datetime-local input
+                const pubDate = new Date(a.published_at);
+                const year = pubDate.getFullYear();
+                const month = String(pubDate.getMonth() + 1).padStart(2, '0');
+                const day = String(pubDate.getDate()).padStart(2, '0');
+                const hours = String(pubDate.getHours()).padStart(2, '0');
+                const minutes = String(pubDate.getMinutes()).padStart(2, '0');
+                document.getElementById('f-published_at').value = `${year}-${month}-${day}T${hours}:${minutes}`;
+            } else {
+                document.getElementById('f-published_at').value = '';
+            }
 
             openModal();
 

@@ -12,7 +12,7 @@
             <div class="relative container mx-auto px-6 text-center">
                 <div class="max-w-4xl mx-auto space-y-6">
                     <span
-                        class="inline-flex items-center gap-2 rounded-full border border-pink-200 bg-pink-50 px-3 py-1 text-xs font-medium text-[#EB329A]">
+                        class="inline-flex items-center gap-2 rounded-full border border-pink-200 bg-pink-50 px-3.5 py-1 text-xs font-semibold text-[#EB329A]">
                         <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                 d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
@@ -20,13 +20,27 @@
                         Struktur Organisasi
                     </span>
                     <h1 class="text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight text-slate-900 leading-tight">
-                        Fungsionaris HMIF <br class="hidden sm:block" />
-                        <span class="text-[#EB329A]">ITATS</span>
+                        Fungsionaris {{ $activePeriod->name ?? 'HMIF' }} <br class="hidden sm:block" />
+                        <span class="text-[#EB329A]">Periode {{ $activePeriod->academic_year ?? 'ITATS' }}</span>
                     </h1>
                     <p class="text-lg text-slate-600 max-w-2xl mx-auto text-balance">
-                        Mengenal lebih dekat dengan para pengurus yang berdedikasi untuk kemajuan organisasi mahasiswa
-                        Informatika.
+                        Mengenal lebih dekat dengan para pengurus yang berdedikasi untuk kemajuan organisasi mahasiswa Informatika.
                     </p>
+
+                    {{-- Period Selector Dropdown --}}
+                    @if($periods->count() > 1)
+                        <div class="pt-2 flex justify-center items-center gap-2">
+                            <label class="text-xs font-semibold text-slate-500 uppercase tracking-wider">Arsip Kabinet:</label>
+                            <select onchange="window.location.href='/struktur-organisasi?period_id=' + this.value"
+                                class="px-4 py-2 border border-slate-200 rounded-xl bg-white text-sm font-semibold text-slate-800 shadow-sm focus:outline-none focus:ring-2 focus:ring-[#EB329A]/20 transition-all cursor-pointer">
+                                @foreach($periods as $p)
+                                    <option value="{{ $p->id }}" {{ $activePeriod && $p->id == $activePeriod->id ? 'selected' : '' }}>
+                                        {{ $p->name }} ({{ $p->academic_year }}) {{ $p->is_active ? '— (Aktif)' : '' }}
+                                    </option>
+                                @endforeach
+                            </select>
+                        </div>
+                    @endif
                 </div>
             </div>
         </section>
@@ -41,7 +55,7 @@
                 <div class="text-center space-y-4 mb-12">
                     <h2 class="text-3xl md:text-4xl font-black text-slate-900 uppercase tracking-tighter">Pengurus Inti</h2>
                     <p class="text-slate-500 max-w-2xl mx-auto font-medium text-sm">Pemimpin dan penggerak utama organisasi HMIF
-                        ITATS Kabinet Reboot periode 2025/2026.</p>
+                        ITATS {{ $activePeriod->name ?? '' }} periode {{ $activePeriod->academic_year ?? '' }}.</p>
                     <div class="w-16 h-1 bg-primary mx-auto rounded-full"></div>
                 </div>
 

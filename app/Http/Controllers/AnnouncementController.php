@@ -9,27 +9,11 @@ class AnnouncementController extends Controller
 {
     public function index()
     {
-        $announcementsData = Announcement::where('is_published', true)
-            ->latest('published_at')
-            ->get();
+        $announcements = Announcement::where('is_published', true)
+            ->orderByRaw('COALESCE(published_at, created_at) DESC')
+            ->paginate(10);
 
-        $postsData = $announcementsData->map(function ($item) {
-            return [
-                'id' => $item->id,
-                'title' => $item->title,
-                'slug' => $item->slug,
-                'excerpt' => \Illuminate\Support\Str::limit(strip_tags($item->content), 150),
-                'date' => $item->published_at ? $item->published_at->format('Y-m-d') : $item->created_at->format('Y-m-d'),
-                'category' => 'pengumuman', // Default category since table doesn't have it yet, or add migration
-                'priority' => 'sedang', // Default priority
-                'author_name' => 'Admin HMIF',
-                'image' => $item->image ? asset('storage/' . $item->image) : null,
-                'tags' => ['Pengumuman'],
-                'is_active' => true,
-            ];
-        });
-
-        return view('pengumuman.index', compact('postsData'));
+        return view('pengumuman.index', compact('announcements'));
     }
 
     public function show($slug)
@@ -38,6 +22,12 @@ class AnnouncementController extends Controller
             ->where('is_published', true)
             ->firstOrFail();
 
-        return view('pengumuman.show', compact('announcement'));
+        $recentAnnouncements = Announcement::where('is_published', true)
+            ->where('id', '!=', $announcement->id)
+            ->orderByRaw('COALESCE(published_at, created_at) DESC')
+            ->take(5)
+            ->get();
+
+        return view('pengumuman.show', compact('announcement', 'recentAnnouncements'));
     }
 }

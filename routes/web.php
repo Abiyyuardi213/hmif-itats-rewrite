@@ -42,7 +42,12 @@ Route::middleware(['auth'])->group(function () {
     Route::delete('/admin/user/{id}', [App\Http\Controllers\UserController::class, 'destroy'])->name('admin.users.destroy');
 
     Route::resource('/admin/positions', App\Http\Controllers\Admin\PositionController::class, ['as' => 'admin']);
+    Route::post('/admin/periods/{period}/set-active', [App\Http\Controllers\Admin\PeriodController::class, 'setActive'])->name('admin.periods.set_active');
+    Route::get('/admin/periods/{period}/members', [App\Http\Controllers\Admin\PeriodController::class, 'manageMembers'])->name('admin.periods.manage_members');
+    Route::resource('/admin/periods', App\Http\Controllers\Admin\PeriodController::class, ['as' => 'admin']);
+    Route::patch('/admin/divisions/{division}/toggle-status', [App\Http\Controllers\Admin\DivisionController::class, 'toggleStatus'])->name('admin.divisions.toggle_status');
     Route::resource('/admin/divisions', App\Http\Controllers\Admin\DivisionController::class, ['as' => 'admin']);
+    Route::patch('/admin/members/{member}/toggle-status', [App\Http\Controllers\Admin\OrgMemberController::class, 'toggleStatus'])->name('admin.members.toggle_status');
     Route::resource('/admin/members', App\Http\Controllers\Admin\OrgMemberController::class, ['as' => 'admin']);
     Route::post('/admin/members/{member}', [App\Http\Controllers\Admin\OrgMemberController::class, 'update'])->name('admin.members.update_post');
     Route::resource('/admin/work-programs', App\Http\Controllers\Admin\WorkProgramController::class, ['as' => 'admin']);
@@ -51,11 +56,18 @@ Route::middleware(['auth'])->group(function () {
     Route::resource('/admin/merchandises', App\Http\Controllers\Admin\MerchandiseController::class, ['as' => 'admin']);
     Route::resource('/admin/activity-reports', App\Http\Controllers\Admin\ActivityReportController::class, ['as' => 'admin']);
 
+    // Pemilu Cakahim (E-Voting Admin)
+    Route::resource('/admin/voting-schedules', App\Http\Controllers\Admin\VotingScheduleController::class, ['as' => 'admin']);
+    Route::resource('/admin/candidates', App\Http\Controllers\Admin\CandidateController::class, ['as' => 'admin']);
+
     // Merchandise Orders
     Route::get('/admin/merchandise-orders', [App\Http\Controllers\Admin\MerchandiseOrderController::class, 'index'])->name('admin.merchandise-orders.index');
     Route::put('/admin/merchandise-orders/{order}/status', [App\Http\Controllers\Admin\MerchandiseOrderController::class, 'updateStatus'])->name('admin.merchandise-orders.updateStatus');
     Route::delete('/admin/merchandise-orders/{order}', [App\Http\Controllers\Admin\MerchandiseOrderController::class, 'destroy'])->name('admin.merchandise-orders.destroy');
     Route::resource('/admin/payment-methods', App\Http\Controllers\Admin\PaymentMethodController::class, ['as' => 'admin']);
 });
+
+Route::get('/pemilu', [App\Http\Controllers\PublicVotingController::class, 'index'])->name('voting.index');
+Route::post('/pemilu/vote', [App\Http\Controllers\PublicVotingController::class, 'storeVote'])->name('voting.store');
 
 Route::get('/struktur-organisasi', [App\Http\Controllers\Admin\OrgMemberController::class, 'publicIndex']);

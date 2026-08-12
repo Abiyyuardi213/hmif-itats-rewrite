@@ -81,13 +81,6 @@
                 </div>
             </div>
 
-            <div class="space-y-2">
-                <label class="text-xs font-bold uppercase tracking-widest text-slate-400 ml-1">Urutan Tampilan</label>
-                <input type="number" name="order" required
-                    class="w-full h-12 px-4 rounded-xl border border-slate-200 bg-slate-50/50 focus:bg-white focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition-all"
-                    value="{{ old('order', 0) }}">
-            </div>
-
             <button type="submit"
                 class="w-full h-12 bg-slate-900 text-white rounded-xl text-sm font-bold shadow-xl shadow-slate-900/20 hover:bg-slate-800 transition-all flex items-center justify-center gap-2">
                 Simpan Anggota

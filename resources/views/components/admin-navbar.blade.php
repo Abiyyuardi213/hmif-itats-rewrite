@@ -26,6 +26,13 @@
 
                 <div class="h-4 w-px bg-slate-200"></div>
 
+                <a href="{{ route('admin.periods.index') }}"
+                    class="relative group text-sm font-semibold transition-colors hover:text-primary {{ request()->is('admin/periods*') ? 'text-primary' : 'text-slate-600' }}">
+                    Periode
+                    <span
+                        class="absolute -bottom-1 left-1/2 w-0 h-0.5 bg-primary transition-all duration-300 -translate-x-1/2 group-hover:w-full {{ request()->is('admin/periods*') ? 'w-full' : '' }}"></span>
+                </a>
+
                 <a href="{{ route('admin.positions.index') }}"
                     class="relative group text-sm font-semibold transition-colors hover:text-primary {{ request()->is('admin/positions*') ? 'text-primary' : 'text-slate-600' }}">
                     Jabatan
@@ -40,12 +47,36 @@
                         class="absolute -bottom-1 left-1/2 w-0 h-0.5 bg-primary transition-all duration-300 -translate-x-1/2 group-hover:w-full {{ request()->is('admin/divisions*') ? 'w-full' : '' }}"></span>
                 </a>
 
-                <a href="{{ route('admin.members.index') }}"
-                    class="relative group text-sm font-semibold transition-colors hover:text-primary {{ request()->is('admin/members*') ? 'text-primary' : 'text-slate-600' }}">
-                    Anggota
-                    <span
-                        class="absolute -bottom-1 left-1/2 w-0 h-0.5 bg-primary transition-all duration-300 -translate-x-1/2 group-hover:w-full {{ request()->is('admin/members*') ? 'w-full' : '' }}"></span>
-                </a>
+                <div class="relative group">
+                    <button
+                        class="relative flex items-center gap-1 text-sm font-semibold transition-colors hover:text-primary {{ request()->is('admin/members*') ? 'text-primary' : 'text-slate-600' }}">
+                        Anggota
+                        <i class="fas fa-chevron-down text-[10px] transition-transform group-hover:rotate-180"></i>
+                        <span
+                            class="absolute -bottom-1 left-1/2 w-0 h-0.5 bg-primary transition-all duration-300 -translate-x-1/2 group-hover:w-full {{ request()->is('admin/members*') ? 'w-full' : '' }}"></span>
+                    </button>
+                    <!-- Dropdown -->
+                    <div
+                        class="absolute top-full left-1/2 -translate-x-1/2 pt-3 w-52 hidden group-hover:block transition-all animate-in fade-in slide-in-from-top-2">
+                        <div class="bg-white rounded-xl shadow-xl border border-slate-100 overflow-hidden p-1">
+                            <a href="{{ route('admin.members.index') }}"
+                                class="flex items-center gap-2 px-3 py-2 text-sm {{ request()->is('admin/members*') && !request()->has('type') ? 'bg-primary/5 text-primary font-bold' : 'text-slate-600' }} rounded-lg hover:bg-slate-50 transition-colors">
+                                <i class="fas fa-users text-xs"></i>
+                                Semua Anggota
+                            </a>
+                            <a href="{{ route('admin.members.index', ['type' => 'active']) }}"
+                                class="flex items-center gap-2 px-3 py-2 text-sm {{ request()->get('type') == 'active' ? 'bg-emerald-50 text-emerald-600 font-bold' : 'text-slate-600' }} rounded-lg hover:bg-slate-50 transition-colors">
+                                <i class="fas fa-user-check text-xs text-emerald-500"></i>
+                                Anggota Aktif
+                            </a>
+                            <a href="{{ route('admin.members.index', ['type' => 'inactive']) }}"
+                                class="flex items-center gap-2 px-3 py-2 text-sm {{ request()->get('type') == 'inactive' ? 'bg-slate-100 text-slate-800 font-bold' : 'text-slate-600' }} rounded-lg hover:bg-slate-50 transition-colors">
+                                <i class="fas fa-user-clock text-xs text-slate-400"></i>
+                                Anggota Tidak Aktif
+                            </a>
+                        </div>
+                    </div>
+                </div>
 
                 <a href="{{ route('admin.work-programs.index') }}"
                     class="relative group text-sm font-semibold transition-colors hover:text-primary {{ request()->is('admin/work-programs*') ? 'text-primary' : 'text-slate-600' }}">
@@ -106,6 +137,32 @@
                                 class="flex items-center gap-2 px-3 py-2 text-sm {{ request()->is('admin/merchandise-orders*') ? 'bg-primary/5 text-primary' : 'text-slate-600' }} rounded-lg hover:bg-slate-50 transition-colors">
                                 <i class="fas fa-shopping-cart text-xs"></i>
                                 Pesanan
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="relative group">
+                    <button
+                        class="relative flex items-center gap-1 text-sm font-semibold transition-colors hover:text-primary {{ request()->is('admin/voting*') || request()->is('admin/candidates*') ? 'text-primary' : 'text-slate-600' }}">
+                        Pemilu Cakahim
+                        <i class="fas fa-chevron-down text-[10px] transition-transform group-hover:rotate-180"></i>
+                        <span
+                            class="absolute -bottom-1 left-1/2 w-0 h-0.5 bg-primary transition-all duration-300 -translate-x-1/2 group-hover:w-full {{ request()->is('admin/voting*') || request()->is('admin/candidates*') ? 'w-full' : '' }}"></span>
+                    </button>
+                    <!-- Dropdown -->
+                    <div
+                        class="absolute top-full left-1/2 -translate-x-1/2 pt-3 w-52 hidden group-hover:block transition-all animate-in fade-in slide-in-from-top-2">
+                        <div class="bg-white rounded-xl shadow-xl border border-slate-100 overflow-hidden p-1">
+                            <a href="{{ route('admin.voting-schedules.index') }}"
+                                class="flex items-center gap-2 px-3 py-2 text-sm {{ request()->is('admin/voting-schedules*') ? 'bg-primary/5 text-primary font-bold' : 'text-slate-600' }} rounded-lg hover:bg-slate-50 transition-colors">
+                                <i class="fas fa-calendar-alt text-xs"></i>
+                                Jadwal Pemilu
+                            </a>
+                            <a href="{{ route('admin.candidates.index') }}"
+                                class="flex items-center gap-2 px-3 py-2 text-sm {{ request()->is('admin/candidates*') ? 'bg-primary/5 text-primary font-bold' : 'text-slate-600' }} rounded-lg hover:bg-slate-50 transition-colors">
+                                <i class="fas fa-users-cog text-xs"></i>
+                                Calon Cakahim
                             </a>
                         </div>
                     </div>
@@ -181,12 +238,21 @@
         <div class="px-3 py-3 sm:p-4 space-y-1 max-h-[calc(100vh-4rem)] overflow-y-auto">
             <a href="{{ url('/admin/dashboard') }}"
                 class="block px-3 sm:px-4 py-2.5 sm:py-3 rounded-xl text-sm font-bold {{ request()->is('admin/dashboard') ? 'bg-primary/5 text-primary' : 'text-slate-600' }}">Dashboard</a>
+            <a href="{{ route('admin.periods.index') }}"
+                class="block px-3 sm:px-4 py-2.5 sm:py-3 rounded-xl text-sm font-bold {{ request()->is('admin/periods*') ? 'bg-primary/5 text-primary' : 'text-slate-600' }}">Periode / Kabinet</a>
             <a href="{{ route('admin.positions.index') }}"
                 class="block px-3 sm:px-4 py-2.5 sm:py-3 rounded-xl text-sm font-bold {{ request()->is('admin/positions*') ? 'bg-primary/5 text-primary' : 'text-slate-600' }}">Jabatan</a>
             <a href="{{ route('admin.divisions.index') }}"
                 class="block px-3 sm:px-4 py-2.5 sm:py-3 rounded-xl text-sm font-bold {{ request()->is('admin/divisions*') ? 'bg-primary/5 text-primary' : 'text-slate-600' }}">Divisi</a>
-            <a href="{{ route('admin.members.index') }}"
-                class="block px-3 sm:px-4 py-2.5 sm:py-3 rounded-xl text-sm font-bold {{ request()->is('admin/members*') ? 'bg-primary/5 text-primary' : 'text-slate-600' }}">Anggota</a>
+            <div class="px-3 sm:px-4 py-2 mt-2 text-[10px] font-bold text-slate-400 uppercase tracking-widest">Manajemen Anggota</div>
+            <a href="{{ route('admin.members.index', ['type' => 'active']) }}"
+                class="block px-3 sm:px-4 py-2 sm:py-2.5 rounded-xl text-sm font-bold {{ request()->get('type') == 'active' ? 'bg-emerald-50 text-emerald-600' : 'text-slate-600' }}">
+                <i class="fas fa-user-check mr-2 text-xs text-emerald-500"></i> Anggota Aktif
+            </a>
+            <a href="{{ route('admin.members.index', ['type' => 'inactive']) }}"
+                class="block px-3 sm:px-4 py-2 sm:py-2.5 rounded-xl text-sm font-bold {{ request()->get('type') == 'inactive' ? 'bg-slate-100 text-slate-800' : 'text-slate-600' }}">
+                <i class="fas fa-user-clock mr-2 text-xs text-slate-400"></i> Anggota Tidak Aktif
+            </a>
             <a href="{{ route('admin.work-programs.index') }}"
                 class="block px-3 sm:px-4 py-2.5 sm:py-3 rounded-xl text-sm font-bold {{ request()->is('admin/work-programs*') ? 'bg-primary/5 text-primary' : 'text-slate-600' }}">Proker</a>
             <div class="px-3 sm:px-4 py-2 mt-2 text-[10px] font-bold text-slate-400 uppercase tracking-widest">Konten & Publikasi</div>
@@ -196,6 +262,15 @@
                 class="block px-3 sm:px-4 py-2.5 sm:py-3 rounded-xl text-sm font-bold {{ request()->is('admin/about-pages*') ? 'bg-primary/5 text-primary' : 'text-slate-600' }}">Halaman</a>
             <a href="{{ route('admin.announcements.index') }}"
                 class="block px-3 sm:px-4 py-2.5 sm:py-3 rounded-xl text-sm font-bold {{ request()->is('admin/announcements*') ? 'bg-primary/5 text-primary' : 'text-slate-600' }}">Pengumuman</a>
+            <div class="px-3 sm:px-4 py-2 mt-2 text-[10px] font-bold text-slate-400 uppercase tracking-widest">Pemilu Cakahim</div>
+            <a href="{{ route('admin.voting-schedules.index') }}"
+                class="block px-3 sm:px-4 py-2 sm:py-2.5 rounded-xl text-sm font-bold {{ request()->is('admin/voting-schedules*') ? 'bg-primary/5 text-primary' : 'text-slate-600' }}">
+                <i class="fas fa-calendar-alt mr-2 text-xs"></i> Jadwal Pemilu
+            </a>
+            <a href="{{ route('admin.candidates.index') }}"
+                class="block px-3 sm:px-4 py-2 sm:py-2.5 rounded-xl text-sm font-bold {{ request()->is('admin/candidates*') ? 'bg-primary/5 text-primary' : 'text-slate-600' }}">
+                <i class="fas fa-users-cog mr-2 text-xs"></i> Calon Cakahim
+            </a>
             <div class="px-3 sm:px-4 py-2 mt-2 text-[10px] font-bold text-slate-400 uppercase tracking-widest">Store & Merchandise</div>
             <a href="{{ route('admin.merchandises.index') }}"
                 class="block px-3 sm:px-4 py-2.5 sm:py-3 rounded-xl text-sm font-bold {{ request()->is('admin/merchandises*') ? 'bg-primary/5 text-primary' : 'text-slate-600' }}">Daftar Produk</a>

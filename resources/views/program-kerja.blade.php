@@ -144,7 +144,7 @@
                                         </template>
 
                                         {{-- Details --}}
-                                        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 text-sm">
+                                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
                                             <div class="flex items-center gap-2 text-muted-foreground">
                                                 <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4"
                                                     viewBox="0 0 24 24" fill="none" stroke="currentColor"
@@ -167,16 +167,6 @@
                                                     <path d="M16 3.13a4 4 0 0 1 0 7.75" />
                                                 </svg>
                                                 <span x-text="program.participants + ' peserta'"></span>
-                                            </div>
-                                            <div class="flex items-center gap-2 text-muted-foreground">
-                                                <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4"
-                                                    viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                                    stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                                    <circle cx="12" cy="12" r="10" />
-                                                    <circle cx="12" cy="12" r="6" />
-                                                    <circle cx="12" cy="12" r="2" />
-                                                </svg>
-                                                <span x-text="program.budget"></span>
                                             </div>
                                         </div>
 
@@ -284,14 +274,14 @@
 
         {{-- Modal --}}
         <div x-show="selectedProgram" style="display: none;"
-            class="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-4 transition-opacity"
-            x-transition:enter="transition ease-out duration-300" x-transition:enter-start="opacity-0"
-            x-transition:enter-end="opacity-100" x-transition:leave="transition ease-in duration-200"
+            class="fixed inset-0 bg-black/60 z-50 flex items-center justify-center p-4 transition-opacity"
+            x-transition:enter="transition ease-out duration-200" x-transition:enter-start="opacity-0"
+            x-transition:enter-end="opacity-100" x-transition:leave="transition ease-in duration-150"
             x-transition:leave-start="opacity-100" x-transition:leave-end="opacity-0" @click.self="closeModal()">
-            <div class="bg-card rounded-xl max-w-4xl w-full max-h-[90vh] overflow-y-auto shadow-lg"
-                x-show="selectedProgram" x-transition:enter="transition ease-out duration-300"
+            <div class="bg-card rounded-xl max-w-4xl w-full max-h-[90vh] overflow-y-auto shadow-xl transform-gpu will-change-transform contain-content"
+                x-show="selectedProgram" x-transition:enter="transition ease-out duration-200"
                 x-transition:enter-start="opacity-0 scale-95" x-transition:enter-end="opacity-100 scale-100"
-                x-transition:leave="transition ease-in duration-200" x-transition:leave-start="opacity-100 scale-100"
+                x-transition:leave="transition ease-in duration-150" x-transition:leave-start="opacity-100 scale-100"
                 x-transition:leave-end="opacity-0 scale-95">
                 <template x-if="selectedProgram">
                     <div class="relative">
@@ -382,7 +372,7 @@
                             {{-- Stats --}}
                             <div>
                                 <h3 class="text-lg font-semibold mb-3">Informasi Program</h3>
-                                <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                                     <div class="p-4 bg-secondary/20 rounded-lg text-center">
                                         <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 mx-auto mb-2 text-primary"
                                             viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
@@ -394,17 +384,6 @@
                                         </svg>
                                         <div class="text-2xl font-bold" x-text="selectedProgram.participants"></div>
                                         <div class="text-sm text-muted-foreground">Peserta</div>
-                                    </div>
-                                    <div class="p-4 bg-secondary/20 rounded-lg text-center">
-                                        <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 mx-auto mb-2 text-primary"
-                                            viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                                            stroke-linecap="round" stroke-linejoin="round">
-                                            <circle cx="12" cy="12" r="10" />
-                                            <circle cx="12" cy="12" r="6" />
-                                            <circle cx="12" cy="12" r="2" />
-                                        </svg>
-                                        <div class="text-lg font-bold" x-text="selectedProgram.budget"></div>
-                                        <div class="text-sm text-muted-foreground">Anggaran</div>
                                     </div>
                                     <div class="p-4 bg-secondary/20 rounded-lg text-center">
                                         <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 mx-auto mb-2 text-primary"

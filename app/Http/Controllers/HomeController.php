@@ -28,13 +28,24 @@ class HomeController extends Controller
             ->latest('published_at')
             ->first();
 
-        // 3. Stats for "Sekilas Angka" (Optional improvement)
+        // 3. Stats for "Sekilas Angka"
         $stats = [
             'programs' => WorkProgram::count(),
             'divisions' => \App\Models\Division::count(),
             'members' => \App\Models\OrgMember::count(),
         ];
 
-        return view('welcome', compact('upcomingActivity', 'latestAnnouncement', 'stats'));
+        // 4. Active Pemilu Voting Schedule
+        $activeVotingSchedule = \App\Models\VotingSchedule::where('is_active', true)
+            ->withCount('candidates')
+            ->latest()
+            ->first();
+
+        // Check if currently open
+        if ($activeVotingSchedule && !$activeVotingSchedule->isOpen()) {
+            $activeVotingSchedule = null;
+        }
+
+        return view('welcome', compact('upcomingActivity', 'latestAnnouncement', 'stats', 'activeVotingSchedule'));
     }
 }

@@ -51,6 +51,12 @@
                     <span
                         class="absolute -bottom-1 left-1/2 w-0 h-0.5 bg-primary transition-all duration-300 -translate-x-1/2 group-hover:w-full {{ request()->is('pengumuman*') ? 'text-primary' : 'text-slate-600' }}"></span>
                 </a>
+                <a href="{{ url('/pemilu') }}"
+                    class="relative group text-sm font-semibold transition-colors hover:text-primary {{ request()->is('pemilu*') ? 'text-primary' : 'text-slate-600' }}">
+                    Pemilu Cakahim
+                    <span
+                        class="absolute -bottom-1 left-1/2 w-0 h-0.5 bg-primary transition-all duration-300 -translate-x-1/2 group-hover:w-full {{ request()->is('pemilu*') ? 'w-full' : '' }}"></span>
+                </a>
                 <a href="{{ url('/merchandise') }}"
                     class="relative group text-sm font-semibold transition-colors hover:text-primary {{ request()->is('merchandise*') ? 'text-primary' : 'text-slate-600' }}">
                     Official Merchandise
@@ -97,6 +103,9 @@
             <a href="{{ url('/pengumuman') }}"
                 class="block px-3 py-2 rounded-md text-base font-semibold {{ request()->is('pengumuman*') ? 'text-primary bg-slate-50' : 'text-slate-600 hover:text-primary hover:bg-slate-50' }}">Pengumuman
                 & Berita</a>
+            <a href="{{ url('/pemilu') }}"
+                class="block px-3 py-2 rounded-md text-base font-semibold {{ request()->is('pemilu*') ? 'text-primary bg-slate-50' : 'text-slate-600 hover:text-primary hover:bg-slate-50' }}">Pemilu
+                Cakahim</a>
             <a href="{{ url('/merchandise') }}"
                 class="block px-3 py-2 rounded-md text-base font-semibold {{ request()->is('merchandise*') ? 'text-primary bg-slate-50' : 'text-slate-600 hover:text-primary hover:bg-slate-50' }}">Official
                 Merchandise</a>

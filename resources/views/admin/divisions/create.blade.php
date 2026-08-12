@@ -34,13 +34,36 @@
                     class="w-full p-4 rounded-xl border border-slate-200 bg-slate-50/50 focus:bg-white focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition-all">{{ old('description') }}</textarea>
             </div>
 
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
                 <div class="space-y-2">
-                    <label class="text-xs font-bold uppercase tracking-widest text-slate-400 ml-1">Hero Color (Tailwind
-                        Class)</label>
-                    <input type="text" name="color" placeholder="Contoh: bg-blue-500"
-                        class="w-full h-12 px-4 rounded-xl border border-slate-200 bg-slate-50/50 focus:bg-white focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition-all"
-                        value="{{ old('color', 'bg-primary') }}">
+                    <label class="text-xs font-bold uppercase tracking-widest text-slate-400 ml-1">Icon Presets</label>
+                    <select name="icon"
+                        class="w-full h-12 px-4 rounded-xl border border-slate-200 bg-slate-50/50 focus:bg-white focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition-all">
+                        <option value="">✨ Otomatis (Default)</option>
+                        <option value="fa-users" {{ old('icon') == 'fa-users' ? 'selected' : '' }}>👥 Keorganisasian / BPH</option>
+                        <option value="fa-laptop-code" {{ old('icon') == 'fa-laptop-code' ? 'selected' : '' }}>💻 Riset & Teknologi (Litbang)</option>
+                        <option value="fa-bullhorn" {{ old('icon') == 'fa-bullhorn' ? 'selected' : '' }}>📢 Media & Informasi</option>
+                        <option value="fa-palette" {{ old('icon') == 'fa-palette' ? 'selected' : '' }}>🎨 Desain & Kreatif</option>
+                        <option value="fa-coins" {{ old('icon') == 'fa-coins' ? 'selected' : '' }}>💰 Kewirausahaan & Danus</option>
+                        <option value="fa-trophy" {{ old('icon') == 'fa-trophy' ? 'selected' : '' }}>🏆 Minat & Bakat</option>
+                        <option value="fa-hand-holding-heart" {{ old('icon') == 'fa-hand-holding-heart' ? 'selected' : '' }}>🤝 Pengabdian Masyarakat</option>
+                        <option value="fa-layer-group" {{ old('icon') == 'fa-layer-group' ? 'selected' : '' }}>📁 Divisi Umum</option>
+                    </select>
+                </div>
+
+                <div class="space-y-2">
+                    <label class="text-xs font-bold uppercase tracking-widest text-slate-400 ml-1">Tema Warna</label>
+                    <select name="color"
+                        class="w-full h-12 px-4 rounded-xl border border-slate-200 bg-slate-50/50 focus:bg-white focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition-all">
+                        <option value="">✨ Otomatis (Default)</option>
+                        <option value="bg-slate-800 text-white" {{ old('color') == 'bg-slate-800 text-white' ? 'selected' : '' }}>⚫ Dark Slate (BPH / Netral)</option>
+                        <option value="bg-blue-600 text-white" {{ old('color') == 'bg-blue-600 text-white' ? 'selected' : '' }}>🔵 Biru (Teknologi / Utama)</option>
+                        <option value="bg-emerald-600 text-white" {{ old('color') == 'bg-emerald-600 text-white' ? 'selected' : '' }}>🟢 Hijau (Riset / Inkubasi)</option>
+                        <option value="bg-purple-600 text-white" {{ old('color') == 'bg-purple-600 text-white' ? 'selected' : '' }}>🟣 Ungu (Kreatif / Media)</option>
+                        <option value="bg-amber-600 text-white" {{ old('color') == 'bg-amber-600 text-white' ? 'selected' : '' }}>🟡 Kuning (Humas / Publik)</option>
+                        <option value="bg-rose-600 text-white" {{ old('color') == 'bg-rose-600 text-white' ? 'selected' : '' }}>🔴 Merah (Event / Talenta)</option>
+                        <option value="bg-cyan-600 text-white" {{ old('color') == 'bg-cyan-600 text-white' ? 'selected' : '' }}>🌐 Cyan (Eksternal)</option>
+                    </select>
                 </div>
 
                 <div class="space-y-2">

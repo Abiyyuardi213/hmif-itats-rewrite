@@ -1,0 +1,343 @@
+@extends('layouts.admin')
+
+@section('title', 'Manajemen Periode / Kabinet')
+
+@section('content')
+    <div class="max-w-7xl mx-auto space-y-6">
+        <!-- Breadcrumbs & Header -->
+        <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
+            <div class="space-y-1">
+                <nav class="flex items-center gap-2 text-xs font-medium text-slate-400 mb-2">
+                    <span class="hover:text-slate-600 transition-colors">Admin</span>
+                    <i class="fas fa-chevron-right text-[8px]"></i>
+                    <span class="text-slate-900">Periode / Kabinet</span>
+                </nav>
+                <h1 class="text-2xl font-bold text-slate-900 tracking-tight">Data Periode / Kabinet</h1>
+                <p class="text-sm text-slate-500">Kelola periode kepengurusan dan susunan fungsionaris organisasi.</p>
+            </div>
+            <button onclick="openCreateModal()"
+                class="inline-flex items-center justify-center px-4 py-2 bg-slate-900 text-slate-50 rounded-md text-sm font-medium hover:bg-slate-800 transition-colors shadow-sm active:scale-95">
+                <i class="fas fa-plus mr-2 text-[10px]"></i>
+                Tambah Kabinet Baru
+            </button>
+        </div>
+
+        <!-- Stats Row -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <div class="p-4 bg-white border border-slate-200 rounded-lg shadow-sm">
+                <p class="text-[11px] font-bold text-slate-400 uppercase tracking-wider mb-1">Total Periode</p>
+                <p class="text-2xl font-bold text-slate-900 tracking-tight">{{ count($periods) }}</p>
+            </div>
+            <div class="p-4 bg-white border border-slate-200 rounded-lg shadow-sm">
+                <p class="text-[11px] font-bold text-slate-400 uppercase tracking-wider mb-1">Kabinet Aktif</p>
+                <p class="text-xl font-bold text-emerald-600 tracking-tight">
+                    {{ $periods->where('is_active', true)->first()->name ?? '-' }}
+                </p>
+            </div>
+            <div class="p-4 bg-white border border-slate-200 rounded-lg shadow-sm">
+                <p class="text-[11px] font-bold text-slate-400 uppercase tracking-wider mb-1">Tahun Akademik Aktif</p>
+                <p class="text-xl font-bold text-slate-900 tracking-tight">
+                    {{ $periods->where('is_active', true)->first()->academic_year ?? '-' }}
+                </p>
+            </div>
+        </div>
+
+        <!-- Table Card -->
+        <div class="bg-white rounded-lg border border-slate-200 shadow-sm overflow-hidden">
+            <div class="overflow-x-auto text-sm">
+                <table class="w-full text-left border-collapse">
+                    <thead>
+                        <tr class="bg-slate-50/50 border-b border-slate-200">
+                            <th class="px-6 py-3 text-xs font-semibold text-slate-500 uppercase tracking-tight">Nama Kabinet</th>
+                            <th class="px-6 py-3 text-xs font-semibold text-slate-500 uppercase tracking-tight">Tahun Kepengurusan</th>
+                            <th class="px-6 py-3 text-xs font-semibold text-slate-500 uppercase tracking-tight text-center">Jumlah Anggota</th>
+                            <th class="px-6 py-3 text-xs font-semibold text-slate-500 uppercase tracking-tight text-center">Status</th>
+                            <th class="px-6 py-3 text-xs font-semibold text-slate-500 uppercase tracking-tight text-right">Aksi</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-slate-100">
+                        @forelse($periods as $period)
+                            <tr class="group hover:bg-slate-50/40 transition-colors">
+                                <td class="px-6 py-4">
+                                    <div class="flex items-center gap-3">
+                                        <div class="w-10 h-10 rounded-lg bg-slate-100 border border-slate-200 flex items-center justify-center overflow-hidden flex-shrink-0">
+                                            @if($period->logo)
+                                                <img src="{{ asset('storage/' . $period->logo) }}" class="w-full h-full object-cover">
+                                            @else
+                                                <i class="fas fa-crown text-slate-400"></i>
+                                            @endif
+                                        </div>
+                                        <div>
+                                            <span class="font-bold text-slate-900 block">{{ $period->name }}</span>
+                                            <span class="text-xs text-slate-500">{{ $period->description ?? 'Tidak ada deskripsi' }}</span>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td class="px-6 py-4">
+                                    <span class="px-2.5 py-1 rounded-md bg-slate-100 text-slate-700 text-xs font-bold font-mono">
+                                        {{ $period->academic_year }}
+                                    </span>
+                                </td>
+                                <td class="px-6 py-4 text-center">
+                                    <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold bg-blue-50 text-blue-700 border border-blue-100">
+                                        {{ $period->members_count }} Fungsionaris
+                                    </span>
+                                </td>
+                                <td class="px-6 py-4 text-center">
+                                    @if($period->is_active)
+                                        <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold bg-emerald-50 text-emerald-700 border border-emerald-200">
+                                            <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+                                            Aktif (Utama)
+                                        </span>
+                                    @else
+                                        <form action="{{ route('admin.periods.set_active', $period->id) }}" method="POST" class="inline-block">
+                                            @csrf
+                                            <button type="submit" class="px-2.5 py-1 text-xs font-semibold text-slate-500 hover:text-slate-900 border border-slate-200 rounded-md hover:bg-slate-50 transition-colors">
+                                                Aktifkan
+                                            </button>
+                                        </form>
+                                    @endif
+                                </td>
+                                <td class="px-6 py-4 text-right">
+                                    <div class="flex items-center justify-end gap-2">
+                                        <a href="{{ route('admin.periods.manage_members', $period->id) }}"
+                                            class="inline-flex items-center px-3 py-1.5 bg-slate-900 text-slate-50 hover:bg-slate-800 rounded-md text-xs font-semibold transition-colors shadow-sm">
+                                            <i class="fas fa-users-cog mr-1.5 text-[10px]"></i>
+                                            Kelola Pengurus
+                                        </a>
+                                        <button onclick="openEditModal({{ json_encode($period) }})"
+                                            class="p-1.5 text-slate-400 hover:text-slate-900 rounded-md hover:bg-slate-100 transition-colors"
+                                            title="Edit">
+                                            <i class="fas fa-edit text-xs"></i>
+                                        </button>
+                                        @if(!$period->is_active)
+                                            <button onclick="confirmDelete({{ $period->id }}, '{{ $period->name }}')"
+                                                class="p-1.5 text-slate-400 hover:text-rose-600 rounded-md hover:bg-slate-100 transition-colors"
+                                                title="Hapus">
+                                                <i class="fas fa-trash-alt text-xs"></i>
+                                            </button>
+                                        @endif
+                                    </div>
+                                </td>
+                            </tr>
+                        @empty
+                            <tr>
+                                <td colspan="5" class="px-6 py-12 text-center text-slate-400 italic">
+                                    Belum ada data periode / kabinet yang tersimpan.
+                                </td>
+                            </tr>
+                        @endforelse
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- Create Modal -->
+    <div id="create-modal-root" class="fixed inset-0 z-[100] hidden items-center justify-center p-4">
+        <div id="create-overlay" class="fixed inset-0 bg-slate-950/20 opacity-0 transition-opacity duration-200"
+            onclick="closeCreateModal()"></div>
+        <div id="create-content"
+            class="relative bg-white w-full max-w-lg rounded-lg shadow-xl translate-y-4 opacity-0 transition-all duration-200 border border-slate-200">
+            <div class="px-6 py-4 border-b border-slate-100 flex items-center justify-between bg-slate-50/50">
+                <h3 class="font-semibold text-slate-900">Tambah Kabinet / Periode</h3>
+                <button onclick="closeCreateModal()" class="p-1 text-slate-400 hover:text-slate-900 transition-colors">
+                    <i class="fas fa-times text-sm"></i>
+                </button>
+            </div>
+            <form action="{{ route('admin.periods.store') }}" method="POST" enctype="multipart/form-data" class="p-6 space-y-4">
+                @csrf
+                <div class="space-y-1.5">
+                    <label class="text-xs font-semibold text-slate-700 uppercase tracking-wider">Nama Kabinet</label>
+                    <input type="text" name="name" required placeholder="Contoh: Kabinet Reboot"
+                        class="w-full px-3 py-2 rounded-md border border-slate-200 text-sm focus:ring-2 focus:ring-slate-900/5 focus:border-slate-400 outline-none transition-all">
+                </div>
+                <div class="space-y-1.5">
+                    <label class="text-xs font-semibold text-slate-700 uppercase tracking-wider">Tahun Akademik / Kepengurusan</label>
+                    <input type="text" name="academic_year" required placeholder="Contoh: 2025/2026"
+                        class="w-full px-3 py-2 rounded-md border border-slate-200 text-sm focus:ring-2 focus:ring-slate-900/5 focus:border-slate-400 outline-none transition-all">
+                </div>
+                <div class="space-y-1.5">
+                    <label class="text-xs font-semibold text-slate-700 uppercase tracking-wider">Deskripsi Kabinet (Opsional)</label>
+                    <textarea name="description" rows="3" placeholder="Visi atau deskripsi kepengurusan..."
+                        class="w-full px-3 py-2 rounded-md border border-slate-200 text-sm focus:ring-2 focus:ring-slate-900/5 focus:border-slate-400 outline-none transition-all resize-none"></textarea>
+                </div>
+                <div class="space-y-1.5">
+                    <label class="text-xs font-semibold text-slate-700 uppercase tracking-wider">Logo Kabinet (Opsional)</label>
+                    <input type="file" name="logo" accept="image/*"
+                        class="w-full text-xs text-slate-500 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-xs file:font-semibold file:bg-slate-100 hover:file:bg-slate-200 transition-all">
+                </div>
+                <div class="space-y-1.5 pt-2">
+                    <label class="relative inline-flex items-center cursor-pointer">
+                        <input type="checkbox" name="is_active" value="1" class="sr-only peer">
+                        <div class="w-9 h-5 bg-slate-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-emerald-500"></div>
+                        <span class="ml-2 text-sm font-medium text-slate-700">Jadikan Kabinet Aktif Publik</span>
+                    </label>
+                </div>
+                <div class="pt-4 flex items-center justify-end gap-3 border-t border-slate-100">
+                    <button type="button" onclick="closeCreateModal()"
+                        class="px-4 py-2 text-slate-600 text-sm font-medium hover:bg-slate-50 rounded-md transition-colors">Batal</button>
+                    <button type="submit"
+                        class="px-4 py-2 bg-slate-900 text-slate-50 rounded-md text-sm font-medium hover:bg-slate-800 transition-colors shadow-sm active:scale-95">Simpan Data</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Edit Modal -->
+    <div id="edit-modal-root" class="fixed inset-0 z-[100] hidden items-center justify-center p-4">
+        <div id="edit-overlay" class="fixed inset-0 bg-slate-950/20 opacity-0 transition-opacity duration-200"
+            onclick="closeEditModal()"></div>
+        <div id="edit-content"
+            class="relative bg-white w-full max-w-lg rounded-lg shadow-xl translate-y-4 opacity-0 transition-all duration-200 border border-slate-200">
+            <div class="px-6 py-4 border-b border-slate-100 flex items-center justify-between bg-slate-50/50">
+                <h3 class="font-semibold text-slate-900">Perbarui Kabinet / Periode</h3>
+                <button onclick="closeEditModal()" class="p-1 text-slate-400 hover:text-slate-900 transition-colors">
+                    <i class="fas fa-times text-sm"></i>
+                </button>
+            </div>
+            <form id="edit-form" method="POST" enctype="multipart/form-data" class="p-6 space-y-4">
+                @csrf
+                @method('PUT')
+                <div class="space-y-1.5">
+                    <label class="text-xs font-semibold text-slate-700 uppercase tracking-wider">Nama Kabinet</label>
+                    <input type="text" name="name" id="edit-name" required
+                        class="w-full px-3 py-2 rounded-md border border-slate-200 text-sm focus:ring-2 focus:ring-slate-900/5 focus:border-slate-400 outline-none transition-all">
+                </div>
+                <div class="space-y-1.5">
+                    <label class="text-xs font-semibold text-slate-700 uppercase tracking-wider">Tahun Akademik / Kepengurusan</label>
+                    <input type="text" name="academic_year" id="edit-academic_year" required
+                        class="w-full px-3 py-2 rounded-md border border-slate-200 text-sm focus:ring-2 focus:ring-slate-900/5 focus:border-slate-400 outline-none transition-all">
+                </div>
+                <div class="space-y-1.5">
+                    <label class="text-xs font-semibold text-slate-700 uppercase tracking-wider">Deskripsi Kabinet (Opsional)</label>
+                    <textarea name="description" id="edit-description" rows="3"
+                        class="w-full px-3 py-2 rounded-md border border-slate-200 text-sm focus:ring-2 focus:ring-slate-900/5 focus:border-slate-400 outline-none transition-all resize-none"></textarea>
+                </div>
+                <div class="space-y-1.5">
+                    <label class="text-xs font-semibold text-slate-700 uppercase tracking-wider">Ganti Logo Kabinet (Opsional)</label>
+                    <input type="file" name="logo" accept="image/*"
+                        class="w-full text-xs text-slate-500 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-xs file:font-semibold file:bg-slate-100 hover:file:bg-slate-200 transition-all">
+                </div>
+                <div class="space-y-1.5 pt-2">
+                    <label class="relative inline-flex items-center cursor-pointer">
+                        <input type="checkbox" name="is_active" id="edit-is_active" value="1" class="sr-only peer">
+                        <div class="w-9 h-5 bg-slate-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-emerald-500"></div>
+                        <span class="ml-2 text-sm font-medium text-slate-700">Jadikan Kabinet Aktif Publik</span>
+                    </label>
+                </div>
+                <div class="pt-4 flex items-center justify-end gap-3 border-t border-slate-100">
+                    <button type="button" onclick="closeEditModal()"
+                        class="px-4 py-2 text-slate-600 text-sm font-medium hover:bg-slate-50 rounded-md transition-colors">Batal</button>
+                    <button type="submit"
+                        class="px-4 py-2 bg-slate-900 text-slate-50 rounded-md text-sm font-medium hover:bg-slate-800 transition-colors shadow-sm active:scale-95">Update Kabinet</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Delete Form -->
+    <form id="delete-form" method="POST" class="hidden">
+        @csrf
+        @method('DELETE')
+    </form>
+
+    <script>
+        const createModalRoot = document.getElementById('create-modal-root');
+        const createOverlay = document.getElementById('create-overlay');
+        const createContent = document.getElementById('create-content');
+
+        function openCreateModal() {
+            createModalRoot.classList.remove('hidden');
+            createModalRoot.classList.add('flex');
+            document.body.style.overflow = 'hidden';
+            setTimeout(() => {
+                createOverlay.classList.replace('opacity-0', 'opacity-100');
+                createContent.classList.remove('translate-y-4', 'opacity-0');
+                createContent.classList.add('translate-y-0', 'opacity-100');
+            }, 10);
+        }
+
+        function closeCreateModal() {
+            createOverlay.classList.replace('opacity-100', 'opacity-0');
+            createContent.classList.replace('translate-y-0', 'opacity-100');
+            createContent.classList.add('translate-y-4', 'opacity-0');
+            setTimeout(() => {
+                createModalRoot.classList.replace('flex', 'hidden');
+                document.body.style.overflow = 'auto';
+            }, 200);
+        }
+
+        const editModalRoot = document.getElementById('edit-modal-root');
+        const editOverlay = document.getElementById('edit-overlay');
+        const editContent = document.getElementById('edit-content');
+
+        function openEditModal(period) {
+            const form = document.getElementById('edit-form');
+            form.action = `/admin/periods/${period.id}`;
+            document.getElementById('edit-name').value = period.name;
+            document.getElementById('edit-academic_year').value = period.academic_year;
+            document.getElementById('edit-description').value = period.description || '';
+            document.getElementById('edit-is_active').checked = !!period.is_active;
+
+            editModalRoot.classList.remove('hidden');
+            editModalRoot.classList.add('flex');
+            document.body.style.overflow = 'hidden';
+            setTimeout(() => {
+                editOverlay.classList.replace('opacity-0', 'opacity-100');
+                editContent.classList.remove('translate-y-4', 'opacity-0');
+                editContent.classList.add('translate-y-0', 'opacity-100');
+            }, 10);
+        }
+
+        function closeEditModal() {
+            editOverlay.classList.replace('opacity-100', 'opacity-0');
+            editContent.classList.replace('translate-y-0', 'opacity-100');
+            editContent.classList.add('translate-y-4', 'opacity-0');
+            setTimeout(() => {
+                editModalRoot.classList.replace('flex', 'hidden');
+                document.body.style.overflow = 'auto';
+            }, 200);
+        }
+
+        function confirmDelete(id, name) {
+            Swal.fire({
+                title: 'Hapus Kabinet?',
+                text: `Anda akan menghapus "${name}". Semua pengurus di dalamnya akan terhapus.`,
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#e11d48',
+                cancelButtonColor: '#f1f5f9',
+                confirmButtonText: 'Hapus',
+                cancelButtonText: 'Batal',
+                reverseButtons: true,
+                customClass: {
+                    popup: 'rounded-lg border border-slate-200 shadow-xl',
+                    confirmButton: 'px-6 py-3 rounded-xl font-bold text-sm',
+                    cancelButton: 'px-6 py-3 rounded-xl font-bold text-sm text-slate-600'
+                }
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    const form = document.getElementById('delete-form');
+                    form.action = `/admin/periods/${id}`;
+                    form.submit();
+                }
+            });
+        }
+
+        @if (session('success'))
+            Swal.fire({
+                toast: true,
+                position: 'top-end',
+                icon: 'success',
+                title: "{{ session('success') }}",
+                showConfirmButton: false,
+                timer: 3000,
+                timerProgressBar: true,
+                customClass: {
+                    popup: 'rounded-md border border-slate-100 shadow-lg'
+                }
+            });
+        @endif
+    </script>
+@endsection

@@ -4,9 +4,15 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Division extends Model
+class Period extends Model
 {
-    protected $fillable = ['name', 'description', 'icon', 'color', 'order', 'is_active'];
+    protected $fillable = [
+        'name',
+        'academic_year',
+        'description',
+        'logo',
+        'is_active',
+    ];
 
     protected $casts = [
         'is_active' => 'boolean',

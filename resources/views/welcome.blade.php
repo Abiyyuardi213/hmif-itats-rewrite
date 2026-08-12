@@ -3,6 +3,39 @@
 @section('content')
     {{-- Hero Bento --}}
     <section class="max-w-screen-2xl mx-auto px-6 md:px-6 pt-10 md:pt-16">
+        @if($activeVotingSchedule)
+            <!-- Pemilu Cakahim Active Announcement Banner -->
+            <div class="mb-8 rounded-2xl bg-gradient-to-r from-slate-900 via-indigo-950 to-pink-950 p-6 sm:p-8 text-white shadow-xl relative overflow-hidden ring-1 ring-white/10 group">
+                <div class="absolute inset-0 bg-[linear-gradient(to_right,#ffffff0a_1px,transparent_1px),linear-gradient(to_bottom,#ffffff0a_1px,transparent_1px)] bg-[size:16px_16px]"></div>
+                <div class="relative z-10 flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
+                    <div class="space-y-2">
+                        <div class="flex items-center gap-2">
+                            <span class="inline-flex items-center gap-1.5 rounded-full bg-pink-500/20 px-3 py-1 text-xs font-bold text-pink-400 border border-pink-500/30">
+                                <span class="w-2 h-2 rounded-full bg-pink-500 animate-ping"></span>
+                                PEMILU KAHIM BERLANGSUNG
+                            </span>
+                            <span class="text-xs font-mono text-slate-400">
+                                s/d {{ $activeVotingSchedule->end_time->format('d M Y, H:i') }}
+                            </span>
+                        </div>
+                        <h2 class="text-2xl sm:text-3xl font-extrabold tracking-tight text-white">
+                            {{ $activeVotingSchedule->title }}
+                        </h2>
+                        <p class="text-slate-300 text-xs sm:text-sm max-w-2xl leading-relaxed">
+                            {{ $activeVotingSchedule->description ?? 'Voting E-Pemilu Ketua Himpunan HMIF ITATS sedang dibuka. Tentukan pilihan paslon Cakahim terbaik Anda sekarang.' }}
+                        </p>
+                    </div>
+
+                    <a href="{{ url('/pemilu') }}"
+                        class="inline-flex items-center gap-2.5 px-6 py-3.5 bg-pink-600 hover:bg-pink-500 text-white text-xs sm:text-sm font-bold rounded-xl shadow-lg shadow-pink-600/30 transition-all hover:scale-105 active:scale-95 whitespace-nowrap">
+                        <i class="fas fa-vote-yea text-base"></i>
+                        VOTE KANDIDAT CAKAHIM
+                        <i class="fas fa-arrow-right text-xs transition-transform group-hover:translate-x-1"></i>
+                    </a>
+                </div>
+            </div>
+        @endif
+
         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
             {{-- Left: Headline + CTA --}}
             <div class="flex flex-col justify-center gap-5">
@@ -136,6 +169,11 @@
                         'href' => '/pengumuman',
                         'title' => 'Pengumuman/Berita',
                         'desc' => 'Informasi terbaru seputar HMIF.',
+                    ],
+                    [
+                        'href' => '/pemilu',
+                        'title' => 'E-Voting Pemilu Cakahim',
+                        'desc' => 'Halaman voting calon ketua himpunan baru.',
                     ],
                 ];
             @endphp

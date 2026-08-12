@@ -5,6 +5,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>HMIF ITATS — Himpunan Mahasiswa Informatika</title>
+    <link rel="shortcut icon" href="{{ asset('image/icon-hmif.png') }}" type="image/png">
+    <link rel="icon" href="{{ asset('image/icon-hmif.png') }}" type="image/png">
     <meta name="description"
         content="Website resmi Himpunan Mahasiswa Informatika ITATS. Informasi struktur organisasi, divisi, program kerja, kegiatan, dan pengumuman/berita.">
 

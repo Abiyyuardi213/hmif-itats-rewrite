@@ -23,10 +23,16 @@
         </div>
 
         <!-- Stats Row -->
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
             <div class="p-4 bg-white border border-slate-200 rounded-lg shadow-sm">
                 <p class="text-[11px] font-bold text-slate-400 uppercase tracking-wider mb-1">Total Divisi</p>
                 <p class="text-2xl font-bold text-slate-900 tracking-tight">{{ count($divisions) }}</p>
+            </div>
+            <div class="p-4 bg-white border border-slate-200 rounded-lg shadow-sm">
+                <p class="text-[11px] font-bold text-slate-400 uppercase tracking-wider mb-1">Divisi Aktif</p>
+                <p class="text-2xl font-bold text-emerald-600 tracking-tight">
+                    {{ $divisions->where('is_active', true)->count() }}
+                </p>
             </div>
             <div class="p-4 bg-white border border-slate-200 rounded-lg shadow-sm">
                 <p class="text-[11px] font-bold text-slate-400 uppercase tracking-wider mb-1">Total Anggota</p>
@@ -52,6 +58,7 @@
                             <th class="px-6 py-3 text-xs font-semibold text-slate-500 uppercase tracking-tight">Deskripsi</th>
                             <th class="px-6 py-3 text-xs font-semibold text-slate-500 uppercase tracking-tight">Visual</th>
                             <th class="px-6 py-3 text-xs font-semibold text-slate-500 uppercase tracking-tight text-center">Urutan</th>
+                            <th class="px-6 py-3 text-xs font-semibold text-slate-500 uppercase tracking-tight text-center">Status</th>
                             <th class="px-6 py-3 text-xs font-semibold text-slate-500 uppercase tracking-tight text-right">Aksi</th>
                         </tr>
                     </thead>
@@ -82,6 +89,17 @@
                                         #{{ $division->order }}
                                     </span>
                                 </td>
+                                <td class="px-6 py-4 text-center">
+                                    <label class="relative inline-flex items-center cursor-pointer select-none">
+                                        <input type="checkbox" class="sr-only peer" 
+                                            {{ $division->is_active ? 'checked' : '' }}
+                                            onchange="toggleDivisionStatus({{ $division->id }}, this.checked)">
+                                        <div class="w-9 h-5 bg-slate-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-emerald-500"></div>
+                                        <span class="ml-2 text-xs font-medium text-slate-700 peer-checked:text-emerald-600">
+                                            {{ $division->is_active ? 'Aktif' : 'Non-Aktif' }}
+                                        </span>
+                                    </label>
+                                </td>
                                 <td class="px-6 py-4 text-right">
                                     <div class="flex items-center justify-end gap-1">
                                         <button onclick="openEditModal({{ json_encode($division) }})"
@@ -99,7 +117,7 @@
                             </tr>
                         @empty
                             <tr>
-                                <td colspan="5" class="px-6 py-12 text-center text-slate-400 italic">
+                                <td colspan="6" class="px-6 py-12 text-center text-slate-400 italic">
                                     Belum ada data divisi yang tersimpan.
                                 </td>
                             </tr>
@@ -136,9 +154,19 @@
                 </div>
                 <div class="grid grid-cols-2 gap-4">
                     <div class="space-y-1.5">
-                        <label class="text-xs font-semibold text-slate-700 uppercase tracking-wider">Icon (FontAwesome)</label>
-                        <input type="text" name="icon" placeholder="fa-users"
+                        <label class="text-xs font-semibold text-slate-700 uppercase tracking-wider">Icon Presets</label>
+                        <select name="icon"
                             class="w-full px-3 py-2 rounded-md border border-slate-200 text-sm focus:ring-2 focus:ring-slate-900/5 focus:border-slate-400 outline-none transition-all">
+                            <option value="">✨ Otomatis (Default)</option>
+                            <option value="fa-users">👥 Keorganisasian / BPH</option>
+                            <option value="fa-laptop-code">💻 Riset & Teknologi (Litbang)</option>
+                            <option value="fa-bullhorn">📢 Media & Informasi</option>
+                            <option value="fa-palette">🎨 Desain & Kreatif</option>
+                            <option value="fa-coins">💰 Kewirausahaan & Danus</option>
+                            <option value="fa-trophy">🏆 Minat & Bakat</option>
+                            <option value="fa-hand-holding-heart">🤝 Pengabdian Masyarakat</option>
+                            <option value="fa-layer-group">📁 Divisi Umum</option>
+                        </select>
                     </div>
                     <div class="space-y-1.5">
                         <label class="text-xs font-semibold text-slate-700 uppercase tracking-wider">Urutan</label>
@@ -147,9 +175,25 @@
                     </div>
                 </div>
                 <div class="space-y-1.5">
-                    <label class="text-xs font-semibold text-slate-700 uppercase tracking-wider">Color Class (Tailwind)</label>
-                    <input type="text" name="color" placeholder="bg-blue-500 text-white"
+                    <label class="text-xs font-semibold text-slate-700 uppercase tracking-wider">Tema Warna</label>
+                    <select name="color"
                         class="w-full px-3 py-2 rounded-md border border-slate-200 text-sm focus:ring-2 focus:ring-slate-900/5 focus:border-slate-400 outline-none transition-all">
+                        <option value="">✨ Otomatis (Default)</option>
+                        <option value="bg-slate-800 text-white">⚫ Dark Slate (BPH / Netral)</option>
+                        <option value="bg-blue-600 text-white">🔵 Biru (Teknologi / Utama)</option>
+                        <option value="bg-emerald-600 text-white">🟢 Hijau (Riset / Inkubasi)</option>
+                        <option value="bg-purple-600 text-white">🟣 Ungu (Kreatif / Media)</option>
+                        <option value="bg-amber-600 text-white">🟡 Kuning (Humas / Publik)</option>
+                        <option value="bg-rose-600 text-white">🔴 Merah (Event / Talenta)</option>
+                        <option value="bg-cyan-600 text-white">🌐 Cyan (Eksternal)</option>
+                    </select>
+                </div>
+                <div class="space-y-1.5">
+                    <label class="relative inline-flex items-center cursor-pointer">
+                        <input type="checkbox" name="is_active" value="1" class="sr-only peer" checked>
+                        <div class="w-9 h-5 bg-slate-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-emerald-500"></div>
+                        <span class="ml-2 text-sm font-medium text-slate-700">Aktifkan Divisi</span>
+                    </label>
                 </div>
                 <div class="pt-4 flex items-center justify-end gap-3 border-t border-slate-100">
                     <button type="button" onclick="closeCreateModal()"
@@ -188,9 +232,19 @@
                 </div>
                 <div class="grid grid-cols-2 gap-4">
                     <div class="space-y-1.5">
-                        <label class="text-xs font-semibold text-slate-700 uppercase tracking-wider">Icon (FontAwesome)</label>
-                        <input type="text" name="icon" id="edit-icon"
+                        <label class="text-xs font-semibold text-slate-700 uppercase tracking-wider">Icon Presets</label>
+                        <select name="icon" id="edit-icon"
                             class="w-full px-3 py-2 rounded-md border border-slate-200 text-sm focus:ring-2 focus:ring-slate-900/5 focus:border-slate-400 outline-none transition-all">
+                            <option value="">✨ Otomatis (Default)</option>
+                            <option value="fa-users">👥 Keorganisasian / BPH</option>
+                            <option value="fa-laptop-code">💻 Riset & Teknologi (Litbang)</option>
+                            <option value="fa-bullhorn">📢 Media & Informasi</option>
+                            <option value="fa-palette">🎨 Desain & Kreatif</option>
+                            <option value="fa-coins">💰 Kewirausahaan & Danus</option>
+                            <option value="fa-trophy">🏆 Minat & Bakat</option>
+                            <option value="fa-hand-holding-heart">🤝 Pengabdian Masyarakat</option>
+                            <option value="fa-layer-group">📁 Divisi Umum</option>
+                        </select>
                     </div>
                     <div class="space-y-1.5">
                         <label class="text-xs font-semibold text-slate-700 uppercase tracking-wider">Urutan</label>
@@ -199,9 +253,96 @@
                     </div>
                 </div>
                 <div class="space-y-1.5">
-                    <label class="text-xs font-semibold text-slate-700 uppercase tracking-wider">Color Class (Tailwind)</label>
-                    <input type="text" name="color" id="edit-color"
+                    <label class="text-xs font-semibold text-slate-700 uppercase tracking-wider">Tema Warna</label>
+                    <select name="color" id="edit-color"
                         class="w-full px-3 py-2 rounded-md border border-slate-200 text-sm focus:ring-2 focus:ring-slate-900/5 focus:border-slate-400 outline-none transition-all">
+                        <option value="">✨ Otomatis (Default)</option>
+                        <option value="bg-slate-800 text-white">⚫ Dark Slate (BPH / Netral)</option>
+                        <option value="bg-blue-600 text-white">🔵 Biru (Teknologi / Utama)</option>
+                        <option value="bg-emerald-600 text-white">🟢 Hijau (Riset / Inkubasi)</option>
+                        <option value="bg-purple-600 text-white">🟣 Ungu (Kreatif / Media)</option>
+                        <option value="bg-amber-600 text-white">🟡 Kuning (Humas / Publik)</option>
+                        <option value="bg-rose-600 text-white">🔴 Merah (Event / Talenta)</option>
+                        <option value="bg-cyan-600 text-white">🌐 Cyan (Eksternal)</option>
+                    </select>
+                </div>
+                <div class="space-y-1.5">
+                    <label class="relative inline-flex items-center cursor-pointer">
+                        <input type="checkbox" name="is_active" id="edit-is_active" value="1" class="sr-only peer">
+                        <div class="w-9 h-5 bg-slate-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-emerald-500"></div>
+                        <span class="ml-2 text-sm font-medium text-slate-700">Aktifkan Divisi</span>
+                    </label>
+                </div>
+                <div class="pt-4 flex items-center justify-end gap-3 border-t border-slate-100">
+                    <button type="button" onclick="closeCreateModal()"
+                        class="px-4 py-2 text-slate-600 text-sm font-medium hover:bg-slate-50 rounded-md transition-colors">Batal</button>
+                    <button type="submit"
+                        class="px-4 py-2 bg-slate-900 text-slate-50 rounded-md text-sm font-medium hover:bg-slate-800 transition-colors shadow-sm active:scale-95">Simpan Data</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Edit Modal -->
+    <div id="edit-modal-root" class="fixed inset-0 z-[100] hidden items-center justify-center p-4">
+        <div id="edit-overlay" class="fixed inset-0 bg-slate-950/20 opacity-0 transition-opacity duration-200"
+            onclick="closeEditModal()"></div>
+        <div id="edit-content"
+            class="relative bg-white w-full max-w-lg rounded-lg shadow-xl translate-y-4 opacity-0 transition-all duration-200 border border-slate-200">
+            <div class="px-6 py-4 border-b border-slate-100 flex items-center justify-between bg-slate-50/50">
+                <h3 class="font-semibold text-slate-900">Perbarui Divisi</h3>
+                <button onclick="closeEditModal()" class="p-1 text-slate-400 hover:text-slate-900 transition-colors">
+                    <i class="fas fa-times text-sm"></i>
+                </button>
+            </div>
+            <form id="edit-form" method="POST" class="p-6 space-y-4">
+                @csrf
+                @method('PUT')
+                <div class="space-y-1.5">
+                    <label class="text-xs font-semibold text-slate-700 uppercase tracking-wider">Nama Divisi</label>
+                    <input type="text" name="name" id="edit-name" required
+                        class="w-full px-3 py-2 rounded-md border border-slate-200 text-sm focus:ring-2 focus:ring-slate-900/5 focus:border-slate-400 outline-none transition-all">
+                </div>
+                <div class="space-y-1.5">
+                    <label class="text-xs font-semibold text-slate-700 uppercase tracking-wider">Deskripsi (Opsional)</label>
+                    <textarea name="description" id="edit-description" rows="3"
+                        class="w-full px-3 py-2 rounded-md border border-slate-200 text-sm focus:ring-2 focus:ring-slate-900/5 focus:border-slate-400 outline-none transition-all resize-none"></textarea>
+                </div>
+                <div class="grid grid-cols-2 gap-4">
+                    <div class="space-y-1.5">
+                        <label class="text-xs font-semibold text-slate-700 uppercase tracking-wider">Icon Presets</label>
+                        <select name="icon" id="edit-icon"
+                            class="w-full px-3 py-2 rounded-md border border-slate-200 text-sm focus:ring-2 focus:ring-slate-900/5 focus:border-slate-400 outline-none transition-all">
+                            <option value="">✨ Otomatis (Default)</option>
+                            <option value="fa-users">👥 Keorganisasian / BPH</option>
+                            <option value="fa-laptop-code">💻 Riset & Teknologi (Litbang)</option>
+                            <option value="fa-bullhorn">📢 Media & Informasi</option>
+                            <option value="fa-palette">🎨 Desain & Kreatif</option>
+                            <option value="fa-coins">💰 Kewirausahaan & Danus</option>
+                            <option value="fa-trophy">🏆 Minat & Bakat</option>
+                            <option value="fa-hand-holding-heart">🤝 Pengabdian Masyarakat</option>
+                            <option value="fa-layer-group">📁 Divisi Umum</option>
+                        </select>
+                    </div>
+                    <div class="space-y-1.5">
+                        <label class="text-xs font-semibold text-slate-700 uppercase tracking-wider">Urutan</label>
+                        <input type="number" name="order" id="edit-order" required
+                            class="w-full px-3 py-2 rounded-md border border-slate-200 text-sm focus:ring-2 focus:ring-slate-900/5 focus:border-slate-400 outline-none transition-all">
+                    </div>
+                </div>
+                <div class="space-y-1.5">
+                    <label class="text-xs font-semibold text-slate-700 uppercase tracking-wider">Tema Warna</label>
+                    <select name="color" id="edit-color"
+                        class="w-full px-3 py-2 rounded-md border border-slate-200 text-sm focus:ring-2 focus:ring-slate-900/5 focus:border-slate-400 outline-none transition-all">
+                        <option value="">✨ Otomatis (Default)</option>
+                        <option value="bg-slate-800 text-white">⚫ Dark Slate (BPH / Netral)</option>
+                        <option value="bg-blue-600 text-white">🔵 Biru (Teknologi / Utama)</option>
+                        <option value="bg-emerald-600 text-white">🟢 Hijau (Riset / Inkubasi)</option>
+                        <option value="bg-purple-600 text-white">🟣 Ungu (Kreatif / Media)</option>
+                        <option value="bg-amber-600 text-white">🟡 Kuning (Humas / Publik)</option>
+                        <option value="bg-rose-600 text-white">🔴 Merah (Event / Talenta)</option>
+                        <option value="bg-cyan-600 text-white">🌐 Cyan (Eksternal)</option>
+                    </select>
                 </div>
                 <div class="pt-4 flex items-center justify-end gap-3 border-t border-slate-100">
                     <button type="button" onclick="closeEditModal()"
@@ -259,6 +400,7 @@
             document.getElementById('edit-order').value = division.order;
             document.getElementById('edit-icon').value = division.icon || '';
             document.getElementById('edit-color').value = division.color || '';
+            document.getElementById('edit-is_active').checked = !!division.is_active;
 
             editModalRoot.classList.remove('hidden');
             editModalRoot.classList.add('flex');
@@ -268,6 +410,37 @@
                 editContent.classList.remove('translate-y-4', 'opacity-0');
                 editContent.classList.add('translate-y-0', 'opacity-100');
             }, 10);
+        }
+
+        function toggleDivisionStatus(id, isActive) {
+            fetch(`/admin/divisions/${id}/toggle-status`, {
+                method: 'PATCH',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                    'Accept': 'application/json'
+                },
+                body: JSON.stringify({ is_active: isActive ? 1 : 0 })
+            })
+            .then(res => res.json())
+            .then(data => {
+                if (data.success) {
+                    Swal.fire({
+                        toast: true,
+                        position: 'top-end',
+                        icon: 'success',
+                        title: data.message,
+                        showConfirmButton: false,
+                        timer: 2000,
+                        timerProgressBar: true
+                    });
+                } else {
+                    location.reload();
+                }
+            })
+            .catch(() => {
+                location.reload();
+            });
         }
 
         function closeEditModal() {
