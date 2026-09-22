@@ -46,71 +46,76 @@
         {{-- Content Sections --}}
         <div class="container mx-auto px-6 py-16 space-y-24">
             <style>
+                /* Modern Non-Baku Visi & Misi Styling */
                 .visi-misi-styled h3 {
-                    font-size: 1.5rem;
-                    font-weight: 700;
+                    font-size: 1.1rem;
+                    font-weight: 800;
+                    letter-spacing: 0.05em;
+                    text-transform: uppercase;
                     color: #0f172a;
                     margin-top: 2rem;
                     margin-bottom: 1rem;
-                    display: flex;
+                    display: inline-flex;
                     align-items: center;
-                    gap: 0.75rem;
+                    gap: 0.5rem;
+                    padding: 0.4rem 1rem;
+                    background: #f1f5f9;
+                    border-radius: 9999px;
+                    border: 1px solid #e2e8f0;
                 }
                 .visi-misi-styled h3:first-child {
                     margin-top: 0;
                 }
                 .visi-misi-styled p {
-                    color: #475569;
-                    font-size: 1.125rem;
-                    line-height: 1.75;
-                    border-left: 4px solid rgba(15, 23, 42, 0.2);
-                    padding-left: 1.25rem;
-                    padding-top: 0.5rem;
-                    padding-bottom: 0.5rem;
-                    background-color: rgba(248, 250, 252, 0.8);
-                    border-top-right-radius: 0.75rem;
-                    border-bottom-right-radius: 0.75rem;
-                    font-style: italic;
-                    margin-bottom: 1.5rem;
+                    color: #334155;
+                    font-size: 1.05rem;
+                    line-height: 1.8;
+                    font-weight: 500;
+                    padding: 1.25rem 1.5rem;
+                    background: #f8fafc;
+                    border-left: 4px solid #0f172a;
+                    border-radius: 0 1rem 1rem 0;
+                    margin-bottom: 2rem;
                 }
                 .visi-misi-styled ol {
                     list-style: none;
-                    counter-reset: visi-misi-counter;
+                    counter-reset: visi-counter;
                     padding: 0;
-                    margin: 0;
+                    margin: 0 0 1.5rem 0;
                     display: flex;
                     flex-direction: column;
-                    gap: 1rem;
+                    gap: 0.875rem;
                 }
                 .visi-misi-styled ol li {
-                    counter-increment: visi-misi-counter;
+                    counter-increment: visi-counter;
                     position: relative;
-                    padding: 1rem 1.25rem 1rem 3.5rem;
-                    color: #475569;
+                    padding: 0.875rem 1.25rem 0.875rem 3.5rem;
+                    color: #334155;
                     font-size: 0.95rem;
-                    line-height: 1.6;
+                    font-weight: 500;
+                    line-height: 1.65;
                     background: #ffffff;
-                    border-radius: 1rem;
-                    border: 1px solid #f1f5f9;
-                    box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.02);
+                    border-radius: 0.875rem;
+                    border: 1px solid #e2e8f0;
+                    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.02);
                     transition: all 0.2s ease;
                 }
                 .visi-misi-styled ol li:hover {
-                    border-color: #cbd5e1;
-                    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+                    border-color: #94a3b8;
+                    transform: translateX(4px);
                 }
                 .visi-misi-styled ol li::before {
-                    content: counter(visi-misi-counter);
+                    content: counter(visi-counter);
                     position: absolute;
-                    left: 1rem;
-                    top: 1rem;
+                    left: 0.875rem;
+                    top: 0.875rem;
                     width: 1.75rem;
                     height: 1.75rem;
-                    background-color: #0f172a;
+                    background: #0f172a;
                     color: #ffffff;
-                    font-size: 0.75rem;
-                    font-weight: 700;
-                    border-radius: 9999px;
+                    font-size: 0.8rem;
+                    font-weight: 800;
+                    border-radius: 0.5rem;
                     display: flex;
                     align-items: center;
                     justify-content: center;
@@ -118,8 +123,33 @@
                 .visi-misi-styled ul {
                     list-style: disc;
                     padding-left: 1.5rem;
-                    color: #475569;
+                    color: #334155;
                     margin-bottom: 1.5rem;
+                }
+
+                /* Dark Theme Variant Overrides for Kabinet */
+                .visi-misi-dark h3 {
+                    background: rgba(255, 255, 255, 0.1) !important;
+                    color: #38bdf8 !important;
+                    border: 1px solid rgba(56, 189, 248, 0.25) !important;
+                }
+                .visi-misi-dark p {
+                    color: #f1f5f9 !important;
+                    background: rgba(15, 23, 42, 0.6) !important;
+                    border-left-color: #38bdf8 !important;
+                }
+                .visi-misi-dark ol li {
+                    background: rgba(15, 23, 42, 0.7) !important;
+                    border-color: rgba(255, 255, 255, 0.1) !important;
+                    color: #cbd5e1 !important;
+                }
+                .visi-misi-dark ol li:hover {
+                    border-color: rgba(56, 189, 248, 0.4) !important;
+                    background: rgba(15, 23, 42, 0.9) !important;
+                }
+                .visi-misi-dark ol li::before {
+                    background: #38bdf8 !important;
+                    color: #0f172a !important;
                 }
             </style>
 
@@ -212,87 +242,64 @@
 
             {{-- Kabinet REBOOT Vision & Mission Section (Dynamic from Admin) --}}
             @if ($visiMisiKabinet && $visiMisiKabinet->is_active)
-            <section class="relative overflow-hidden rounded-3xl bg-gradient-to-br from-slate-900 to-slate-950 text-white p-8 md:p-12 shadow-xl border border-slate-800">
-                {{-- Decorative elements --}}
-                <div class="absolute -top-24 -right-24 w-64 h-64 bg-blue-500/10 rounded-full blur-3xl"></div>
-                <div class="absolute -bottom-24 -left-24 w-64 h-64 bg-purple-500/10 rounded-full blur-3xl"></div>
+            <section class="relative overflow-hidden rounded-3xl bg-gradient-to-br from-slate-900 via-slate-900 to-slate-950 text-white p-8 md:p-12 shadow-2xl border border-slate-800">
+                {{-- Decorative Glow --}}
+                <div class="absolute -top-32 -right-32 w-80 h-80 bg-blue-500/10 rounded-full blur-3xl pointer-events-none"></div>
+                <div class="absolute -bottom-32 -left-32 w-80 h-80 bg-purple-500/10 rounded-full blur-3xl pointer-events-none"></div>
 
-                <div class="relative z-10 max-w-6xl mx-auto">
-                    @if ($visiMisiKabinet->images->count() > 0 || $visiMisiKabinet->image)
-                        {{-- Data 2: Zig-Zag Side-by-Side (Media RIGHT, Content LEFT) --}}
-                        <div class="flex flex-col lg:flex-row-reverse gap-12 items-center">
-                            {{-- Media / Image Side (Right) --}}
-                            <div class="w-full lg:w-1/2">
-                                @if ($visiMisiKabinet->images->count() > 1)
-                                    <div class="relative rounded-2xl overflow-hidden shadow-2xl aspect-[4/3] group border border-slate-800" x-data="{ activeSlide: 0, slides: {{ $visiMisiKabinet->images->count() }} }">
-                                        <div class="relative w-full h-full">
-                                            @foreach ($visiMisiKabinet->images as $key => $img)
-                                                <div x-show="activeSlide === {{ $key }}"
-                                                    x-transition:enter="transition ease-out duration-500"
-                                                    x-transition:enter-start="opacity-0 transform scale-95"
-                                                    x-transition:enter-end="opacity-100 transform scale-100"
-                                                    x-transition:leave="transition ease-in duration-300"
-                                                    x-transition:leave-start="opacity-100 transform scale-100"
-                                                    x-transition:leave-end="opacity-0 transform scale-95"
-                                                    class="absolute inset-0 w-full h-full">
-                                                    <img src="{{ asset('storage/' . $img->image) }}" alt="{{ $visiMisiKabinet->title }}"
-                                                        class="w-full h-full object-cover">
-                                                    <div class="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent"></div>
-                                                </div>
-                                            @endforeach
-                                        </div>
-                                        <button @click="activeSlide = activeSlide === 0 ? slides - 1 : activeSlide - 1"
-                                            class="absolute left-3 top-1/2 -translate-y-1/2 p-2 rounded-full bg-white/20 backdrop-blur-sm hover:bg-white/40 text-white transition-all opacity-0 group-hover:opacity-100">
-                                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path></svg>
-                                        </button>
-                                        <button @click="activeSlide = activeSlide === slides - 1 ? 0 : activeSlide + 1"
-                                            class="absolute right-3 top-1/2 -translate-y-1/2 p-2 rounded-full bg-white/20 backdrop-blur-sm hover:bg-white/40 text-white transition-all opacity-0 group-hover:opacity-100">
-                                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
-                                        </button>
-                                        <div class="absolute bottom-3 left-1/2 -translate-x-1/2 flex gap-1.5">
-                                            @foreach ($visiMisiKabinet->images as $key => $img)
-                                                <button @click="activeSlide = {{ $key }}"
-                                                    class="w-2 h-2 rounded-full transition-all"
-                                                    :class="activeSlide === {{ $key }} ? 'bg-white w-5' : 'bg-white/50 hover:bg-white/80'">
-                                                </button>
-                                            @endforeach
-                                        </div>
-                                    </div>
-                                @else
-                                    <div class="relative rounded-2xl overflow-hidden shadow-2xl aspect-[4/3] w-full border border-slate-800">
-                                        <img src="{{ asset('storage/' . ($visiMisiKabinet->images->first()->image ?? $visiMisiKabinet->image)) }}" alt="{{ $visiMisiKabinet->title }}"
-                                            class="w-full h-full object-cover">
-                                    </div>
-                                @endif
-                            </div>
-
-                            {{-- Content Side (Left) --}}
-                            <div class="w-full lg:w-1/2 space-y-6">
-                                <div class="space-y-3">
-                                    <span class="inline-flex items-center gap-2 rounded-full bg-white/10 border border-white/20 px-4 py-1.5 text-sm font-semibold text-white">
-                                        {{ $visiMisiKabinet->subtitle ?: 'HMIF 2024/2025' }}
-                                    </span>
-                                    <h2 class="text-3xl lg:text-4xl font-bold text-white tracking-tight">{{ $visiMisiKabinet->title }}</h2>
-                                    <p class="text-slate-400 text-sm">Himpunan Mahasiswa Teknik Informatika ITATS</p>
-                                </div>
-                                <div class="visi-misi-styled [&_h3]:text-white [&_p]:bg-white/5 [&_p]:text-slate-200 [&_p]:border-blue-400 [&_ol_li]:bg-slate-900/80 [&_ol_li]:border-slate-800 [&_ol_li]:text-slate-300 [&_ol_li::before]:bg-white [&_ol_li::before]:text-slate-950">
-                                    {!! $visiMisiKabinet->content !!}
-                                </div>
-                            </div>
-                        </div>
-                    @else
-                        {{-- Fallback: Full Width Single Column when No Image --}}
-                        <div class="text-center mb-12 space-y-4">
-                            <span class="inline-flex items-center gap-2 rounded-full bg-white/10 border border-white/20 px-4 py-1.5 text-sm font-semibold text-white">
+                <div class="relative z-10 max-w-6xl mx-auto space-y-10">
+                    {{-- Header Badges --}}
+                    <div class="flex flex-col md:flex-row md:items-end justify-between gap-4 border-b border-slate-800/80 pb-6">
+                        <div class="space-y-2">
+                            <span class="inline-flex items-center gap-2 rounded-full bg-blue-500/10 border border-blue-400/20 px-3.5 py-1 text-xs font-bold uppercase tracking-widest text-blue-400">
+                                <i class="fas fa-bullhorn text-[10px]"></i>
                                 {{ $visiMisiKabinet->subtitle ?: 'HMIF 2024/2025' }}
                             </span>
-                            <h2 class="text-3xl md:text-5xl font-bold text-white tracking-tight">{{ $visiMisiKabinet->title }}</h2>
-                            <p class="text-slate-400 text-lg">Himpunan Mahasiswa Teknik Informatika ITATS</p>
+                            <h2 class="text-3xl lg:text-4xl font-extrabold text-white tracking-tight">{{ $visiMisiKabinet->title }}</h2>
                         </div>
-                        <div class="visi-misi-styled [&_h3]:text-white [&_p]:bg-white/5 [&_p]:text-slate-200 [&_p]:border-blue-400 [&_ol_li]:bg-slate-900/80 [&_ol_li]:border-slate-800 [&_ol_li]:text-slate-300 [&_ol_li::before]:bg-white [&_ol_li::before]:text-slate-950">
-                            {!! $visiMisiKabinet->content !!}
+                        <p class="text-slate-400 text-xs font-mono uppercase tracking-wider">Himpunan Mahasiswa Teknik Informatika ITATS</p>
+                    </div>
+
+                    {{-- Dynamic Visi & Misi Layout --}}
+                    <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+                        {{-- Visi Card (Span 5) --}}
+                        <div class="lg:col-span-5 bg-slate-800/60 rounded-2xl p-6 md:p-8 border border-slate-700/60 shadow-lg relative overflow-hidden group">
+                            <div class="absolute top-0 right-0 w-24 h-24 bg-blue-500/10 rounded-bl-full transition-all group-hover:scale-110"></div>
+                            <div class="flex items-center gap-2.5 mb-4">
+                                <span class="w-7 h-7 rounded-lg bg-blue-500/20 text-blue-400 flex items-center justify-center text-xs font-black">01</span>
+                                <h3 class="text-sm font-extrabold uppercase tracking-widest text-blue-400">Visi Utama</h3>
+                            </div>
+                            <blockquote class="text-slate-200 text-sm md:text-base leading-relaxed font-medium italic border-l-2 border-blue-400 pl-4 py-1">
+                                "Terwujudnya Himpunan Mahasiswa Teknik Informatika (HMIF ITATS) sebagai wadah pergerakan yang inklusif, adaptif, profesional, dan berorientasi pada pengembangan potensi berasaskan kekeluargaan serta inovasi teknologi."
+                            </blockquote>
                         </div>
-                    @endif
+
+                        {{-- Misi Cards Grid (Span 7) --}}
+                        <div class="lg:col-span-7 space-y-4">
+                            <div class="flex items-center gap-2.5 mb-2">
+                                <span class="w-7 h-7 rounded-lg bg-purple-500/20 text-purple-400 flex items-center justify-center text-xs font-black">02</span>
+                                <h3 class="text-sm font-extrabold uppercase tracking-widest text-purple-400">Misi Pergerakan</h3>
+                            </div>
+                            <div class="grid grid-cols-1 gap-3">
+                                <div class="bg-slate-800/40 p-4 rounded-xl border border-slate-700/40 flex items-start gap-3 hover:border-slate-600 transition-all hover:translate-x-1">
+                                    <span class="w-6 h-6 rounded-md bg-slate-700 text-slate-300 text-xs font-bold flex items-center justify-center flex-shrink-0 mt-0.5">1</span>
+                                    <p class="text-xs md:text-sm text-slate-300 leading-relaxed font-medium">Memperkuat tata kelola internal organisasi secara profesional, transparan, dan akuntabel.</p>
+                                </div>
+                                <div class="bg-slate-800/40 p-4 rounded-xl border border-slate-700/40 flex items-start gap-3 hover:border-slate-600 transition-all hover:translate-x-1">
+                                    <span class="w-6 h-6 rounded-md bg-slate-700 text-slate-300 text-xs font-bold flex items-center justify-center flex-shrink-0 mt-0.5">2</span>
+                                    <p class="text-xs md:text-sm text-slate-300 leading-relaxed font-medium">Menyediakan ruang kreasi, penelitian, dan inovasi teknologi bagi seluruh mahasiswa Teknik Informatika ITATS.</p>
+                                </div>
+                                <div class="bg-slate-800/40 p-4 rounded-xl border border-slate-700/40 flex items-start gap-3 hover:border-slate-600 transition-all hover:translate-x-1">
+                                    <span class="w-6 h-6 rounded-md bg-slate-700 text-slate-300 text-xs font-bold flex items-center justify-center flex-shrink-0 mt-0.5">3</span>
+                                    <p class="text-xs md:text-sm text-slate-300 leading-relaxed font-medium">Mempererat tali kekeluargaan, solidaritas, dan kolaborasi antar mahasiswa, alumni, serta elemen akademis ITATS.</p>
+                                </div>
+                                <div class="bg-slate-800/40 p-4 rounded-xl border border-slate-700/40 flex items-start gap-3 hover:border-slate-600 transition-all hover:translate-x-1">
+                                    <span class="w-6 h-6 rounded-md bg-slate-700 text-slate-300 text-xs font-bold flex items-center justify-center flex-shrink-0 mt-0.5">4</span>
+                                    <p class="text-xs md:text-sm text-slate-300 leading-relaxed font-medium">Meningkatkan peran aktif HMIF ITATS dalam kegiatan pengabdian masyarakat dan jejaring keorganisasian tingkat regional maupun nasional.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </section>
             @endif
