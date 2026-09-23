@@ -14,25 +14,69 @@
             </div>
 
             <!-- Desktop Menu -->
-            <div class="hidden md:flex items-center space-x-10">
+            <div class="hidden lg:flex items-center space-x-6 xl:space-x-8">
                 <a href="{{ url('/') }}"
                     class="relative group text-sm font-semibold transition-colors hover:text-primary {{ request()->path() == '/' ? 'text-primary' : 'text-slate-600' }}">
                     Beranda
                     <span
                         class="absolute -bottom-1 left-1/2 w-0 h-0.5 bg-primary transition-all duration-300 -translate-x-1/2 group-hover:w-full {{ request()->path() == '/' ? 'w-full' : '' }}"></span>
                 </a>
-                <a href="{{ url('/tentang') }}"
-                    class="relative group text-sm font-semibold transition-colors hover:text-primary {{ request()->is('tentang*') ? 'text-primary' : 'text-slate-600' }}">
-                    Tentang
-                    <span
-                        class="absolute -bottom-1 left-1/2 w-0 h-0.5 bg-primary transition-all duration-300 -translate-x-1/2 group-hover:w-full {{ request()->is('tentang*') ? 'w-full' : '' }}"></span>
-                </a>
-                <a href="{{ url('/struktur-organisasi') }}"
-                    class="relative group text-sm font-semibold transition-colors hover:text-primary {{ request()->is('struktur-organisasi*') ? 'text-primary' : 'text-slate-600' }}">
-                    Struktur Organisasi
-                    <span
-                        class="absolute -bottom-1 left-1/2 w-0 h-0.5 bg-primary transition-all duration-300 -translate-x-1/2 group-hover:w-full {{ request()->is('struktur-organisasi*') ? 'w-full' : '' }}"></span>
-                </a>
+
+                {{-- Tentang Dropdown --}}
+                <div class="relative group">
+                    <a href="{{ url('/tentang') }}"
+                        class="relative flex items-center gap-1 text-sm font-semibold transition-colors hover:text-primary {{ request()->is('tentang*') ? 'text-primary' : 'text-slate-600' }}">
+                        Tentang
+                        <i class="fas fa-chevron-down text-[10px] transition-transform group-hover:rotate-180"></i>
+                        <span
+                            class="absolute -bottom-1 left-1/2 w-0 h-0.5 bg-primary transition-all duration-300 -translate-x-1/2 group-hover:w-full {{ request()->is('tentang*') ? 'text-primary' : 'text-slate-600' }}"></span>
+                    </a>
+                    <div class="absolute top-full left-1/2 -translate-x-1/2 pt-3 w-56 hidden group-hover:block transition-all animate-in fade-in slide-in-from-top-2 z-50">
+                        <div class="bg-white rounded-xl shadow-xl border border-slate-100 overflow-hidden p-1.5">
+                            <a href="{{ url('/tentang') }}"
+                                class="flex items-center gap-2.5 px-3 py-2 text-sm text-slate-700 rounded-lg hover:bg-slate-50 hover:text-primary transition-colors">
+                                <i class="fas fa-info-circle text-xs text-slate-400"></i>
+                                Profil & Sejarah
+                            </a>
+                            <a href="{{ url('/tentang') }}#visi-misi"
+                                class="flex items-center gap-2.5 px-3 py-2 text-sm text-slate-700 rounded-lg hover:bg-slate-50 hover:text-primary transition-colors">
+                                <i class="fas fa-bullseye text-xs text-slate-400"></i>
+                                Visi & Misi HMIF
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                {{-- Anggota / Struktur Organisasi Dropdown --}}
+                <div class="relative group">
+                    <a href="{{ url('/struktur-organisasi') }}"
+                        class="relative flex items-center gap-1 text-sm font-semibold transition-colors hover:text-primary {{ request()->is('struktur-organisasi*') ? 'text-primary' : 'text-slate-600' }}">
+                        Anggota
+                        <i class="fas fa-chevron-down text-[10px] transition-transform group-hover:rotate-180"></i>
+                        <span
+                            class="absolute -bottom-1 left-1/2 w-0 h-0.5 bg-primary transition-all duration-300 -translate-x-1/2 group-hover:w-full {{ request()->is('struktur-organisasi*') ? 'w-full' : '' }}"></span>
+                    </a>
+                    <div class="absolute top-full left-1/2 -translate-x-1/2 pt-3 w-56 hidden group-hover:block transition-all animate-in fade-in slide-in-from-top-2 z-50">
+                        <div class="bg-white rounded-xl shadow-xl border border-slate-100 overflow-hidden p-1.5">
+                            <a href="{{ url('/struktur-organisasi') }}"
+                                class="flex items-center gap-2.5 px-3 py-2 text-sm text-slate-700 rounded-lg hover:bg-slate-50 hover:text-primary transition-colors">
+                                <i class="fas fa-sitemap text-xs text-slate-400"></i>
+                                Struktur Organisasi
+                            </a>
+                            <a href="{{ url('/struktur-organisasi') }}?status=aktif"
+                                class="flex items-center gap-2.5 px-3 py-2 text-sm text-slate-700 rounded-lg hover:bg-slate-50 hover:text-emerald-600 transition-colors">
+                                <i class="fas fa-user-check text-xs text-emerald-500"></i>
+                                Anggota Aktif
+                            </a>
+                            <a href="{{ url('/struktur-organisasi') }}?status=tidak-aktif"
+                                class="flex items-center gap-2.5 px-3 py-2 text-sm text-slate-700 rounded-lg hover:bg-slate-50 hover:text-slate-900 transition-colors">
+                                <i class="fas fa-user-clock text-xs text-slate-400"></i>
+                                Anggota Demisioner
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
                 <a href="{{ url('/program-kerja') }}"
                     class="relative group text-sm font-semibold transition-colors hover:text-primary {{ request()->is('program-kerja*') ? 'text-primary' : 'text-slate-600' }}">
                     Program Kerja
@@ -49,7 +93,7 @@
                     class="relative group text-sm font-semibold transition-colors hover:text-primary {{ request()->is('pengumuman*') ? 'text-primary' : 'text-slate-600' }}">
                     Pengumuman & Berita
                     <span
-                        class="absolute -bottom-1 left-1/2 w-0 h-0.5 bg-primary transition-all duration-300 -translate-x-1/2 group-hover:w-full {{ request()->is('pengumuman*') ? 'text-primary' : 'text-slate-600' }}"></span>
+                        class="absolute -bottom-1 left-1/2 w-0 h-0.5 bg-primary transition-all duration-300 -translate-x-1/2 group-hover:w-full {{ request()->path() == '/' ? 'text-primary' : 'text-slate-600' }}"></span>
                 </a>
                 <a href="{{ url('/pemilu') }}"
                     class="relative group text-sm font-semibold transition-colors hover:text-primary {{ request()->is('pemilu*') ? 'text-primary' : 'text-slate-600' }}">
@@ -59,14 +103,14 @@
                 </a>
                 <a href="{{ url('/merchandise') }}"
                     class="relative group text-sm font-semibold transition-colors hover:text-primary {{ request()->is('merchandise*') ? 'text-primary' : 'text-slate-600' }}">
-                    Official Merchandise
+                    Merchandise
                     <span
                         class="absolute -bottom-1 left-1/2 w-0 h-0.5 bg-primary transition-all duration-300 -translate-x-1/2 group-hover:w-full {{ request()->is('merchandise*') ? 'w-full' : '' }}"></span>
                 </a>
             </div>
 
             <!-- CTA Button -->
-            <div class="hidden md:flex items-center">
+            <div class="hidden lg:flex items-center">
                 <a href="#"
                     class="inline-flex items-center justify-center px-6 py-2.5 text-sm font-bold transition-all duration-200 rounded-lg text-white bg-primary hover:opacity-90 shadow-md shadow-primary/20">
                     Kontak HMIF
@@ -74,7 +118,7 @@
             </div>
 
             <!-- Mobile Menu Button -->
-            <div class="md:hidden flex items-center">
+            <div class="lg:hidden flex items-center">
                 <button id="mobile-menu-button" class="text-slate-600 hover:text-primary focus:outline-none">
                     <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -86,7 +130,7 @@
     </div>
 
     <!-- Mobile Menu -->
-    <div id="mobile-menu" class="hidden md:hidden bg-white border-t border-slate-100 shadow-xl">
+    <div id="mobile-menu" class="hidden lg:hidden bg-white border-t border-slate-100 shadow-xl">
         <div class="px-4 pt-2 pb-6 space-y-1">
             <a href="{{ url('/') }}"
                 class="block px-3 py-2 rounded-md text-base font-semibold {{ request()->path() == '/' ? 'text-primary bg-slate-50' : 'text-slate-600' }}">Beranda</a>
