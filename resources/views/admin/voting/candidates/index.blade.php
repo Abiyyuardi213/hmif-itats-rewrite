@@ -38,25 +38,47 @@
             @if($selectedScheduleId)
                 @php $currentS = $schedules->firstWhere('id', $selectedScheduleId); @endphp
                 @if($currentS)
-                    <span class="text-xs font-mono font-medium text-slate-500 bg-slate-100 px-3 py-1 rounded-md">
-                        Periode: {{ $currentS->start_time->format('d M Y') }} s/d {{ $currentS->end_time->format('d M Y') }}
-                    </span>
+                    <div class="flex items-center gap-3">
+                        <span class="text-xs font-bold font-mono text-emerald-700 bg-emerald-50 px-3 py-1.5 rounded-md border border-emerald-200">
+                            <i class="fas fa-vote-yea mr-1"></i> Total Suara: {{ $totalVotesCount ?? $candidates->sum('votes_count') }} Vote
+                        </span>
+                        <span class="text-xs font-mono font-medium text-slate-500 bg-slate-100 px-3 py-1.5 rounded-md">
+                            Periode: {{ $currentS->start_time->format('d M Y') }} s/d {{ $currentS->end_time->format('d M Y') }}
+                        </span>
+                    </div>
                 @endif
             @endif
         </div>
 
+        @php
+            $totalScheduleVotes = $candidates->sum('votes_count');
+        @endphp
+
         <!-- Candidate Cards Grid -->
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             @forelse($candidates as $candidate)
+                @php
+                    $percentage = $totalScheduleVotes > 0 ? round(($candidate->votes_count / $totalScheduleVotes) * 100, 1) : 0;
+                @endphp
                 <div class="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden flex flex-col group hover:border-slate-300 transition-all">
                     <!-- Top Badge & Header -->
                     <div class="p-4 border-b border-slate-100 bg-slate-50/50 flex items-center justify-between">
                         <span class="w-9 h-9 rounded-full bg-slate-900 text-white font-black text-sm flex items-center justify-center shadow-md">
                             0{{ $candidate->candidate_number }}
                         </span>
-                        <span class="text-xs font-bold font-mono px-2.5 py-1 bg-emerald-50 text-emerald-700 rounded-md border border-emerald-100">
-                            <i class="fas fa-vote-yea text-[10px] mr-1"></i> {{ $candidate->votes_count }} Suara
-                        </span>
+                        <div class="flex items-center gap-2">
+                            <span class="text-xs font-bold font-mono px-2.5 py-1 bg-indigo-50 text-indigo-700 rounded-md border border-indigo-100">
+                                {{ $percentage }}%
+                            </span>
+                            <span class="text-xs font-bold font-mono px-2.5 py-1 bg-emerald-50 text-emerald-700 rounded-md border border-emerald-100">
+                                <i class="fas fa-vote-yea text-[10px] mr-1"></i> {{ $candidate->votes_count }} Suara
+                            </span>
+                        </div>
+                    </div>
+
+                    <!-- Percentage Bar -->
+                    <div class="w-full bg-slate-100 h-2 overflow-hidden">
+                        <div class="bg-gradient-to-r from-indigo-500 to-pink-500 h-full transition-all duration-500" style="width: {{ $percentage }}%"></div>
                     </div>
 
                     <!-- Photo & Name -->
