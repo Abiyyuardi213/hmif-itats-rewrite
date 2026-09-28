@@ -98,14 +98,14 @@
 
                             <!-- Card Actions Footer -->
                             <div class="p-5 space-y-3 bg-white border-t border-slate-100">
-                                <button onclick="openDetailModal({{ json_encode($candidate) }})"
+                                <button onclick='openDetailModal(@json($candidate->only(["id", "candidate_number", "name", "npm", "photo", "vision", "mission"])))'
                                     class="w-full py-2.5 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-xl font-bold text-xs transition-colors flex items-center justify-center gap-2">
                                     <i class="fas fa-eye text-pink-500"></i>
                                     Lihat Visi & Misi
                                 </button>
 
                                 @if($activeSchedule->isOpen())
-                                    <button onclick="openVoteModal({{ json_encode($candidate) }})"
+                                    <button onclick='openVoteModal(@json($candidate->only(["id", "candidate_number", "name", "npm", "photo"])))'
                                         class="w-full py-3 bg-slate-900 hover:bg-pink-600 text-white rounded-xl font-bold text-xs tracking-wide shadow-md hover:shadow-pink-600/25 transition-all duration-300 flex items-center justify-center gap-2 group">
                                         <i class="fas fa-check-circle group-hover:scale-110 transition-transform"></i>
                                         PILIH PASLON NO 0{{ $candidate->candidate_number }}

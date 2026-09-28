@@ -14,7 +14,7 @@ class PublicVotingController extends Controller
     {
         $activeSchedule = VotingSchedule::where('is_active', true)
             ->with(['candidates' => function($q) {
-                $q->withCount('votes')->orderBy('candidate_number');
+                $q->orderBy('candidate_number');
             }])
             ->latest()
             ->first();
