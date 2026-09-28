@@ -59,6 +59,8 @@ Route::middleware(['auth'])->group(function () {
     // Pemilu Cakahim (E-Voting Admin)
     Route::resource('/admin/voting-schedules', App\Http\Controllers\Admin\VotingScheduleController::class, ['as' => 'admin']);
     Route::resource('/admin/candidates', App\Http\Controllers\Admin\CandidateController::class, ['as' => 'admin']);
+    Route::get('/admin/votes', [App\Http\Controllers\Admin\VoteLogController::class, 'index'])->name('admin.votes.index');
+    Route::delete('/admin/votes/{vote}', [App\Http\Controllers\Admin\VoteLogController::class, 'destroy'])->name('admin.votes.destroy');
 
     // Merchandise Orders
     Route::get('/admin/merchandise-orders', [App\Http\Controllers\Admin\MerchandiseOrderController::class, 'index'])->name('admin.merchandise-orders.index');

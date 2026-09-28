@@ -164,6 +164,11 @@
                                 <i class="fas fa-users-cog text-xs"></i>
                                 Calon Cakahim
                             </a>
+                            <a href="{{ route('admin.votes.index') }}"
+                                class="flex items-center gap-2 px-3 py-2 text-sm {{ request()->is('admin/votes*') ? 'bg-primary/5 text-primary font-bold' : 'text-slate-600' }} rounded-lg hover:bg-slate-50 transition-colors">
+                                <i class="fas fa-list-check text-xs"></i>
+                                Daftar Pemilih
+                            </a>
                         </div>
                     </div>
                 </div>
@@ -270,6 +275,10 @@
             <a href="{{ route('admin.candidates.index') }}"
                 class="block px-3 sm:px-4 py-2 sm:py-2.5 rounded-xl text-sm font-bold {{ request()->is('admin/candidates*') ? 'bg-primary/5 text-primary' : 'text-slate-600' }}">
                 <i class="fas fa-users-cog mr-2 text-xs"></i> Calon Cakahim
+            </a>
+            <a href="{{ route('admin.votes.index') }}"
+                class="block px-3 sm:px-4 py-2 sm:py-2.5 rounded-xl text-sm font-bold {{ request()->is('admin/votes*') ? 'bg-primary/5 text-primary' : 'text-slate-600' }}">
+                <i class="fas fa-list-check mr-2 text-xs"></i> Daftar Pemilih
             </a>
             <div class="px-3 sm:px-4 py-2 mt-2 text-[10px] font-bold text-slate-400 uppercase tracking-widest">Store & Merchandise</div>
             <a href="{{ route('admin.merchandises.index') }}"
