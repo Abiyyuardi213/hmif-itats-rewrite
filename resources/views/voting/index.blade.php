@@ -209,6 +209,11 @@
                 <input type="hidden" name="voting_schedule_id" value="{{ $activeSchedule->id ?? '' }}">
                 <input type="hidden" name="candidate_id" id="m-candidate-id">
 
+                <!-- Anti-Bot Honeypot Field (Hidden from real human users) -->
+                <div class="hidden" aria-hidden="true">
+                    <input type="text" name="website_url" tabindex="-1" autocomplete="off">
+                </div>
+
                 <div class="p-4 bg-slate-50 rounded-2xl border border-slate-100 flex items-center gap-3">
                     <div class="w-12 h-12 rounded-xl bg-slate-200 overflow-hidden flex-shrink-0">
                         <img id="m-candidate-photo" src="" class="w-full h-full object-cover">
@@ -247,8 +252,10 @@
                     </div>
 
                     <div class="space-y-1.5">
-                        <label class="text-xs font-bold text-slate-700 uppercase tracking-wider">Email (Opsional)</label>
-                        <input type="email" name="voter_email" placeholder="email@example.com"
+                        <label class="text-xs font-bold text-slate-700 uppercase tracking-wider">
+                            Email <span id="voter-email-req-indicator" class="text-rose-500 hidden">*</span> <span class="text-slate-400 font-normal">(Wajib untuk Dosen)</span>
+                        </label>
+                        <input type="email" name="voter_email" id="voter_email_input" placeholder="email@example.com"
                             class="w-full px-4 py-3 border border-slate-200 rounded-xl text-sm focus:ring-2 focus:ring-pink-500/20 focus:border-pink-500 outline-none transition-all">
                     </div>
                 </div>
@@ -305,14 +312,23 @@
 
         function toggleVoterType(type) {
             const container = document.getElementById('voter-npm-container');
-            const input = document.getElementById('voter_npm_input');
+            const npmInput = document.getElementById('voter_npm_input');
+            const emailInput = document.getElementById('voter_email_input');
+            const emailIndicator = document.getElementById('voter-email-req-indicator');
+
             if (type === 'dosen') {
                 container.classList.add('hidden');
-                input.removeAttribute('required');
-                input.value = '';
+                npmInput.removeAttribute('required');
+                npmInput.value = '';
+
+                emailInput.setAttribute('required', 'required');
+                emailIndicator.classList.remove('hidden');
             } else {
                 container.classList.remove('hidden');
-                input.setAttribute('required', 'required');
+                npmInput.setAttribute('required', 'required');
+
+                emailInput.removeAttribute('required');
+                emailIndicator.classList.add('hidden');
             }
         }
 

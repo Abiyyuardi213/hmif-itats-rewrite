@@ -127,8 +127,8 @@
                                     </td>
                                     <td class="px-6 py-4">
                                         <div class="flex items-center gap-3">
-                                            <div class="w-8 h-8 rounded-full bg-slate-100 text-slate-600 font-bold text-xs flex items-center justify-center uppercase">
-                                                {{ substr($vote->voter_name, 0, 2) }}
+                                            <div class="w-8 h-8 rounded-full bg-slate-100 text-slate-600 font-bold text-xs flex items-center justify-center uppercase overflow-hidden">
+                                                {{ substr(e(strip_tags($vote->voter_name)), 0, 2) }}
                                             </div>
                                             <div class="flex flex-col">
                                                 <span class="font-bold text-slate-900">{{ $vote->voter_name }}</span>

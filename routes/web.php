@@ -71,6 +71,8 @@ Route::middleware(['auth'])->group(function () {
 });
 
 Route::get('/pemilu', [App\Http\Controllers\PublicVotingController::class, 'index'])->name('voting.index');
-Route::post('/pemilu/vote', [App\Http\Controllers\PublicVotingController::class, 'storeVote'])->name('voting.store');
+Route::post('/pemilu/vote', [App\Http\Controllers\PublicVotingController::class, 'storeVote'])
+    ->middleware('throttle:3,1')
+    ->name('voting.store');
 
 Route::get('/struktur-organisasi', [App\Http\Controllers\Admin\OrgMemberController::class, 'publicIndex']);
