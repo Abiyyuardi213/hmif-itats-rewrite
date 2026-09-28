@@ -1,311 +1,159 @@
-<nav class="fixed w-full z-50 transition-all duration-300 bg-white/80 backdrop-blur-md border-b border-slate-100">
-    <div class="max-w-[1600px] mx-auto px-3 sm:px-6 lg:px-12">
-        <div class="flex justify-between items-center h-16 sm:h-20">
-            <!-- Left: Logo -->
-            <div class="flex-shrink-0 flex items-center">
-                <a href="{{ url('/admin/dashboard') }}" class="flex items-center gap-2 sm:gap-3">
-                    <img src="{{ asset('image/hima-infor.png') }}" alt="HMIF Logo"
-                        class="w-10 h-10 sm:w-12 sm:h-12 object-contain">
-                    <div class="hidden xs:flex flex-col">
-                        <span class="font-bold text-base sm:text-lg leading-tight text-slate-900 tracking-tight">Admin
-                            System</span>
-                        <span class="text-[10px] sm:text-xs font-medium text-slate-500 uppercase tracking-widest">HMIF
-                            ITATS</span>
-                    </div>
-                </a>
-            </div>
-
-            <!-- Middle: Nav Links -->
-            <div class="hidden lg:flex items-center space-x-6">
-                <a href="{{ url('/admin/dashboard') }}"
-                    class="relative group text-sm font-semibold transition-colors hover:text-primary {{ request()->is('admin/dashboard') ? 'text-primary' : 'text-slate-600' }}">
-                    Dashboard
-                    <span
-                        class="absolute -bottom-1 left-1/2 w-0 h-0.5 bg-primary transition-all duration-300 -translate-x-1/2 group-hover:w-full {{ request()->is('admin/dashboard') ? 'w-full' : '' }}"></span>
-                </a>
-
-                <div class="h-4 w-px bg-slate-200"></div>
-
-                <a href="{{ route('admin.periods.index') }}"
-                    class="relative group text-sm font-semibold transition-colors hover:text-primary {{ request()->is('admin/periods*') ? 'text-primary' : 'text-slate-600' }}">
-                    Periode
-                    <span
-                        class="absolute -bottom-1 left-1/2 w-0 h-0.5 bg-primary transition-all duration-300 -translate-x-1/2 group-hover:w-full {{ request()->is('admin/periods*') ? 'w-full' : '' }}"></span>
-                </a>
-
-                <a href="{{ route('admin.positions.index') }}"
-                    class="relative group text-sm font-semibold transition-colors hover:text-primary {{ request()->is('admin/positions*') ? 'text-primary' : 'text-slate-600' }}">
-                    Jabatan
-                    <span
-                        class="absolute -bottom-1 left-1/2 w-0 h-0.5 bg-primary transition-all duration-300 -translate-x-1/2 group-hover:w-full {{ request()->is('admin/positions*') ? 'w-full' : '' }}"></span>
-                </a>
-
-                <a href="{{ route('admin.divisions.index') }}"
-                    class="relative group text-sm font-semibold transition-colors hover:text-primary {{ request()->is('admin/divisions*') ? 'text-primary' : 'text-slate-600' }}">
-                    Divisi
-                    <span
-                        class="absolute -bottom-1 left-1/2 w-0 h-0.5 bg-primary transition-all duration-300 -translate-x-1/2 group-hover:w-full {{ request()->is('admin/divisions*') ? 'w-full' : '' }}"></span>
-                </a>
-
-                <div class="relative group">
-                    <button
-                        class="relative flex items-center gap-1 text-sm font-semibold transition-colors hover:text-primary {{ request()->is('admin/members*') ? 'text-primary' : 'text-slate-600' }}">
-                        Anggota
-                        <i class="fas fa-chevron-down text-[10px] transition-transform group-hover:rotate-180"></i>
-                        <span
-                            class="absolute -bottom-1 left-1/2 w-0 h-0.5 bg-primary transition-all duration-300 -translate-x-1/2 group-hover:w-full {{ request()->is('admin/members*') ? 'w-full' : '' }}"></span>
-                    </button>
-                    <!-- Dropdown -->
-                    <div
-                        class="absolute top-full left-1/2 -translate-x-1/2 pt-3 w-52 hidden group-hover:block transition-all animate-in fade-in slide-in-from-top-2">
-                        <div class="bg-white rounded-xl shadow-xl border border-slate-100 overflow-hidden p-1">
-                            <a href="{{ route('admin.members.index') }}"
-                                class="flex items-center gap-2 px-3 py-2 text-sm {{ request()->is('admin/members*') && !request()->has('type') ? 'bg-primary/5 text-primary font-bold' : 'text-slate-600' }} rounded-lg hover:bg-slate-50 transition-colors">
-                                <i class="fas fa-users text-xs"></i>
-                                Semua Anggota
-                            </a>
-                            <a href="{{ route('admin.members.index', ['type' => 'active']) }}"
-                                class="flex items-center gap-2 px-3 py-2 text-sm {{ request()->get('type') == 'active' ? 'bg-emerald-50 text-emerald-600 font-bold' : 'text-slate-600' }} rounded-lg hover:bg-slate-50 transition-colors">
-                                <i class="fas fa-user-check text-xs text-emerald-500"></i>
-                                Anggota Aktif
-                            </a>
-                            <a href="{{ route('admin.members.index', ['type' => 'inactive']) }}"
-                                class="flex items-center gap-2 px-3 py-2 text-sm {{ request()->get('type') == 'inactive' ? 'bg-slate-100 text-slate-800 font-bold' : 'text-slate-600' }} rounded-lg hover:bg-slate-50 transition-colors">
-                                <i class="fas fa-user-clock text-xs text-slate-400"></i>
-                                Anggota Tidak Aktif
-                            </a>
-                        </div>
-                    </div>
+<div x-data="{ sidebarOpen: true }">
+    <!-- Floating Detached Sidebar (Permanent on Desktop, Collapsible on Mobile) -->
+    <aside :class="sidebarOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'"
+        class="fixed top-5 left-5 bottom-5 z-40 w-64 bg-white/95 backdrop-blur-xl border border-slate-200/80 shadow-xl rounded-3xl flex flex-col justify-between transition-all duration-300 overflow-hidden">
+        
+        <!-- Sidebar Brand Header -->
+        <div class="p-5 border-b border-slate-100 flex items-center justify-between">
+            <a href="{{ url('/admin/dashboard') }}" class="flex items-center gap-3">
+                <img src="{{ asset('image/hima-infor.png') }}" alt="HMIF Logo" class="w-9 h-9 object-contain">
+                <div class="flex flex-col">
+                    <span class="font-bold text-sm leading-tight text-slate-900 tracking-tight">Admin System</span>
+                    <span class="text-[10px] font-semibold text-slate-400 uppercase tracking-widest">HMIF ITATS</span>
                 </div>
-
-                <a href="{{ route('admin.work-programs.index') }}"
-                    class="relative group text-sm font-semibold transition-colors hover:text-primary {{ request()->is('admin/work-programs*') ? 'text-primary' : 'text-slate-600' }}">
-                    Proker
-                    <span
-                        class="absolute -bottom-1 left-1/2 w-0 h-0.5 bg-primary transition-all duration-300 -translate-x-1/2 group-hover:w-full {{ request()->is('admin/work-programs*') ? 'w-full' : '' }}"></span>
-                </a>
-
-                <div class="relative group">
-                    <button
-                        class="relative flex items-center gap-1 text-sm font-semibold transition-colors hover:text-primary {{ request()->is('admin/activity-reports*') || request()->is('admin/about-pages*') || request()->is('admin/announcements*') ? 'text-primary' : 'text-slate-600' }}">
-                        Konten
-                        <i class="fas fa-chevron-down text-[10px] transition-transform group-hover:rotate-180"></i>
-                        <span
-                            class="absolute -bottom-1 left-1/2 w-0 h-0.5 bg-primary transition-all duration-300 -translate-x-1/2 group-hover:w-full {{ request()->is('admin/activity-reports*') || request()->is('admin/about-pages*') || request()->is('admin/announcements*') ? 'w-full' : '' }}"></span>
-                    </button>
-                    <!-- Dropdown -->
-                    <div
-                        class="absolute top-full left-1/2 -translate-x-1/2 pt-3 w-48 hidden group-hover:block transition-all animate-in fade-in slide-in-from-top-2">
-                        <div class="bg-white rounded-xl shadow-xl border border-slate-100 overflow-hidden p-1">
-                            <a href="{{ route('admin.activity-reports.index') }}"
-                                class="flex items-center gap-2 px-3 py-2 text-sm {{ request()->is('admin/activity-reports*') ? 'bg-primary/5 text-primary' : 'text-slate-600' }} rounded-lg hover:bg-slate-50 transition-colors">
-                                <i class="fas fa-newspaper text-xs"></i>
-                                Artikel
-                            </a>
-                            <a href="{{ route('admin.about-pages.index') }}"
-                                class="flex items-center gap-2 px-3 py-2 text-sm {{ request()->is('admin/about-pages*') ? 'bg-primary/5 text-primary' : 'text-slate-600' }} rounded-lg hover:bg-slate-50 transition-colors">
-                                <i class="fas fa-file-alt text-xs"></i>
-                                Halaman
-                            </a>
-                            <a href="{{ route('admin.announcements.index') }}"
-                                class="flex items-center gap-2 px-3 py-2 text-sm {{ request()->is('admin/announcements*') ? 'bg-primary/5 text-primary' : 'text-slate-600' }} rounded-lg hover:bg-slate-50 transition-colors">
-                                <i class="fas fa-bullhorn text-xs"></i>
-                                Pengumuman
-                            </a>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="relative group">
-                    <button
-                        class="relative flex items-center gap-1 text-sm font-semibold transition-colors hover:text-primary {{ request()->is('admin/merchandises*') || request()->is('admin/merchandise-orders*') ? 'text-primary' : 'text-slate-600' }}">
-                        Merchandise
-                        <i class="fas fa-chevron-down text-[10px] transition-transform group-hover:rotate-180"></i>
-                        <span
-                            class="absolute -bottom-1 left-1/2 w-0 h-0.5 bg-primary transition-all duration-300 -translate-x-1/2 group-hover:w-full {{ request()->is('admin/merchandises*') || request()->is('admin/merchandise-orders*') ? 'w-full' : '' }}"></span>
-                    </button>
-                    <!-- Dropdown -->
-                    <div
-                        class="absolute top-full left-1/2 -translate-x-1/2 pt-3 w-48 hidden group-hover:block transition-all animate-in fade-in slide-in-from-top-2">
-                        <div class="bg-white rounded-xl shadow-xl border border-slate-100 overflow-hidden p-1">
-                            <a href="{{ route('admin.merchandises.index') }}"
-                                class="flex items-center gap-2 px-3 py-2 text-sm {{ request()->is('admin/merchandises*') ? 'bg-primary/5 text-primary' : 'text-slate-600' }} rounded-lg hover:bg-slate-50 transition-colors">
-                                <i class="fas fa-box text-xs"></i>
-                                Daftar Produk
-                            </a>
-                            <a href="{{ route('admin.merchandise-orders.index') }}"
-                                class="flex items-center gap-2 px-3 py-2 text-sm {{ request()->is('admin/merchandise-orders*') ? 'bg-primary/5 text-primary' : 'text-slate-600' }} rounded-lg hover:bg-slate-50 transition-colors">
-                                <i class="fas fa-shopping-cart text-xs"></i>
-                                Pesanan
-                            </a>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="relative group">
-                    <button
-                        class="relative flex items-center gap-1 text-sm font-semibold transition-colors hover:text-primary {{ request()->is('admin/voting*') || request()->is('admin/candidates*') ? 'text-primary' : 'text-slate-600' }}">
-                        Pemilu Cakahim
-                        <i class="fas fa-chevron-down text-[10px] transition-transform group-hover:rotate-180"></i>
-                        <span
-                            class="absolute -bottom-1 left-1/2 w-0 h-0.5 bg-primary transition-all duration-300 -translate-x-1/2 group-hover:w-full {{ request()->is('admin/voting*') || request()->is('admin/candidates*') ? 'w-full' : '' }}"></span>
-                    </button>
-                    <!-- Dropdown -->
-                    <div
-                        class="absolute top-full left-1/2 -translate-x-1/2 pt-3 w-52 hidden group-hover:block transition-all animate-in fade-in slide-in-from-top-2">
-                        <div class="bg-white rounded-xl shadow-xl border border-slate-100 overflow-hidden p-1">
-                            <a href="{{ route('admin.voting-schedules.index') }}"
-                                class="flex items-center gap-2 px-3 py-2 text-sm {{ request()->is('admin/voting-schedules*') ? 'bg-primary/5 text-primary font-bold' : 'text-slate-600' }} rounded-lg hover:bg-slate-50 transition-colors">
-                                <i class="fas fa-calendar-alt text-xs"></i>
-                                Jadwal Pemilu
-                            </a>
-                            <a href="{{ route('admin.candidates.index') }}"
-                                class="flex items-center gap-2 px-3 py-2 text-sm {{ request()->is('admin/candidates*') ? 'bg-primary/5 text-primary font-bold' : 'text-slate-600' }} rounded-lg hover:bg-slate-50 transition-colors">
-                                <i class="fas fa-users-cog text-xs"></i>
-                                Calon Cakahim
-                            </a>
-                            <a href="{{ route('admin.votes.index') }}"
-                                class="flex items-center gap-2 px-3 py-2 text-sm {{ request()->is('admin/votes*') ? 'bg-primary/5 text-primary font-bold' : 'text-slate-600' }} rounded-lg hover:bg-slate-50 transition-colors">
-                                <i class="fas fa-list-check text-xs"></i>
-                                Daftar Pemilih
-                            </a>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="h-4 w-px bg-slate-200"></div>
-
-                <a href="{{ url('/admin/users') }}"
-                    class="relative group text-sm font-semibold transition-colors hover:text-primary {{ request()->is('admin/users*') ? 'text-primary' : 'text-slate-600' }}">
-                    Akses Admin
-                    <span
-                        class="absolute -bottom-1 left-1/2 w-0 h-0.5 bg-primary transition-all duration-300 -translate-x-1/2 group-hover:w-full {{ request()->is('admin/users*') ? 'w-full' : '' }}"></span>
-                </a>
-            </div>
-
-            <!-- Right: Profile & Action -->
-            <div class="flex items-center gap-2 sm:gap-4">
-                <div class="hidden md:flex flex-col items-end mr-2">
-                    <span class="text-xs font-bold text-slate-900 leading-none">{{ Auth::user()->name }}</span>
-                    <span
-                        class="text-[10px] font-medium text-slate-400 uppercase tracking-tighter">{{ Auth::user()->role }}</span>
-                </div>
-
-                <div class="relative group">
-                    <button
-                        class="w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-slate-100 p-0.5 border border-slate-200 focus:outline-none flex items-center justify-center overflow-hidden">
-                        <img src="https://ui-avatars.com/api/?name={{ urlencode(Auth::user()->name) }}&background=f8fafc&color=0f172a&bold=true"
-                            class="w-full h-full object-cover">
-                    </button>
-                    <!-- Dropdown -->
-                    <div
-                        class="absolute top-full right-0 pt-3 w-56 hidden group-hover:block transition-all animate-in fade-in slide-in-from-top-2">
-                        <div class="bg-white rounded-xl shadow-xl border border-slate-100 overflow-hidden">
-                            <div class="px-4 py-3 bg-slate-50/50 border-b border-slate-100">
-                                <p class="text-xs font-bold text-slate-400 uppercase tracking-widest mb-1">Signed in as
-                                </p>
-                                <p class="text-sm font-bold text-slate-900 truncate">{{ Auth::user()->email }}</p>
-                            </div>
-                            <div class="p-1">
-                                <a href="{{ url('/') }}"
-                                    class="flex items-center gap-2 px-3 py-2 text-sm text-slate-600 rounded-lg hover:bg-slate-50">
-                                    <i class="fas fa-external-link-alt text-xs"></i>
-                                    Lihat Website
-                                </a>
-                                <button type="button" onclick="confirmLogout()"
-                                    class="w-full text-left flex items-center gap-2 px-3 py-2 text-sm text-rose-600 rounded-lg hover:bg-rose-50 font-bold">
-                                    <i class="fas fa-sign-out-alt text-xs"></i>
-                                    Logout
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="h-6 w-px bg-slate-200 mx-2 hidden lg:block"></div>
-
-                <button onclick="confirmLogout()"
-                    class="hidden lg:flex items-center gap-2 px-4 sm:px-5 py-2 sm:py-2.5 bg-slate-900 text-white text-xs font-bold rounded-xl hover:bg-slate-800 transition-all shadow-lg shadow-slate-900/10">
-                    <i class="fas fa-power-off"></i>
-                    <span class="hidden xl:inline">Keluar</span>
-                </button>
-
-                <!-- Mobile Trigger -->
-                <button id="admin-mobile-button" class="lg:hidden text-slate-600 p-2">
-                    <i class="fas fa-bars text-lg sm:text-xl"></i>
-                </button>
-            </div>
+            </a>
+            <button @click="sidebarOpen = false" class="lg:hidden text-slate-400 hover:text-slate-900 p-1">
+                <i class="fas fa-times text-sm"></i>
+            </button>
         </div>
-    </div>
 
-    <!-- Mobile Menu -->
-    <div id="admin-mobile-menu" class="hidden lg:hidden bg-white border-t border-slate-100 shadow-2xl">
-        <div class="px-3 py-3 sm:p-4 space-y-1 max-h-[calc(100vh-4rem)] overflow-y-auto">
+        <!-- Sidebar Navigation Items (Scrollable) -->
+        <div class="p-3.5 space-y-1 overflow-y-auto flex-1 custom-scrollbar">
+            <!-- Main Section -->
             <a href="{{ url('/admin/dashboard') }}"
-                class="block px-3 sm:px-4 py-2.5 sm:py-3 rounded-xl text-sm font-bold {{ request()->is('admin/dashboard') ? 'bg-primary/5 text-primary' : 'text-slate-600' }}">Dashboard</a>
+                class="flex items-center gap-3 px-3 py-2.5 rounded-2xl text-xs font-bold transition-all {{ request()->is('admin/dashboard') ? 'bg-slate-900 text-white shadow-md shadow-slate-900/10' : 'text-slate-600 hover:bg-slate-100/80 hover:text-slate-900' }}">
+                <i class="fas fa-chart-pie text-sm {{ request()->is('admin/dashboard') ? 'text-pink-400' : 'text-slate-400' }}"></i>
+                <span>Dashboard</span>
+            </a>
+
+            <!-- Structure Section -->
+            <div class="pt-3 pb-1 px-3 text-[10px] font-extrabold text-slate-400 uppercase tracking-widest">Struktur Organisasi</div>
             <a href="{{ route('admin.periods.index') }}"
-                class="block px-3 sm:px-4 py-2.5 sm:py-3 rounded-xl text-sm font-bold {{ request()->is('admin/periods*') ? 'bg-primary/5 text-primary' : 'text-slate-600' }}">Periode / Kabinet</a>
+                class="flex items-center gap-3 px-3 py-2 rounded-2xl text-xs font-semibold transition-all {{ request()->is('admin/periods*') ? 'bg-slate-900 text-white shadow-sm' : 'text-slate-600 hover:bg-slate-100/80 hover:text-slate-900' }}">
+                <i class="fas fa-layer-group text-xs {{ request()->is('admin/periods*') ? 'text-pink-400' : 'text-slate-400' }}"></i>
+                <span>Periode Kabinet</span>
+            </a>
             <a href="{{ route('admin.positions.index') }}"
-                class="block px-3 sm:px-4 py-2.5 sm:py-3 rounded-xl text-sm font-bold {{ request()->is('admin/positions*') ? 'bg-primary/5 text-primary' : 'text-slate-600' }}">Jabatan</a>
+                class="flex items-center gap-3 px-3 py-2 rounded-2xl text-xs font-semibold transition-all {{ request()->is('admin/positions*') ? 'bg-slate-900 text-white shadow-sm' : 'text-slate-600 hover:bg-slate-100/80 hover:text-slate-900' }}">
+                <i class="fas fa-id-badge text-xs {{ request()->is('admin/positions*') ? 'text-pink-400' : 'text-slate-400' }}"></i>
+                <span>Jabatan</span>
+            </a>
             <a href="{{ route('admin.divisions.index') }}"
-                class="block px-3 sm:px-4 py-2.5 sm:py-3 rounded-xl text-sm font-bold {{ request()->is('admin/divisions*') ? 'bg-primary/5 text-primary' : 'text-slate-600' }}">Divisi</a>
-            <div class="px-3 sm:px-4 py-2 mt-2 text-[10px] font-bold text-slate-400 uppercase tracking-widest">Manajemen Anggota</div>
-            <a href="{{ route('admin.members.index', ['type' => 'active']) }}"
-                class="block px-3 sm:px-4 py-2 sm:py-2.5 rounded-xl text-sm font-bold {{ request()->get('type') == 'active' ? 'bg-emerald-50 text-emerald-600' : 'text-slate-600' }}">
-                <i class="fas fa-user-check mr-2 text-xs text-emerald-500"></i> Anggota Aktif
+                class="flex items-center gap-3 px-3 py-2 rounded-2xl text-xs font-semibold transition-all {{ request()->is('admin/divisions*') ? 'bg-slate-900 text-white shadow-sm' : 'text-slate-600 hover:bg-slate-100/80 hover:text-slate-900' }}">
+                <i class="fas fa-sitemap text-xs {{ request()->is('admin/divisions*') ? 'text-pink-400' : 'text-slate-400' }}"></i>
+                <span>Divisi</span>
             </a>
-            <a href="{{ route('admin.members.index', ['type' => 'inactive']) }}"
-                class="block px-3 sm:px-4 py-2 sm:py-2.5 rounded-xl text-sm font-bold {{ request()->get('type') == 'inactive' ? 'bg-slate-100 text-slate-800' : 'text-slate-600' }}">
-                <i class="fas fa-user-clock mr-2 text-xs text-slate-400"></i> Anggota Tidak Aktif
+            <a href="{{ route('admin.members.index') }}"
+                class="flex items-center gap-3 px-3 py-2 rounded-2xl text-xs font-semibold transition-all {{ request()->is('admin/members*') ? 'bg-slate-900 text-white shadow-sm' : 'text-slate-600 hover:bg-slate-100/80 hover:text-slate-900' }}">
+                <i class="fas fa-users text-xs {{ request()->is('admin/members*') ? 'text-pink-400' : 'text-slate-400' }}"></i>
+                <span>Anggota Himpunan</span>
             </a>
+
+            <!-- Program & Content -->
+            <div class="pt-3 pb-1 px-3 text-[10px] font-extrabold text-slate-400 uppercase tracking-widest">Program & Artikel</div>
             <a href="{{ route('admin.work-programs.index') }}"
-                class="block px-3 sm:px-4 py-2.5 sm:py-3 rounded-xl text-sm font-bold {{ request()->is('admin/work-programs*') ? 'bg-primary/5 text-primary' : 'text-slate-600' }}">Proker</a>
-            <div class="px-3 sm:px-4 py-2 mt-2 text-[10px] font-bold text-slate-400 uppercase tracking-widest">Konten & Publikasi</div>
+                class="flex items-center gap-3 px-3 py-2 rounded-2xl text-xs font-semibold transition-all {{ request()->is('admin/work-programs*') ? 'bg-slate-900 text-white shadow-sm' : 'text-slate-600 hover:bg-slate-100/80 hover:text-slate-900' }}">
+                <i class="fas fa-tasks text-xs {{ request()->is('admin/work-programs*') ? 'text-pink-400' : 'text-slate-400' }}"></i>
+                <span>Program Kerja</span>
+            </a>
             <a href="{{ route('admin.activity-reports.index') }}"
-                class="block px-3 sm:px-4 py-2.5 sm:py-3 rounded-xl text-sm font-bold {{ request()->is('admin/activity-reports*') ? 'bg-primary/5 text-primary' : 'text-slate-600' }}">Artikel</a>
+                class="flex items-center gap-3 px-3 py-2 rounded-2xl text-xs font-semibold transition-all {{ request()->is('admin/activity-reports*') ? 'bg-slate-900 text-white shadow-sm' : 'text-slate-600 hover:bg-slate-100/80 hover:text-slate-900' }}">
+                <i class="fas fa-newspaper text-xs {{ request()->is('admin/activity-reports*') ? 'text-pink-400' : 'text-slate-400' }}"></i>
+                <span>Artikel & Berita</span>
+            </a>
             <a href="{{ route('admin.about-pages.index') }}"
-                class="block px-3 sm:px-4 py-2.5 sm:py-3 rounded-xl text-sm font-bold {{ request()->is('admin/about-pages*') ? 'bg-primary/5 text-primary' : 'text-slate-600' }}">Halaman</a>
+                class="flex items-center gap-3 px-3 py-2 rounded-2xl text-xs font-semibold transition-all {{ request()->is('admin/about-pages*') ? 'bg-slate-900 text-white shadow-sm' : 'text-slate-600 hover:bg-slate-100/80 hover:text-slate-900' }}">
+                <i class="fas fa-file-alt text-xs {{ request()->is('admin/about-pages*') ? 'text-pink-400' : 'text-slate-400' }}"></i>
+                <span>Halaman Profil</span>
+            </a>
             <a href="{{ route('admin.announcements.index') }}"
-                class="block px-3 sm:px-4 py-2.5 sm:py-3 rounded-xl text-sm font-bold {{ request()->is('admin/announcements*') ? 'bg-primary/5 text-primary' : 'text-slate-600' }}">Pengumuman</a>
-            <div class="px-3 sm:px-4 py-2 mt-2 text-[10px] font-bold text-slate-400 uppercase tracking-widest">Pemilu Cakahim</div>
+                class="flex items-center gap-3 px-3 py-2 rounded-2xl text-xs font-semibold transition-all {{ request()->is('admin/announcements*') ? 'bg-slate-900 text-white shadow-sm' : 'text-slate-600 hover:bg-slate-100/80 hover:text-slate-900' }}">
+                <i class="fas fa-bullhorn text-xs {{ request()->is('admin/announcements*') ? 'text-pink-400' : 'text-slate-400' }}"></i>
+                <span>Pengumuman</span>
+            </a>
+
+            <!-- Pemilu Cakahim -->
+            <div class="pt-3 pb-1 px-3 text-[10px] font-extrabold text-slate-400 uppercase tracking-widest">Pemilu Cakahim</div>
             <a href="{{ route('admin.voting-schedules.index') }}"
-                class="block px-3 sm:px-4 py-2 sm:py-2.5 rounded-xl text-sm font-bold {{ request()->is('admin/voting-schedules*') ? 'bg-primary/5 text-primary' : 'text-slate-600' }}">
-                <i class="fas fa-calendar-alt mr-2 text-xs"></i> Jadwal Pemilu
+                class="flex items-center gap-3 px-3 py-2 rounded-2xl text-xs font-semibold transition-all {{ request()->is('admin/voting-schedules*') ? 'bg-slate-900 text-white shadow-sm' : 'text-slate-600 hover:bg-slate-100/80 hover:text-slate-900' }}">
+                <i class="fas fa-calendar-alt text-xs {{ request()->is('admin/voting-schedules*') ? 'text-pink-400' : 'text-slate-400' }}"></i>
+                <span>Jadwal Pemilu</span>
             </a>
             <a href="{{ route('admin.candidates.index') }}"
-                class="block px-3 sm:px-4 py-2 sm:py-2.5 rounded-xl text-sm font-bold {{ request()->is('admin/candidates*') ? 'bg-primary/5 text-primary' : 'text-slate-600' }}">
-                <i class="fas fa-users-cog mr-2 text-xs"></i> Calon Cakahim
+                class="flex items-center gap-3 px-3 py-2 rounded-2xl text-xs font-semibold transition-all {{ request()->is('admin/candidates*') ? 'bg-slate-900 text-white shadow-sm' : 'text-slate-600 hover:bg-slate-100/80 hover:text-slate-900' }}">
+                <i class="fas fa-users-cog text-xs {{ request()->is('admin/candidates*') ? 'text-pink-400' : 'text-slate-400' }}"></i>
+                <span>Calon Cakahim</span>
             </a>
             <a href="{{ route('admin.votes.index') }}"
-                class="block px-3 sm:px-4 py-2 sm:py-2.5 rounded-xl text-sm font-bold {{ request()->is('admin/votes*') ? 'bg-primary/5 text-primary' : 'text-slate-600' }}">
-                <i class="fas fa-list-check mr-2 text-xs"></i> Daftar Pemilih
+                class="flex items-center gap-3 px-3 py-2 rounded-2xl text-xs font-semibold transition-all {{ request()->is('admin/votes*') ? 'bg-slate-900 text-white shadow-sm' : 'text-slate-600 hover:bg-slate-100/80 hover:text-slate-900' }}">
+                <i class="fas fa-list-check text-xs {{ request()->is('admin/votes*') ? 'text-pink-400' : 'text-slate-400' }}"></i>
+                <span>Daftar Pemilih</span>
             </a>
-            <div class="px-3 sm:px-4 py-2 mt-2 text-[10px] font-bold text-slate-400 uppercase tracking-widest">Store & Merchandise</div>
+
+            <!-- Store & Access -->
+            <div class="pt-3 pb-1 px-3 text-[10px] font-extrabold text-slate-400 uppercase tracking-widest">Store & Hak Akses</div>
             <a href="{{ route('admin.merchandises.index') }}"
-                class="block px-3 sm:px-4 py-2.5 sm:py-3 rounded-xl text-sm font-bold {{ request()->is('admin/merchandises*') ? 'bg-primary/5 text-primary' : 'text-slate-600' }}">Daftar Produk</a>
+                class="flex items-center gap-3 px-3 py-2 rounded-2xl text-xs font-semibold transition-all {{ request()->is('admin/merchandises*') ? 'bg-slate-900 text-white shadow-sm' : 'text-slate-600 hover:bg-slate-100/80 hover:text-slate-900' }}">
+                <i class="fas fa-box text-xs {{ request()->is('admin/merchandises*') ? 'text-pink-400' : 'text-slate-400' }}"></i>
+                <span>Daftar Produk</span>
+            </a>
             <a href="{{ route('admin.merchandise-orders.index') }}"
-                class="block px-3 sm:px-4 py-2.5 sm:py-3 rounded-xl text-sm font-bold {{ request()->is('admin/merchandise-orders*') ? 'bg-primary/5 text-primary' : 'text-slate-600' }}">Pesanan</a>
+                class="flex items-center gap-3 px-3 py-2 rounded-2xl text-xs font-semibold transition-all {{ request()->is('admin/merchandise-orders*') ? 'bg-slate-900 text-white shadow-sm' : 'text-slate-600 hover:bg-slate-100/80 hover:text-slate-900' }}">
+                <i class="fas fa-shopping-cart text-xs {{ request()->is('admin/merchandise-orders*') ? 'text-pink-400' : 'text-slate-400' }}"></i>
+                <span>Pesanan Merchandise</span>
+            </a>
             <a href="{{ url('/admin/users') }}"
-                class="block px-3 sm:px-4 py-2.5 sm:py-3 rounded-xl text-sm font-bold {{ request()->is('admin/users*') ? 'bg-primary/5 text-primary' : 'text-slate-600' }}">Akses
-                Admin</a>
-            <div class="pt-3 sm:pt-4 mt-3 sm:mt-4 border-t border-slate-100">
-                <button onclick="confirmLogout()"
-                    class="w-full py-2.5 sm:py-3 bg-rose-600 text-white rounded-xl text-sm font-bold shadow-lg shadow-rose-600/20">LOGOUT</button>
-            </div>
+                class="flex items-center gap-3 px-3 py-2 rounded-2xl text-xs font-semibold transition-all {{ request()->is('admin/users*') ? 'bg-slate-900 text-white shadow-sm' : 'text-slate-600 hover:bg-slate-100/80 hover:text-slate-900' }}">
+                <i class="fas fa-user-shield text-xs {{ request()->is('admin/users*') ? 'text-pink-400' : 'text-slate-400' }}"></i>
+                <span>User Admin</span>
+            </a>
         </div>
-    </div>
-</nav>
+
+        <!-- Sidebar Profile Footer -->
+        <div class="p-3.5 bg-slate-50/80 border-t border-slate-100 flex items-center justify-between">
+            <div class="flex items-center gap-2.5 min-w-0 flex-1">
+                <img src="https://ui-avatars.com/api/?name={{ urlencode(Auth::user()->name) }}&background=0f172a&color=fff&bold=true"
+                    class="w-8 h-8 rounded-xl object-cover flex-shrink-0">
+                <div class="flex flex-col min-w-0 flex-1">
+                    <span class="text-xs font-bold text-slate-900 truncate">{{ Auth::user()->name }}</span>
+                    <span class="text-[9px] text-slate-400 uppercase font-semibold truncate">{{ Auth::user()->role }}</span>
+                </div>
+            </div>
+            <button onclick="confirmLogout()" class="p-2 text-rose-500 hover:bg-rose-50 rounded-xl transition-colors flex-shrink-0" title="Logout">
+                <i class="fas fa-sign-out-alt text-xs"></i>
+            </button>
+        </div>
+    </aside>
+
+    <!-- Top Action Controls -->
+    <header class="absolute top-6 right-6 lg:right-8 z-30">
+        <div class="flex items-center gap-3">
+            <!-- Mobile Toggle -->
+            <button @click="sidebarOpen = !sidebarOpen"
+                class="lg:hidden p-2.5 rounded-2xl bg-white/90 hover:bg-white text-slate-800 backdrop-blur-md shadow-sm border border-slate-200/60">
+                <i class="fas fa-bars text-base"></i>
+            </button>
+
+            <a href="{{ url('/') }}" target="_blank"
+                class="hidden sm:inline-flex items-center gap-1.5 px-3.5 py-2 bg-white/90 hover:bg-white text-slate-700 text-xs font-bold rounded-2xl backdrop-blur-md border border-slate-200/60 shadow-sm transition-all hover:text-slate-900">
+                <i class="fas fa-external-link-alt text-[10px]"></i>
+                <span>Lihat Website</span>
+            </a>
+
+            <button onclick="confirmLogout()"
+                class="inline-flex items-center gap-1.5 px-4 py-2 bg-rose-500 hover:bg-rose-600 text-white text-xs font-bold rounded-2xl shadow-md shadow-rose-500/20 transition-all active:scale-95">
+                <i class="fas fa-power-off text-xs"></i>
+                <span>Keluar</span>
+            </button>
+        </div>
+    </header>
+</div>
 
 <form id="logout-form" action="{{ url('/logout-admin') }}" method="POST" class="hidden">
     @csrf
 </form>
 
 <script>
-    document.getElementById('admin-mobile-button').addEventListener('click', function() {
-        const menu = document.getElementById('admin-mobile-menu');
-        menu.classList.toggle('hidden');
-    });
-
     function confirmLogout() {
         Swal.fire({
             title: 'Konfirmasi Logout',

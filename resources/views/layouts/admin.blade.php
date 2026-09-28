@@ -19,12 +19,14 @@
 
 <body class="bg-gray-50/50 min-h-screen font-sans antialiased text-slate-800">
 
-    <!-- Floating Navbar -->
+    <!-- Floating Detached Sidebar -->
     <x-admin-navbar />
 
-    <!-- Main Content -->
-    <main class="max-w-7xl mx-auto px-3 sm:px-4 md:px-6 lg:px-8 py-20 sm:py-24">
-        @yield('content')
+    <!-- Shifted Main Content (Clear of Floating Sidebar) -->
+    <main class="lg:pl-80 px-4 sm:px-6 lg:pr-8 pt-6 pb-12 transition-all">
+        <div class="max-w-[1600px] mx-auto space-y-6">
+            @yield('content')
+        </div>
     </main>
 
 </body>
