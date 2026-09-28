@@ -25,8 +25,8 @@
                                 <span>Waktu Voting: {{ $activeSchedule->start_time->format('d M H:i') }} - {{ $activeSchedule->end_time->format('d M Y, H:i') }}</span>
                             </div>
                             <div class="flex items-center gap-2 bg-white/10 px-3.5 py-2 rounded-xl backdrop-blur-sm border border-white/10">
-                                <i class="fas fa-users text-pink-400"></i>
-                                <span>Total Suara Masuk: {{ $totalVotes }} Vote</span>
+                                <i class="fas fa-lock text-pink-400"></i>
+                                <span>Perolehan Suara: Dirahasiakan</span>
                             </div>
                         </div>
                     @endif
@@ -77,9 +77,9 @@
                                             </div>
                                         </div>
 
-                                        <div class="bg-slate-800/80 px-2 py-1 rounded-lg border border-slate-700/60 text-right flex-shrink-0">
-                                            <span class="text-xs font-black text-pink-400 block leading-none">{{ $candidate->votes_count }}</span>
-                                            <span class="text-[8px] font-bold uppercase tracking-wider text-slate-400 block mt-0.5">Suara</span>
+                                        <div class="bg-slate-800/80 px-2 py-1 rounded-lg border border-slate-700/60 text-right flex-shrink-0 flex items-center gap-1.5">
+                                            <i class="fas fa-lock text-[10px] text-pink-400"></i>
+                                            <span class="text-[10px] font-bold uppercase tracking-wider text-slate-300">Rahasia</span>
                                         </div>
                                     </div>
                                 </div>
