@@ -58,4 +58,18 @@ class VoteLogController extends Controller
         return redirect()->route('admin.votes.index', ['schedule_id' => $scheduleId])
             ->with('success', 'Data pemilih / riwayat vote berhasil dihapus');
     }
+
+    public function bulkDelete(Request $request)
+    {
+        $request->validate([
+            'ids' => 'required|array',
+            'ids.*' => 'exists:votes,id',
+        ]);
+
+        $scheduleId = $request->get('schedule_id');
+        Vote::whereIn('id', $request->ids)->delete();
+
+        return redirect()->route('admin.votes.index', ['schedule_id' => $scheduleId])
+            ->with('success', count($request->ids) . ' data pemilih berhasil dihapus.');
+    }
 }

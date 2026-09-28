@@ -60,6 +60,7 @@ Route::middleware(['auth'])->group(function () {
     Route::resource('/admin/voting-schedules', App\Http\Controllers\Admin\VotingScheduleController::class, ['as' => 'admin']);
     Route::resource('/admin/candidates', App\Http\Controllers\Admin\CandidateController::class, ['as' => 'admin']);
     Route::get('/admin/votes', [App\Http\Controllers\Admin\VoteLogController::class, 'index'])->name('admin.votes.index');
+    Route::post('/admin/votes/bulk-delete', [App\Http\Controllers\Admin\VoteLogController::class, 'bulkDelete'])->name('admin.votes.bulkDelete');
     Route::delete('/admin/votes/{vote}', [App\Http\Controllers\Admin\VoteLogController::class, 'destroy'])->name('admin.votes.destroy');
 
     // Merchandise Orders
