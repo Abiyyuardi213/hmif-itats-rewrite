@@ -35,6 +35,19 @@ class DashboardController extends Controller
             'completedOrders' => MerchandiseOrder::where('status', 'completed')->count(),
         ];
 
+        // Fetch active Pemilu / Voting schedule and vote progress
+        $activeVotingSchedule = \App\Models\VotingSchedule::where('is_active', true)
+            ->with(['candidates' => function ($q) {
+                $q->withCount('votes')->orderBy('candidate_number');
+            }])
+            ->latest()
+            ->first();
+
+        $totalVotingVotes = 0;
+        if ($activeVotingSchedule) {
+            $totalVotingVotes = $activeVotingSchedule->candidates->sum('votes_count');
+        }
+
         // Fetch activities from various sources
         $activities = collect();
 
@@ -96,6 +109,6 @@ class DashboardController extends Controller
 
         $recentActivities = $activities->sortByDesc('time')->take(8);
 
-        return view('admin.dashboard', compact('stats', 'recentActivities'));
+        return view('admin.dashboard', compact('stats', 'recentActivities', 'activeVotingSchedule', 'totalVotingVotes'));
     }
 }

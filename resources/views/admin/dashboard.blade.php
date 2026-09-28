@@ -95,6 +95,69 @@
             </div>
         </div>
 
+        <!-- Pemilu Cakahim Quick Count Widget -->
+        @if($activeVotingSchedule)
+            <div class="bg-gradient-to-r from-slate-900 via-indigo-950 to-slate-900 rounded-xl p-5 sm:p-6 text-white shadow-lg relative overflow-hidden">
+                <div class="absolute inset-0 bg-[linear-gradient(to_right,#ffffff0a_1px,transparent_1px),linear-gradient(to_bottom,#ffffff0a_1px,transparent_1px)] bg-[size:20px_20px]"></div>
+                
+                <div class="relative z-10 space-y-4">
+                    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-white/10 pb-4">
+                        <div class="space-y-1">
+                            <div class="flex items-center gap-2">
+                                <span class="px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-pink-500/20 text-pink-400 border border-pink-500/30 uppercase tracking-widest">
+                                    <i class="fas fa-vote-yea mr-1"></i> Live Quick Count
+                                </span>
+                                <span class="text-xs text-slate-400 font-mono">Status: {{ $activeVotingSchedule->status_label }}</span>
+                            </div>
+                            <h2 class="text-lg sm:text-xl font-bold text-white tracking-tight">{{ $activeVotingSchedule->title }}</h2>
+                        </div>
+                        <div class="flex items-center gap-3">
+                            <span class="text-xs font-mono font-bold bg-white/10 px-3.5 py-1.5 rounded-lg border border-white/10 text-pink-300">
+                                Total Masuk: {{ $totalVotingVotes }} Vote
+                            </span>
+                            <a href="{{ route('admin.candidates.index', ['schedule_id' => $activeVotingSchedule->id]) }}"
+                                class="px-3.5 py-1.5 bg-pink-600 hover:bg-pink-700 text-white rounded-lg text-xs font-bold transition-all shadow-md">
+                                Detail Paslon <i class="fas fa-arrow-right text-[10px] ml-1"></i>
+                            </a>
+                        </div>
+                    </div>
+
+                    @if($activeVotingSchedule->candidates->count() > 0)
+                        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 pt-1">
+                            @foreach($activeVotingSchedule->candidates as $candidate)
+                                @php
+                                    $pct = $totalVotingVotes > 0 ? round(($candidate->votes_count / $totalVotingVotes) * 100, 1) : 0;
+                                @endphp
+                                <div class="bg-white/5 border border-white/10 rounded-xl p-4 space-y-3 backdrop-blur-sm">
+                                    <div class="flex items-center justify-between">
+                                        <div class="flex items-center gap-3">
+                                            <span class="w-8 h-8 rounded-lg bg-pink-600 font-black text-xs flex items-center justify-center text-white shadow-sm">
+                                                0{{ $candidate->candidate_number }}
+                                            </span>
+                                            <div>
+                                                <h4 class="font-bold text-sm text-white leading-tight">{{ $candidate->name }}</h4>
+                                                <p class="text-[10px] font-mono text-slate-400 mt-0.5">{{ $candidate->npm ?? 'Cakahim' }}</p>
+                                            </div>
+                                        </div>
+                                        <div class="text-right">
+                                            <span class="text-base font-black text-pink-400 leading-none block">{{ $pct }}%</span>
+                                            <span class="text-[10px] font-mono text-slate-400 block mt-0.5">{{ $candidate->votes_count }} Vote</span>
+                                        </div>
+                                    </div>
+                                    <!-- Progress Bar -->
+                                    <div class="w-full bg-white/10 h-2 rounded-full overflow-hidden">
+                                        <div class="bg-gradient-to-r from-pink-500 to-rose-500 h-full transition-all duration-500" style="width: {{ $pct }}%"></div>
+                                    </div>
+                                </div>
+                            @endforeach
+                        </div>
+                    @else
+                        <p class="text-xs text-slate-400 italic">Belum ada paslon Cakahim yang terdaftar pada sesi ini.</p>
+                    @endif
+                </div>
+            </div>
+        @endif
+
         <!-- Secondary Stats -->
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4">
             <!-- Merchandise Stats -->
