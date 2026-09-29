@@ -14,6 +14,7 @@ class Vote extends Model
         'voter_name',
         'voter_email',
         'ip_address',
+        'status',
     ];
 
     public function schedule()

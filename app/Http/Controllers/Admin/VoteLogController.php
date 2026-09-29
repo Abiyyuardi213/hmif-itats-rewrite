@@ -15,6 +15,7 @@ class VoteLogController extends Controller
         $selectedScheduleId = $request->get('schedule_id');
         $search = $request->get('search');
         $voterType = $request->get('voter_type');
+        $status = $request->get('status');
 
         if (!$selectedScheduleId) {
             $activeSchedule = VotingSchedule::where('is_active', true)->first();
@@ -31,6 +32,10 @@ class VoteLogController extends Controller
             $query->where('voter_type', $voterType);
         }
 
+        if ($status) {
+            $query->where('status', $status);
+        }
+
         if ($search) {
             $query->where(function ($q) use ($search) {
                 $q->where('voter_name', 'like', "%{$search}%")
@@ -45,9 +50,26 @@ class VoteLogController extends Controller
             'total' => Vote::where('voting_schedule_id', $selectedScheduleId)->count(),
             'mahasiswa' => Vote::where('voting_schedule_id', $selectedScheduleId)->where('voter_type', 'mahasiswa')->count(),
             'dosen' => Vote::where('voting_schedule_id', $selectedScheduleId)->where('voter_type', 'dosen')->count(),
+            'verified' => Vote::where('voting_schedule_id', $selectedScheduleId)->where('status', 'verified')->count(),
+            'pending' => Vote::where('voting_schedule_id', $selectedScheduleId)->where('status', 'pending')->count(),
+            'rejected' => Vote::where('voting_schedule_id', $selectedScheduleId)->where('status', 'rejected')->count(),
         ];
 
-        return view('admin.voting.votes.index', compact('votes', 'schedules', 'selectedScheduleId', 'search', 'voterType', 'stats'));
+        return view('admin.voting.votes.index', compact('votes', 'schedules', 'selectedScheduleId', 'search', 'voterType', 'status', 'stats'));
+    }
+
+    public function verify(Vote $vote)
+    {
+        $vote->update(['status' => 'verified']);
+
+        return redirect()->back()->with('success', "Vote dari {$vote->voter_name} ({$vote->voter_npm}) berhasil DIVERIFIKASI (Disetujui).");
+    }
+
+    public function reject(Vote $vote)
+    {
+        $vote->update(['status' => 'rejected']);
+
+        return redirect()->back()->with('success', "Vote dari {$vote->voter_name} ({$vote->voter_npm}) DITOLAK.");
     }
 
     public function destroy(Vote $vote)

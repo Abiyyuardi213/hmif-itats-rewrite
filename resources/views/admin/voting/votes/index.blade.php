@@ -25,7 +25,7 @@
         </div>
 
         <!-- Filter & Stats Bar -->
-        <div class="grid grid-cols-1 lg:grid-cols-4 gap-4">
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4">
             <!-- Stats Widgets -->
             <div class="bg-white p-4 rounded-lg border border-slate-200 shadow-sm flex items-center justify-between">
                 <div>
@@ -49,11 +49,21 @@
 
             <div class="bg-white p-4 rounded-lg border border-slate-200 shadow-sm flex items-center justify-between">
                 <div>
-                    <p class="text-xs font-bold text-slate-400 uppercase tracking-wider">Suara Dosen</p>
-                    <p class="text-2xl font-black text-emerald-600 mt-0.5">{{ $stats['dosen'] }} <span class="text-xs font-semibold text-slate-400">Voter</span></p>
+                    <p class="text-xs font-bold text-slate-400 uppercase tracking-wider">Terverifikasi</p>
+                    <p class="text-2xl font-black text-emerald-600 mt-0.5">{{ $stats['verified'] }} <span class="text-xs font-semibold text-slate-400">Sah</span></p>
                 </div>
                 <div class="w-10 h-10 rounded-lg bg-emerald-50 text-emerald-600 flex items-center justify-center font-bold">
-                    <i class="fas fa-chalkboard-teacher text-base"></i>
+                    <i class="fas fa-check-circle text-base"></i>
+                </div>
+            </div>
+
+            <div class="bg-white p-4 rounded-lg border border-slate-200 shadow-sm flex items-center justify-between">
+                <div>
+                    <p class="text-xs font-bold text-slate-400 uppercase tracking-wider">Pending (ACC)</p>
+                    <p class="text-2xl font-black text-amber-500 mt-0.5">{{ $stats['pending'] }} <span class="text-xs font-semibold text-slate-400">Voter</span></p>
+                </div>
+                <div class="w-10 h-10 rounded-lg bg-amber-50 text-amber-600 flex items-center justify-center font-bold">
+                    <i class="fas fa-clock text-base"></i>
                 </div>
             </div>
 
@@ -76,12 +86,20 @@
             <form method="GET" action="{{ route('admin.votes.index') }}" class="flex flex-col sm:flex-row gap-3 items-center justify-between w-full">
                 <input type="hidden" name="schedule_id" value="{{ $selectedScheduleId }}">
                 
-                <div class="flex items-center gap-3 w-full sm:w-auto">
+                <div class="flex flex-wrap items-center gap-3 w-full sm:w-auto">
                     <select name="voter_type" onchange="this.form.submit()"
                         class="px-3 py-2 border border-slate-200 rounded-md text-xs font-semibold text-slate-700 bg-white">
-                        <option value="">-- Semua Jenis Pemilih --</option>
+                        <option value="">-- Semua Jenis --</option>
                         <option value="mahasiswa" {{ $voterType == 'mahasiswa' ? 'selected' : '' }}>Mahasiswa</option>
                         <option value="dosen" {{ $voterType == 'dosen' ? 'selected' : '' }}>Dosen</option>
+                    </select>
+
+                    <select name="status" onchange="this.form.submit()"
+                        class="px-3 py-2 border border-slate-200 rounded-md text-xs font-semibold text-slate-700 bg-white">
+                        <option value="">-- Semua Status --</option>
+                        <option value="verified" {{ (isset($status) && $status == 'verified') ? 'selected' : '' }}>Verified (Sah)</option>
+                        <option value="pending" {{ (isset($status) && $status == 'pending') ? 'selected' : '' }}>Pending (Menunggu ACC)</option>
+                        <option value="rejected" {{ (isset($status) && $status == 'rejected') ? 'selected' : '' }}>Rejected (Ditolak)</option>
                     </select>
 
                     <button type="button" id="bulk-delete-btn" onclick="submitBulkDelete()" disabled
@@ -114,6 +132,7 @@
                                 <th class="px-6 py-3 text-xs font-semibold text-slate-500 uppercase tracking-tight">Nama Pemilih</th>
                                 <th class="px-6 py-3 text-xs font-semibold text-slate-500 uppercase tracking-tight">Status Pemilih</th>
                                 <th class="px-6 py-3 text-xs font-semibold text-slate-500 uppercase tracking-tight">NPM / Identitas</th>
+                                <th class="px-6 py-3 text-xs font-semibold text-slate-500 uppercase tracking-tight">Status Suara</th>
                                 <th class="px-6 py-3 text-xs font-semibold text-slate-500 uppercase tracking-tight">Pilihan Paslon</th>
                                 <th class="px-6 py-3 text-xs font-semibold text-slate-500 uppercase tracking-tight">Waktu Voting</th>
                                 <th class="px-6 py-3 text-xs font-semibold text-slate-500 uppercase tracking-tight text-right">Aksi</th>
@@ -153,6 +172,21 @@
                                         </span>
                                     </td>
                                     <td class="px-6 py-4">
+                                        @if($vote->status === 'verified')
+                                            <span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-bold bg-emerald-50 text-emerald-700 border border-emerald-200">
+                                                <i class="fas fa-check-circle text-[10px]"></i> Sah (Verified)
+                                            </span>
+                                        @elseif($vote->status === 'pending')
+                                            <span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-bold bg-amber-50 text-amber-700 border border-amber-200">
+                                                <i class="fas fa-clock text-[10px]"></i> Pending ACC
+                                            </span>
+                                        @else
+                                            <span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-bold bg-rose-50 text-rose-700 border border-rose-200">
+                                                <i class="fas fa-times-circle text-[10px]"></i> Ditolak
+                                            </span>
+                                        @endif
+                                    </td>
+                                    <td class="px-6 py-4">
                                         @if($vote->candidate)
                                             <div class="flex items-center gap-2">
                                                 <span class="w-6 h-6 rounded-md bg-slate-900 text-white font-bold text-[10px] flex items-center justify-center">
@@ -171,16 +205,36 @@
                                         </span>
                                     </td>
                                     <td class="px-6 py-4 text-right">
-                                        <button type="button" onclick="confirmDeleteVote({{ $vote->id }}, '{{ $vote->voter_name }}')"
-                                            class="p-1.5 text-slate-400 hover:text-rose-600 rounded-md hover:bg-slate-100 transition-colors"
-                                            title="Hapus Vote">
-                                            <i class="fas fa-trash-alt text-xs"></i>
-                                        </button>
+                                        <div class="flex items-center justify-end gap-1">
+                                            @if($vote->status === 'pending')
+                                                <form action="{{ route('admin.votes.verify', $vote->id) }}" method="POST" onsubmit="saveScrollPosition()" class="inline">
+                                                    @csrf
+                                                    @method('PATCH')
+                                                    <button type="submit" class="px-2 py-1 bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold rounded shadow-sm transition-colors flex items-center gap-1" title="ACC / Verifikasi Vote">
+                                                        <i class="fas fa-check text-[10px]"></i> ACC
+                                                    </button>
+                                                </form>
+
+                                                <form action="{{ route('admin.votes.reject', $vote->id) }}" method="POST" onsubmit="saveScrollPosition()" class="inline">
+                                                    @csrf
+                                                    @method('PATCH')
+                                                    <button type="submit" class="px-2 py-1 bg-amber-500 hover:bg-amber-600 text-white text-xs font-bold rounded shadow-sm transition-colors flex items-center gap-1" title="Tolak Vote">
+                                                        <i class="fas fa-times text-[10px]"></i> Tolak
+                                                    </button>
+                                                </form>
+                                            @endif
+
+                                            <button type="button" onclick="confirmDeleteVote({{ $vote->id }}, '{{ $vote->voter_name }}')"
+                                                class="p-1.5 text-slate-400 hover:text-rose-600 rounded-md hover:bg-slate-100 transition-colors"
+                                                title="Hapus Vote">
+                                                <i class="fas fa-trash-alt text-xs"></i>
+                                            </button>
+                                        </div>
                                     </td>
                                 </tr>
                             @empty
                                 <tr>
-                                    <td colspan="7" class="px-6 py-12 text-center text-slate-400 italic">
+                                    <td colspan="8" class="px-6 py-12 text-center text-slate-400 italic">
                                         Belum ada data pemilih / voting yang terekam pada sesi ini.
                                     </td>
                                 </tr>
@@ -198,8 +252,8 @@
         </div>
     </div>
 
-    <!-- Hidden Delete Form -->
-    <form id="delete-vote-form" method="POST" class="hidden">
+    <!-- Action Forms -->
+    <form id="delete-form" method="POST" class="hidden">
         @csrf
         @method('DELETE')
     </form>
