@@ -34,6 +34,20 @@
             </div>
 
             <!-- Messages Alert -->
+            @if ($errors->any())
+                <div class="p-4 bg-rose-50 border border-rose-200 rounded-2xl space-y-1 text-rose-800 text-sm font-semibold shadow-sm">
+                    <div class="flex items-center gap-2 text-rose-900 font-bold">
+                        <i class="fas fa-exclamation-circle text-rose-500 text-lg"></i>
+                        <span>Gagal Mengirim Vote (Kesalahan Validasi Input):</span>
+                    </div>
+                    <ul class="list-disc list-inside pl-6 text-xs text-rose-700 font-normal space-y-0.5">
+                        @foreach ($errors->all() as $error)
+                            <li>{{ $error }}</li>
+                        @endforeach
+                    </ul>
+                </div>
+            @endif
+
             @if(session('success'))
                 <div class="p-4 bg-emerald-50 border border-emerald-200 rounded-2xl flex items-center gap-3 text-emerald-800 text-sm font-semibold shadow-sm">
                     <i class="fas fa-check-circle text-emerald-500 text-lg"></i>
@@ -367,5 +381,39 @@
                 document.body.style.overflow = 'auto';
             }, 200);
         }
+
+        @if (session('success'))
+            Swal.fire({
+                title: 'Berhasil!',
+                text: @json(session('success')),
+                icon: 'success',
+                confirmButtonColor: '#0f172a',
+                confirmButtonText: 'Tutup'
+            });
+        @endif
+
+        @if (session('error'))
+            Swal.fire({
+                title: 'Gagal Voting',
+                text: @json(session('error')),
+                icon: 'error',
+                confirmButtonColor: '#e11d48',
+                confirmButtonText: 'Paham'
+            });
+        @endif
+
+        @if ($errors->any())
+            Swal.fire({
+                title: 'Data Tidak Valid!',
+                html: `<div class="text-left text-xs font-semibold text-rose-600 space-y-1">
+                    @foreach ($errors->all() as $error)
+                        <p>• {{ $error }}</p>
+                    @endforeach
+                </div>`,
+                icon: 'warning',
+                confirmButtonColor: '#e11d48',
+                confirmButtonText: 'Perbaiki Data'
+            });
+        @endif
     </script>
 @endsection
