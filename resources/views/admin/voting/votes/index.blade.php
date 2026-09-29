@@ -207,21 +207,13 @@
                                     <td class="px-6 py-4 text-right">
                                         <div class="flex items-center justify-end gap-1">
                                             @if($vote->status === 'pending')
-                                                <form action="{{ route('admin.votes.verify', $vote->id) }}" method="POST" onsubmit="saveScrollPosition()" class="inline">
-                                                    @csrf
-                                                    @method('PATCH')
-                                                    <button type="submit" class="px-2 py-1 bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold rounded shadow-sm transition-colors flex items-center gap-1" title="ACC / Verifikasi Vote">
-                                                        <i class="fas fa-check text-[10px]"></i> ACC
-                                                    </button>
-                                                </form>
+                                                <button type="button" onclick="submitVerifyVote({{ $vote->id }})" class="px-2 py-1 bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold rounded shadow-sm transition-colors flex items-center gap-1" title="ACC / Verifikasi Vote">
+                                                    <i class="fas fa-check text-[10px]"></i> ACC
+                                                </button>
 
-                                                <form action="{{ route('admin.votes.reject', $vote->id) }}" method="POST" onsubmit="saveScrollPosition()" class="inline">
-                                                    @csrf
-                                                    @method('PATCH')
-                                                    <button type="submit" class="px-2 py-1 bg-amber-500 hover:bg-amber-600 text-white text-xs font-bold rounded shadow-sm transition-colors flex items-center gap-1" title="Tolak Vote">
-                                                        <i class="fas fa-times text-[10px]"></i> Tolak
-                                                    </button>
-                                                </form>
+                                                <button type="button" onclick="submitRejectVote({{ $vote->id }})" class="px-2 py-1 bg-amber-500 hover:bg-amber-600 text-white text-xs font-bold rounded shadow-sm transition-colors flex items-center gap-1" title="Tolak Vote">
+                                                    <i class="fas fa-times text-[10px]"></i> Tolak
+                                                </button>
                                             @endif
 
                                             <button type="button" onclick="confirmDeleteVote({{ $vote->id }}, '{{ $vote->voter_name }}')"
@@ -253,6 +245,16 @@
     </div>
 
     <!-- Action Forms -->
+    <form id="verify-form" method="POST" class="hidden">
+        @csrf
+        @method('PATCH')
+    </form>
+
+    <form id="reject-form" method="POST" class="hidden">
+        @csrf
+        @method('PATCH')
+    </form>
+
     <form id="delete-form" method="POST" class="hidden">
         @csrf
         @method('DELETE')
@@ -312,6 +314,20 @@
                     document.getElementById('bulk-delete-form').submit();
                 }
             });
+        }
+
+        function submitVerifyVote(id) {
+            saveScrollPosition();
+            const form = document.getElementById('verify-form');
+            form.action = `/admin/votes/${id}/verify`;
+            form.submit();
+        }
+
+        function submitRejectVote(id) {
+            saveScrollPosition();
+            const form = document.getElementById('reject-form');
+            form.action = `/admin/votes/${id}/reject`;
+            form.submit();
         }
 
         function confirmDeleteVote(id, name) {
